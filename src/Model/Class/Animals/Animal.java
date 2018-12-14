@@ -26,5 +26,10 @@ public abstract class Animal
 
     protected Point2D position;
 
+    /***
+     * Function
+     * Handles the growth of an Animal
+     * Changing size and sprites depending on its age
+     * ***/
     abstract void growth(int Age);
 }

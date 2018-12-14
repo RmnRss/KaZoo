@@ -15,9 +15,7 @@ public class Turtle extends Animal
         speed = 14;
         litter = 2;
     }
-
-    // N'importe où
-
+    
     // Baby Turtle
     public Turtle(String Name, String Sex, Animal Father, Animal Mother)
     {

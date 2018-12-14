@@ -20,7 +20,7 @@ public class Penguin extends Animal
 
     }
 
-    // Baby Penguin
+    // Baby Penguin Constructor
     public Penguin(String Name, String Sex, Animal Father, Animal Mother)
     {
         this(Name, Sex);

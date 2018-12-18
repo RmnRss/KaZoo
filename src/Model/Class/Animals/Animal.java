@@ -1,5 +1,6 @@
 package Model.Class.Animals;
 
+import Model.Class.Animations.Sprite;
 import Model.Class.Client;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -8,7 +9,6 @@ import java.util.Random;
 
 public abstract class Animal
 {
-    protected int speed;
     protected int name;
 
     protected int age;
@@ -24,9 +24,7 @@ public abstract class Animal
     protected Animal father;
     protected Animal mother;
 
-    protected Image sprite;
-
-    protected Point2D position;
+    protected Sprite sprite;
 
     /***
      * Function

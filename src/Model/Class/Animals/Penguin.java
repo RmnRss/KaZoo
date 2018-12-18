@@ -1,5 +1,6 @@
 package Model.Class.Animals;
 
+import Model.Class.Animations.Sprite;
 import javafx.scene.image.Image;
 
 import java.util.Random;
@@ -14,10 +15,8 @@ public class Penguin extends Animal
     public Penguin(String Name, String Sex)
     {
         averageSize = 5;
-        speed = 5;
         litter = 1;
-
-
+        sprite = new Sprite(5, "resources/img/penguin.png");
     }
 
     // Baby Penguin Constructor

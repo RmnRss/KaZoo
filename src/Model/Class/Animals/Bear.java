@@ -1,5 +1,7 @@
 package Model.Class.Animals;
 
+import Model.Class.Animations.Sprite;
+
 import java.util.Random;
 
 public class Bear extends Animal
@@ -12,9 +14,8 @@ public class Bear extends Animal
     public Bear(String Name, String Sex)
     {
         averageSize = 15;
-        speed = 14;
         litter = 2;
-
+        sprite = new Sprite(14, "resources/img/bear.png");
 
     }
 

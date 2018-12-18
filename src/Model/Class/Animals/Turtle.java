@@ -1,5 +1,7 @@
 package Model.Class.Animals;
 
+import Model.Class.Animations.Sprite;
+
 import java.util.Random;
 
 public class Turtle extends Animal
@@ -12,8 +14,8 @@ public class Turtle extends Animal
     public Turtle(String Name, String Sex)
     {
         averageSize = 3;
-        speed = 14;
         litter = 2;
+        sprite = new Sprite(3, "resources/img/turtle.png");
     }
     
     // Baby Turtle

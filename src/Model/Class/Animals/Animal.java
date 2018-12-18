@@ -4,6 +4,8 @@ import Model.Class.Client;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
+import java.util.Random;
+
 public abstract class Animal
 {
     protected int speed;
@@ -32,4 +34,31 @@ public abstract class Animal
      * Changing size and sprites depending on its age
      * ***/
     abstract void growth(int Age);
+
+    public int getTargetX()
+    {
+        int mapSide = 500;
+
+        Random r = new Random();
+
+        return r.nextInt(mapSide);
+    }
+
+    public int getTargetY()
+    {
+        int mapSide = 500;
+
+        Random r = new Random();
+
+        return r.nextInt(mapSide);
+    }
+
+    public void move()
+    {
+        int targetX = getTargetX();
+        int targetY = getTargetY();
+
+
+
+    }
 }

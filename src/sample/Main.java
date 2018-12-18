@@ -1,5 +1,7 @@
 package sample;
 
+import Model.Class.Animals.Penguin;
+import Model.Class.Animals.Turtle;
 import Model.Class.Animations.AnimatedImage;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -25,12 +27,17 @@ public class Main extends Application {
        // SIde of a square in px
         int mapSide = 500 ;
 
+
         // Image declaration
         Image grass = new Image("resources/img/grass.jpg");
+        /*
         Image pigloo = new Image("resources/img/penguin.png");
         Image baloo = new Image("resources/img/babyBear.png");
         Image caro = new Image("resources/img/turtle.png");
+        */
 
+        Penguin pigloo = new Penguin("Pigloo","Bonhomme");
+        Turtle caro = new Turtle("Caroline", "Madame");
 
         window.setTitle("KaZoo");
 
@@ -51,7 +58,8 @@ public class Main extends Application {
         gc.drawImage(grass,0 ,0 );
 
 
-        gc.drawImage(pigloo, 0,0 , 31, 35, 0,0 , 31, 35);
+        gc.drawImage(pigloo.getSprite().getImage(), 0,0 , 31, 35, 0,0 , 31, 35);
+        gc.drawImage(caro.getSprite().getImage(), 0,0 , 31, 35, 0,0 , 31, 35);
 
         final long startNanoTime = System.nanoTime();
 
@@ -60,14 +68,27 @@ public class Main extends Application {
         {
             public void handle(long currentNanoTime)
             {
-                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+                if(!pigloo.getSprite().isArrived())
+                {
+                    double t = (currentNanoTime - startNanoTime) / 1000000000.0;
 
-                double x = 100 + 128 * Math.cos(t);
-                double y = 100 + 128 * Math.sin(t);
+                    pigloo.getSprite().update(t);
 
-                gc.drawImage(grass , 0,0 );
-                gc.drawImage(pigloo, 0,0 , 31, 35, x,y , 31, 35);
+                    gc.drawImage(grass , 0,0 );
+                    pigloo.getSprite().render(gc);
+                    caro.getSprite().render(gc);
+                }
 
+                if(!caro.getSprite().isArrived())
+                {
+                    double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+
+                    caro.getSprite().update(t);
+
+                    gc.drawImage(grass , 0,0 );
+                    pigloo.getSprite().render(gc);
+                    caro.getSprite().render(gc);
+                }
             }
         }.start();
 

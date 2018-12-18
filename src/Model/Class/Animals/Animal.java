@@ -33,30 +33,92 @@ public abstract class Animal
      * ***/
     abstract void growth(int Age);
 
-    public int getTargetX()
-    {
-        int mapSide = 500;
-
-        Random r = new Random();
-
-        return r.nextInt(mapSide);
-    }
-
-    public int getTargetY()
-    {
-        int mapSide = 500;
-
-        Random r = new Random();
-
-        return r.nextInt(mapSide);
-    }
-
     public void move()
     {
-        int targetX = getTargetX();
-        int targetY = getTargetY();
+        //int targetX = getTargetX();
+        //int targetY = getTargetY();
 
 
 
+    }
+
+    public int getName() {
+        return name;
+    }
+
+    public void setName(int name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Client getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public float getAverageSize() {
+        return averageSize;
+    }
+
+    public void setAverageSize(float averageSize) {
+        this.averageSize = averageSize;
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public int getLitter() {
+        return litter;
+    }
+
+    public void setLitter(int litter) {
+        this.litter = litter;
+    }
+
+    public Animal getFather() {
+        return father;
+    }
+
+    public void setFather(Animal father) {
+        this.father = father;
+    }
+
+    public Animal getMother() {
+        return mother;
+    }
+
+    public void setMother(Animal mother) {
+        this.mother = mother;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
 }

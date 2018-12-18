@@ -9,12 +9,14 @@ import java.util.Random;
 public class Sprite
 {
     private Image image;
-    private double positionX;
-    private double positionY;
-    private double velocityX;
-    private double velocityY;
-    private double width;
-    private double height;
+    private int positionX;
+    private int positionY;
+    private int targetX;
+    private int targetY;
+    private int velocityX;
+    private int velocityY;
+    private int width;
+    private int height;
 
     public Sprite(int velocity, String url)
     {
@@ -23,18 +25,20 @@ public class Sprite
 
         positionX = r.nextInt(mapSide);
         positionY = r.nextInt(mapSide);
+
         velocityX = velocity;
         velocityY = velocity;
+
         image = new Image(url);
-        width = image.getWidth();
-        height = image.getHeight();
+        width = 31;
+        height = 35;
     }
 
     public void setImage(Image i)
     {
         image = i;
-        width = i.getWidth();
-        height = i.getHeight();
+        width = (int)i.getWidth();
+        height = (int)i.getHeight();
     }
 
     public void setImage(String filename)
@@ -43,19 +47,19 @@ public class Sprite
         setImage(i);
     }
 
-    public void setPosition(double x, double y)
+    public void setPosition(int x, int y)
     {
         positionX = x;
         positionY = y;
     }
 
-    public void setVelocity(double x, double y)
+    public void setVelocity(int x, int y)
     {
         velocityX = x;
         velocityY = y;
     }
 
-    public void addVelocity(double x, double y)
+    public void addVelocity(int x, int y)
     {
         velocityX += x;
         velocityY += y;
@@ -86,5 +90,40 @@ public class Sprite
     {
         return " Position: [" + positionX + "," + positionY + "]"
                 + " Velocity: [" + velocityX + "," + velocityY + "]";
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public int getTargetX() {
+        return targetX;
+    }
+
+    public int getTargetY() {
+        return targetY;
+    }
+
+    public void setTarget(){
+        int mapSide = 500;
+
+        Random r = new Random();
+
+        targetX = r.nextInt(mapSide);
+        targetY = r.nextInt(mapSide);
+    }
+
+    public Boolean isArrived(){
+        if(this.positionX == this.targetX && this.positionY == this.targetY)
+            return true;
+        else return false;
     }
 }

@@ -1,39 +1,20 @@
 package Model.Class.Zoo;
 
-import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
+import Model.Class.Animations.Sprite;
 
 public class Obstacle
 {
-    private int size;
-    private Point2D position;
+    private Sprite sprite;
 
-    private Image sprite;
-
-    public Obstacle() {
+    public Obstacle(Sprite sprite) {
+        this.sprite = sprite;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public Point2D getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point2D position) {
-        this.position = position;
-    }
-
-    public Image getSprite() {
+    public Sprite getSprite() {
         return sprite;
     }
 
-    public void setSprite(Image sprite) {
+    public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 }

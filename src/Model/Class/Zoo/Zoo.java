@@ -1,6 +1,7 @@
 package Model.Class.Zoo;
 
 import Model.Class.Animals.*;
+import Model.Class.Animations.Sprite;
 import Model.Class.Client;
 
 import java.util.ArrayList;
@@ -13,6 +14,15 @@ public class Zoo
     private List<Client> clientsInZoo = new ArrayList<Client>();
 
     public Zoo() {
+        Obstacle topBorder = new Obstacle(new Sprite(0, -1, 501, 1, "resources/img/rectangle.png"));
+        Obstacle rightBorder = new Obstacle(new Sprite(501, 0, 1, 501, "resources/img/rectangle.png"));
+        Obstacle bottomBorder = new Obstacle(new Sprite(-1, 501, 501, 1, "resources/img/rectangle.png"));
+        Obstacle leftBorder = new Obstacle(new Sprite(-1, -1, 1, 501, "resources/img/rectangle.png"));
+
+        obstaclesInZoo.add(topBorder);
+        obstaclesInZoo.add(rightBorder);
+        obstaclesInZoo.add(bottomBorder);
+        obstaclesInZoo.add(leftBorder);
     }
 
     public List<Animal> getAnimalsInZoo() {

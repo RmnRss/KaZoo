@@ -16,7 +16,7 @@ public class Penguin extends Animal
     {
         averageSize = 5;
         litter = 1;
-        sprite = new Sprite(5, "resources/img/penguin.png");
+        sprite = new Sprite(5, "resources/img/triangle.png");
     }
 
     // Baby Penguin Constructor

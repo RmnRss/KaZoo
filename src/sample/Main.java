@@ -3,6 +3,7 @@ package sample;
 import Model.Class.Animals.Penguin;
 import Model.Class.Animals.Turtle;
 import Model.Class.Animations.AnimatedImage;
+import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,8 @@ public class Main extends Application {
 
        // SIde of a square in px
         int mapSide = 500 ;
+
+        Zoo KaZoo = new Zoo();
 
 
         // Image declaration
@@ -58,10 +61,15 @@ public class Main extends Application {
         gc.drawImage(grass,0 ,0 );
 
 
-        gc.drawImage(pigloo.getSprite().getImage(), 0,0 , 31, 35, 0,0 , 31, 35);
-        gc.drawImage(caro.getSprite().getImage(), 0,0 , 31, 35, 0,0 , 31, 35);
+        gc.drawImage(caro.getSprite().getImage(), 0,0 , caro.getSprite().getWidth(), caro.getSprite().getHeight(), caro.getSprite().getPositionX(), caro.getSprite().getPositionY(), caro.getSprite().getWidth(), caro.getSprite().getHeight());
+        gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getPositionX(), pigloo.getSprite().getPositionY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
 
+        System.out.println(pigloo.getSprite().intersects(caro.getSprite()));
+        System.out.println(pigloo.getSprite().getPositionX());
+        System.out.println(pigloo.getSprite().getBoundary().getMaxX());
+        System.out.println(caro.getSprite().getBoundary().getMinX());
         final long startNanoTime = System.nanoTime();
+
 
         // Deplacements
         new AnimationTimer()
@@ -91,6 +99,7 @@ public class Main extends Application {
                 }
             }
         }.start();
+
 
         window.show();
 

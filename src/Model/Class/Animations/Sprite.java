@@ -30,8 +30,24 @@ public class Sprite
         velocityY = velocity;
 
         image = new Image(url);
-        width = 31;
-        height = 35;
+        width = 30;
+        height = 30;
+    }
+
+    public Sprite(int positionX, int positionY, int width, int height, String url){
+        this.positionX = positionX;
+        this.positionY = positionY;
+
+        this.targetX = 0;
+        this.targetY = 0;
+
+        this.velocityX = 0;
+        this.velocityY = 0;
+
+        this.width = width;
+        this.height = height;
+
+        this.image = new Image(url);
     }
 
     public void setImage(Image i)
@@ -83,7 +99,7 @@ public class Sprite
 
     public boolean intersects(Sprite s)
     {
-        return s.getBoundary().intersects( this.getBoundary() );
+        return s.getBoundary().intersects(this.getBoundary());
     }
 
     public String toString()
@@ -111,6 +127,10 @@ public class Sprite
     public int getTargetY() {
         return targetY;
     }
+
+    public int getWidth(){  return this.width; }
+
+    public int getHeight(){ return this.height; }
 
     public void setTarget(){
         int mapSide = 500;

@@ -15,7 +15,7 @@ public class Bear extends Animal
     {
         averageSize = 15;
         litter = 2;
-        sprite = new Sprite(14, "resources/img/bear.png");
+        sprite = new Sprite(14, "resources/img/rectangle.png");
 
     }
 

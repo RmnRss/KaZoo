@@ -15,7 +15,7 @@ public class Turtle extends Animal
     {
         averageSize = 3;
         litter = 2;
-        sprite = new Sprite(3, "resources/img/turtle.png");
+        sprite = new Sprite(3, "resources/img/circle.png");
     }
     
     // Baby Turtle

@@ -32,7 +32,7 @@ public class Main extends Application {
 
 
         // Image declaration
-        Image grass = new Image("resources/img/grass.jpg");
+        Image grass = new Image("resources/img/map.png");
         /*
         Image pigloo = new Image("resources/img/penguin.png");
         Image baloo = new Image("resources/img/babyBear.png");
@@ -96,15 +96,18 @@ public class Main extends Application {
                     }
                     if(isObstacle)
                     {
-                        System.out.println(pigloo.getSprite().getTargetX());
                         pigloo.getSprite().setTarget();
-                        System.out.println(pigloo.getSprite().getTargetX());
                     }
 
+                    System.out.println(currentNanoTime);
                     gc.drawImage(grass , 0,0 );
                     pigloo.getSprite().render(gc);
                     caro.getSprite().render(gc);
 
+                }
+                else
+                {
+                    pigloo.getSprite().setTarget();
                 }
             }
         }.start();

@@ -11,13 +11,13 @@ public class Sprite
     private Image image;
     private int positionX;
     private int positionY;
-    private int targetX;
-    private int targetY;
+    private Rectangle2D target;
     private int velocityX;
     private int velocityY;
     private int width;
     private int height;
 
+    // Animal sprite constructor
     public Sprite(int velocity, String url)
     {
         Random r = new Random();
@@ -29,17 +29,16 @@ public class Sprite
         velocityX = velocity;
         velocityY = velocity;
 
+        target = new Rectangle2D(r.nextInt(mapSide), r.nextInt(mapSide), 5, 5);
         image = new Image(url);
         width = 30;
         height = 30;
     }
 
+    // Obstacle sprite constructor
     public Sprite(int positionX, int positionY, int width, int height, String url){
         this.positionX = positionX;
         this.positionY = positionY;
-
-        this.targetX = 0;
-        this.targetY = 0;
 
         this.velocityX = 0;
         this.velocityY = 0;
@@ -49,6 +48,8 @@ public class Sprite
 
         this.image = new Image(url);
     }
+
+
 
     public void setImage(Image i)
     {
@@ -84,8 +85,8 @@ public class Sprite
     public void update(double time)
     {
         int deltaPosX, deltaPosY;
-        deltaPosX = targetX - positionX;
-        deltaPosY = targetY - positionY;
+        deltaPosX = (int)target.getMinX() - positionX;
+        deltaPosY = (int)target.getMinY() - positionY;
 
         // Déplacement vers la droite
         if(deltaPosX > 0){
@@ -121,6 +122,11 @@ public class Sprite
         return s.getBoundary().intersects(this.getBoundary());
     }
 
+    public boolean intersects(Rectangle2D target)
+    {
+        return target.intersects(this.getBoundary());
+    }
+
     public String toString()
     {
         return " Position: [" + positionX + "," + positionY + "]"
@@ -139,12 +145,16 @@ public class Sprite
         return positionY;
     }
 
-    public int getTargetX() {
-        return targetX;
+    public Rectangle2D getTarget() {
+        return target;
     }
 
-    public int getTargetY() {
-        return targetY;
+    public int getVelocityX() {
+        return velocityX;
+    }
+
+    public int getVelocityY() {
+        return velocityY;
     }
 
     public int getWidth(){  return this.width; }
@@ -156,13 +166,10 @@ public class Sprite
 
         Random r = new Random();
 
-        targetX = r.nextInt(mapSide);
-        targetY = r.nextInt(mapSide);
+        target = new Rectangle2D(r.nextInt(mapSide), r.nextInt(mapSide), 5, 5);
     }
 
     public Boolean isArrived(){
-        if(this.positionX == this.targetX && this.positionY == this.targetY)
-            return true;
-        else return false;
+        return this.intersects(this.target);
     }
 }

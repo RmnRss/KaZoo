@@ -83,13 +83,32 @@ public class Sprite
 
     public void update(double time)
     {
-        positionX += velocityX * time;
-        positionY += velocityY * time;
+        int deltaPosX, deltaPosY;
+        deltaPosX = targetX - positionX;
+        deltaPosY = targetY - positionY;
+
+        // Déplacement vers la droite
+        if(deltaPosX > 0){
+            positionX += velocityX * time;
+        }
+        else // Déplacement vers la gauche
+        {
+            positionX -= velocityX * time;
+        }
+
+        // Déplacement vers le bas
+        if(deltaPosY > 0){
+            positionY += velocityY * time;
+        }
+        else // Déplacement vers la haut
+        {
+            positionY -= velocityY * time;
+        }
     }
 
     public void render(GraphicsContext gc)
     {
-        gc.drawImage( image, positionX, positionY );
+        gc.drawImage(image, positionX, positionY);
     }
 
     public Rectangle2D getBoundary()

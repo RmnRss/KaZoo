@@ -62,14 +62,11 @@ public class Main extends Application {
 
 
         gc.drawImage(caro.getSprite().getImage(), 0,0 , caro.getSprite().getWidth(), caro.getSprite().getHeight(), caro.getSprite().getPositionX(), caro.getSprite().getPositionY(), caro.getSprite().getWidth(), caro.getSprite().getHeight());
-        gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getPositionX(), pigloo.getSprite().getPositionY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
+        //gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getPositionX(), pigloo.getSprite().getPositionY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
 
-        System.out.println(pigloo.getSprite().intersects(caro.getSprite()));
-        System.out.println(pigloo.getSprite().getPositionX());
-        System.out.println(pigloo.getSprite().getBoundary().getMaxX());
+        System.out.println(KaZoo.getObstaclesInZoo().get(0).getSprite().intersects(caro.getSprite()));
         System.out.println(caro.getSprite().getBoundary().getMinX());
         final long startNanoTime = System.nanoTime();
-
 
         // Deplacements
         new AnimationTimer()
@@ -78,24 +75,36 @@ public class Main extends Application {
             {
                 if(!pigloo.getSprite().isArrived())
                 {
-                    double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+                    double t = (currentNanoTime - startNanoTime) / 10000000000.0;
 
                     pigloo.getSprite().update(t);
 
+                    int i = 0;
+                    Boolean isObstacle = false;
+
+                    while(i < KaZoo.getObstaclesInZoo().size() && !isObstacle)
+                    {
+                        if(pigloo.getSprite().intersects(KaZoo.getObstaclesInZoo().get(i).getSprite()))
+                        {
+                            isObstacle = true;
+                            System.out.println(isObstacle);
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                    if(isObstacle)
+                    {
+                        System.out.println(pigloo.getSprite().getTargetX());
+                        pigloo.getSprite().setTarget();
+                        System.out.println(pigloo.getSprite().getTargetX());
+                    }
+
                     gc.drawImage(grass , 0,0 );
                     pigloo.getSprite().render(gc);
                     caro.getSprite().render(gc);
-                }
 
-                if(!caro.getSprite().isArrived())
-                {
-                    double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-
-                    caro.getSprite().update(t);
-
-                    gc.drawImage(grass , 0,0 );
-                    pigloo.getSprite().render(gc);
-                    caro.getSprite().render(gc);
                 }
             }
         }.start();

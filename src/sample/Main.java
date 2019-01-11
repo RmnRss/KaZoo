@@ -77,6 +77,13 @@ public class Main extends Application {
                 {
                     double t = (currentNanoTime - startNanoTime) / 10000000000.0;
 
+                    if (t > 0.15)
+                    {
+                        t = 0.15;
+                    }else{
+                        t = (currentNanoTime - startNanoTime) / 10000000000.0;
+                    }
+
                     pigloo.getSprite().update(t);
 
                     int i = 0;
@@ -99,7 +106,7 @@ public class Main extends Application {
                         pigloo.getSprite().setTarget();
                     }
 
-                    System.out.println(currentNanoTime);
+                    System.out.println(t);
                     gc.drawImage(grass , 0,0 );
                     pigloo.getSprite().render(gc);
                     caro.getSprite().render(gc);

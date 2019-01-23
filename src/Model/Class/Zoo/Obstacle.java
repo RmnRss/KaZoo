@@ -2,7 +2,9 @@ package Model.Class.Zoo;
 
 import Model.Class.Animations.Sprite;
 
-public class Obstacle
+import java.io.Serializable;
+
+public class Obstacle implements Serializable
 {
     private Sprite sprite;
 

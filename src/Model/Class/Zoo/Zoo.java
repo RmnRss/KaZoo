@@ -4,10 +4,11 @@ import Model.Class.Animals.*;
 import Model.Class.Animations.Sprite;
 import Model.Class.Client;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zoo
+public class Zoo implements Serializable
 {
     private List<Animal> animalsInZoo = new ArrayList<Animal>();
     private List<Obstacle> obstaclesInZoo = new ArrayList<Obstacle>();
@@ -23,6 +24,10 @@ public class Zoo
         obstaclesInZoo.add(rightBorder);
         obstaclesInZoo.add(bottomBorder);
         obstaclesInZoo.add(leftBorder);
+    }
+
+    public Zoo(String useless){
+
     }
 
     public List<Animal> getAnimalsInZoo() {
@@ -47,5 +52,9 @@ public class Zoo
 
     public void setClientsInZoo(List<Client> clientsInZoo) {
         this.clientsInZoo = clientsInZoo;
+    }
+
+    public void addAnimal(Animal newAnimal){
+        this.animalsInZoo.add(newAnimal);
     }
 }

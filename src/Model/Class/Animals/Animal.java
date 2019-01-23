@@ -5,9 +5,10 @@ import Model.Class.Client;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public abstract class Animal
+public abstract class Animal implements Serializable
 {
     protected int name;
 

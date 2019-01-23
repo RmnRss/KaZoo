@@ -4,9 +4,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Sprite
+public class Sprite implements Serializable
 {
     private Image image;
     private int positionX;

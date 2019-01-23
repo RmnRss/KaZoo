@@ -1,7 +1,6 @@
 package Model.Class.Zoo;
 
-import Model.Class.Animals.*;
-import Model.Class.Animations.Sprite;
+import Model.Class.Zoo.Animals.*;
 import Model.Class.Client;
 
 import java.io.Serializable;
@@ -15,10 +14,10 @@ public class Zoo implements Serializable
     private List<Client> clientsInZoo = new ArrayList<Client>();
 
     public Zoo() {
-        Obstacle topBorder = new Obstacle(new Sprite(0, -1, 501, 1, "resources/img/rectangle.png"));
-        Obstacle rightBorder = new Obstacle(new Sprite(501, 0, 1, 501, "resources/img/rectangle.png"));
-        Obstacle bottomBorder = new Obstacle(new Sprite(-1, 501, 501, 1, "resources/img/rectangle.png"));
-        Obstacle leftBorder = new Obstacle(new Sprite(-1, -1, 1, 501, "resources/img/rectangle.png"));
+        Obstacle topBorder = new Obstacle(0, -1, 501, 1);
+        Obstacle rightBorder = new Obstacle(501, 0, 1, 501);
+        Obstacle bottomBorder = new Obstacle(-1, 501, 501, 1);
+        Obstacle leftBorder = new Obstacle(-1, -1, 1, 501);
 
         obstaclesInZoo.add(topBorder);
         obstaclesInZoo.add(rightBorder);

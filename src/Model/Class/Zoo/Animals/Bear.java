@@ -1,29 +1,36 @@
-package Model.Class.Animals;
+package Model.Class.Zoo.Animals;
 
-import Model.Class.Animations.Sprite;
-import javafx.scene.image.Image;
+import Model.Class.Animations.Position;
+import Model.Class.Animations.Velocity;
+import javafx.geometry.Rectangle2D;
 
 import java.util.Random;
 
-public class Penguin extends Animal
+public class Bear extends Animal
 {
-    public Penguin()
+    public Bear()
     {
 
     }
 
-    public Penguin(String Name, String Sex)
+    public Bear(String Name, String Sex)
     {
-        averageSize = 5;
-        litter = 1;
-        sprite = new Sprite(5, "resources/img/triangle.png");
+        averageSize = 15;
+        litter = 2;
+
+        Random r = new Random();
+        int mapSide = 500;
+
+        position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
+        velocity = new Velocity(5);
+        target = new Rectangle2D(r.nextInt(mapSide), r.nextInt(mapSide), 5, 5);
     }
 
-    // Baby Penguin Constructor
-    public Penguin(String Name, String Sex, Animal Father, Animal Mother)
+    // Baby Bear
+    public Bear(String Name, String Sex, Animal Father, Animal Mother)
     {
         this(Name, Sex);
-        size = 1;
+        size = 5;
         father = Father;
         mother = Mother;
         age = 0;
@@ -42,7 +49,7 @@ public class Penguin extends Animal
                 break;
             //Child
             case 2:
-                size = size + r.nextInt(3-(int) size);
+                size = size + r.nextInt(8-(int) size);
                 //sprite = ;
                 break;
             //Adult
@@ -60,6 +67,4 @@ public class Penguin extends Animal
                 break;
         }
     }
-
-
 }

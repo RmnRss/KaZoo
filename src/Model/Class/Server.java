@@ -1,20 +1,8 @@
 package Model.Class;
 
-import Model.Class.Animals.Animal;
-import Model.Class.Animals.Penguin;
-import Model.Class.Animals.Turtle;
+import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Zoo;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;

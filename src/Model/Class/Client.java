@@ -1,7 +1,7 @@
 package Model.Class;
 
-import Model.Class.Animals.Penguin;
-import Model.Class.Animals.Turtle;
+import Model.Class.Zoo.Animals.Penguin;
+import Model.Class.Zoo.Animals.Turtle;
 import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,9 +17,9 @@ import java.net.Socket;
 
 public class Client extends Application {
     public static final int PORT = 6789;
-    private Socket clientSocket = new Socket("localhost", PORT);
+    private Socket clientSocket = new Socket("192.168.43.92", PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-    private Zoo clientKaZoo;
+    private Zoo clientKaZoo = new Zoo();
 
     public Client() throws IOException {
     }
@@ -65,8 +65,11 @@ public class Client extends Application {
         gc.drawImage(map,0 ,0 );
 
 
-        gc.drawImage(caro.getSprite().getImage(), 0,0 , caro.getSprite().getWidth(), caro.getSprite().getHeight(), caro.getSprite().getPositionX(), caro.getSprite().getPositionY(), caro.getSprite().getWidth(), caro.getSprite().getHeight());
-        //gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getPositionX(), pigloo.getSprite().getPositionY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
+        Image tortue = new Image("resources/img/circle.png");
+        Image penguin = new Image("resources/img/   rectangle.png");
+        caro.render(gc, tortue);
+
+        //gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getX(), pigloo.getSprite().getY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
 
         final long startNanoTime = System.nanoTime();
 
@@ -75,7 +78,7 @@ public class Client extends Application {
         {
             public void handle(long currentNanoTime)
             {
-                if(!pigloo.getSprite().isArrived())
+                if(!pigloo.isArrived())
                 {
                     double t = (currentNanoTime - startNanoTime) / 10000000000.0;
 
@@ -86,14 +89,14 @@ public class Client extends Application {
                         t = (currentNanoTime - startNanoTime) / 10000000000.0;
                     }
 
-                    pigloo.getSprite().update(t);
+                    pigloo.move(t);
 
                     int i = 0;
                     Boolean isObstacle = false;
 
                     while(i < clientKaZoo.getObstaclesInZoo().size() && !isObstacle)
                     {
-                        if(pigloo.getSprite().intersects(clientKaZoo.getObstaclesInZoo().get(i).getSprite()))
+                        if(pigloo.intersects(clientKaZoo.getObstaclesInZoo().get(i)))
                         {
                             isObstacle = true;
                             System.out.println(isObstacle);
@@ -105,18 +108,18 @@ public class Client extends Application {
                     }
                     if(isObstacle)
                     {
-                        pigloo.getSprite().setTarget();
+                        pigloo.setTarget();
                     }
 
                     System.out.println(t);
                     gc.drawImage(map , 0,0 );
-                    pigloo.getSprite().render(gc);
-                    caro.getSprite().render(gc);
+                    pigloo.render(gc, penguin);
+                    caro.render(gc, penguin);
 
                 }
                 else
                 {
-                    pigloo.getSprite().setTarget();
+                    pigloo.setTarget();
                 }
 
                 try {

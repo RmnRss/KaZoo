@@ -4,6 +4,7 @@ import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import Model.Class.Zoo.Obstacle;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -32,17 +33,19 @@ public abstract class Animal implements Serializable
 
     protected Velocity velocity;
 
-    protected Rectangle2D target;
+    protected Position target;
 
 
     public Position getPosition(){ return this.position; }
 
-    public Rectangle2D getTarget() {
+    public Position getTarget() {
         return target;
     }
 
-    public void setTarget(Rectangle2D target) {
-        this.target = target;
+    public void setTarget(int newX, int newY) {
+
+        this.target.setX(newX);
+        this.target.setY(newY);
     }
 
     public Velocity getVelocity() {
@@ -59,8 +62,8 @@ public abstract class Animal implements Serializable
     public void move(double time)
     {
         int deltaPosX, deltaPosY;
-        deltaPosX = (int)target.getMinX() - position.getX();
-        deltaPosY = (int)target.getMinY() - position.getY();
+        deltaPosX = (int)target.getX() - position.getX();
+        deltaPosY = (int)target.getY() - position.getY();
 
         // Déplacement vers la droite
         if(deltaPosX > 0){
@@ -86,22 +89,13 @@ public abstract class Animal implements Serializable
         gc.drawImage(theImage, position.getX(), position.getY());
     }
 
-    public Rectangle2D getBoundary()
+    public boolean intersects(Position target)
     {
-        return new Rectangle2D(position.getX(), position.getY(), size, size);
-    }
+        Boolean inX = position.getX() > (target.getX() - 5) && position.getX() < (target.getX() + 5);
+        Boolean inY = position.getY() > (target.getY() - 5) && position.getY() < (target.getY() + 5);
 
-
-    public boolean intersects(Obstacle obstacle)
-    {
-
-        return obstacle.getBoundary().intersects(this.getBoundary());
-    }
-
-
-    public boolean intersects(Rectangle2D target)
-    {
-        return target.intersects(this.getBoundary());
+        if(inX && inY) return true;
+        else return false;
     }
 
     public void setTarget(){
@@ -109,7 +103,7 @@ public abstract class Animal implements Serializable
 
         Random r = new Random();
 
-        target = new Rectangle2D(r.nextInt(mapSide), r.nextInt(mapSide), 5, 5);
+        target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
     public Boolean isArrived(){

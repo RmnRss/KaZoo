@@ -66,7 +66,7 @@ public class Client extends Application {
 
 
         Image tortue = new Image("resources/img/circle.png");
-        Image penguin = new Image("resources/img/   rectangle.png");
+        Image penguin = new Image("resources/img/rectangle.png");
         caro.render(gc, tortue);
 
         //gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getX(), pigloo.getSprite().getY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
@@ -96,7 +96,7 @@ public class Client extends Application {
 
                     while(i < clientKaZoo.getObstaclesInZoo().size() && !isObstacle)
                     {
-                        if(pigloo.intersects(clientKaZoo.getObstaclesInZoo().get(i)))
+                        if(pigloo.intersects(clientKaZoo.getObstaclesInZoo().get(i).getPosition()))
                         {
                             isObstacle = true;
                             System.out.println(isObstacle);
@@ -114,7 +114,7 @@ public class Client extends Application {
                     System.out.println(t);
                     gc.drawImage(map , 0,0 );
                     pigloo.render(gc, penguin);
-                    caro.render(gc, penguin);
+                    caro.render(gc, tortue);
 
                 }
                 else

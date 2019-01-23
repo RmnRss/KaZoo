@@ -25,10 +25,19 @@ public class Obstacle implements Serializable
         this.position = position;
     }
 
-    public Rectangle2D getBoundary()
-    {
-        return new Rectangle2D(position.getX(), position.getY(), width, height);
+    public int getWidth() {
+        return width;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

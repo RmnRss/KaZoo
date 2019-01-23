@@ -19,18 +19,16 @@ public class Server {
 
         Zoo KaZoo = new Zoo("");
 
-        //while (true) {
         Socket cSocket = serSocket.accept();
-        ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
-        Zoo tempZoo = (Zoo)in.readObject();
+        System.out.println("Connexion client");
 
-        for (Animal animal : tempZoo.getAnimalsInZoo()) {
-            KaZoo.addAnimal(animal);
+        while (cSocket.isConnected()){
+            ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
+            Zoo tempZoo = (Zoo)in.readObject();
+
+            for (Animal animal : tempZoo.getAnimalsInZoo()) {
+                KaZoo.addAnimal(animal);
+            }
         }
-        //new Thread(new Zoo(cSocket)).start();
-        //}
-
-
-
     }
 }

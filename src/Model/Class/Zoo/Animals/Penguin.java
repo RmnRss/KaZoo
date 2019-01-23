@@ -23,7 +23,7 @@ public class Penguin extends Animal
 
         position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
         velocity = new Velocity(5);
-        target = new Rectangle2D(r.nextInt(mapSide), r.nextInt(mapSide), 5, 5);
+        target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
     // Baby Penguin Constructor

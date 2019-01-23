@@ -82,12 +82,7 @@ public class Client extends Application {
                 {
                     double t = (currentNanoTime - startNanoTime) / 10000000000.0;
 
-                    if (t > 0.15)
-                    {
-                        t = 0.15;
-                    }else{
-                        t = (currentNanoTime - startNanoTime) / 10000000000.0;
-                    }
+                    
 
                     pigloo.move(t);
 

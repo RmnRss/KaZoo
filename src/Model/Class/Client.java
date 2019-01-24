@@ -102,7 +102,7 @@ public class Client extends Application
         {
             public void handle(long currentNanoTime)
             {
-                //TO DO : A généraliser
+                //TO DO : Make this part dynamic
                 if(!pigloo.isArrived())
                 {
                     double t = (currentNanoTime - startNanoTime) / 10000000000.0;

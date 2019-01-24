@@ -9,6 +9,10 @@ import java.net.Socket;
 
 import static javafx.application.Application.launch;
 
+/***
+ * Received all information about all zoo and merged them into one
+ * Then sends those information to all clients so they can all display it
+ */
 public class Server {
     public static final int PORT = 6789;
 

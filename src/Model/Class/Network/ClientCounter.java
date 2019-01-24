@@ -1,5 +1,8 @@
 package Model.Class.Network;
 
+/***
+ * Not used yet
+ */
 public class ClientCounter {
 
     private int compteurClient;

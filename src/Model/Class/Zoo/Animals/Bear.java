@@ -8,11 +8,19 @@ import java.util.Random;
 
 public class Bear extends Animal
 {
+    /***
+     * Empty Bear constructor
+     */
     public Bear()
     {
 
     }
 
+    /***
+     * Classic constructor for a normal bear
+     * @param Name
+     * @param Sex
+     */
     public Bear(String Name, String Sex)
     {
         averageSize = 15;
@@ -26,7 +34,13 @@ public class Bear extends Animal
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
-    // Baby Bear
+    /***
+     * Constructor for a baby bear
+     * @param Name
+     * @param Sex
+     * @param Father
+     * @param Mother
+     */
     public Bear(String Name, String Sex, Animal Father, Animal Mother)
     {
         this(Name, Sex);
@@ -37,6 +51,10 @@ public class Bear extends Animal
 
     }
 
+    /***
+     * Implementation for the growth of a bear
+     * @param Age
+     */
     @Override
     public void growth(int Age)
     {

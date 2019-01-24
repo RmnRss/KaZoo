@@ -6,13 +6,24 @@ import javafx.geometry.Rectangle2D;
 
 import java.util.Random;
 
+/***
+ * Implementation of Animal for penguins
+ */
 public class Penguin extends Animal
 {
+    /***
+     * Empty constructor
+     */
     public Penguin()
     {
 
     }
 
+    /***
+     * Constructor using a Name and a Sex
+     * @param Name
+     * @param Sex
+     */
     public Penguin(String Name, String Sex)
     {
         averageSize = 5;
@@ -26,7 +37,13 @@ public class Penguin extends Animal
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
-    // Baby Penguin Constructor
+    /***
+     * Complete constructor for baby penguins
+     * @param Name
+     * @param Sex
+     * @param Father
+     * @param Mother
+     */
     public Penguin(String Name, String Sex, Animal Father, Animal Mother)
     {
         this(Name, Sex);
@@ -36,6 +53,10 @@ public class Penguin extends Animal
         age = 0;
     }
 
+    /***
+     * Implementation for the growth of a penguin
+     * @param Age
+     */
     @Override
     public void growth(int Age)
     {

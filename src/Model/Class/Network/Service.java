@@ -4,7 +4,9 @@ import java.net.*;
 import java.io.*;
 import java.util.Arrays;
 
-// le service
+/***
+ * Not fonctionnal yet
+ */
 class Service implements Runnable
 {
     private Socket maSocket;

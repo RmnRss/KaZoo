@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.Random;
 import javafx.scene.image.Image;
 
+/***
+ * Represents an animal in a Zoo
+ */
 public abstract class Animal implements Serializable
 {
     protected int name;
@@ -36,22 +39,6 @@ public abstract class Animal implements Serializable
     protected Position target;
 
 
-    public Position getPosition(){ return this.position; }
-
-    public Position getTarget() {
-        return target;
-    }
-
-    public void setTarget(int newX, int newY) {
-
-        this.target.setX(newX);
-        this.target.setY(newY);
-    }
-
-    public Velocity getVelocity() {
-        return velocity;
-    }
-
     /***
      * Function
      * Handles the growth of an Animal
@@ -59,6 +46,10 @@ public abstract class Animal implements Serializable
      * ***/
     abstract void growth(int Age);
 
+    /***
+     * Handles the movements of an animal
+     * @param time
+     */
     public void move(double time)
     {
         int deltaPosX, deltaPosY;
@@ -84,11 +75,22 @@ public abstract class Animal implements Serializable
         }
     }
 
+    /***
+     * Easier way to draw an animal of the canvas
+     * @param gc
+     * @param theImage
+     */
     public void render(GraphicsContext gc, Image theImage)
     {
         gc.drawImage(theImage, position.getX(), position.getY());
     }
 
+    /***
+     * Checks if the position of an animal is close to its target
+     * If the animal is in a 5 pixel radius of his target then it returns true
+     * @param target
+     * @return
+     */
     public boolean intersects(Position target)
     {
         Boolean inX = position.getX() > (target.getX() - 5) && position.getX() < (target.getX() + 5);
@@ -98,6 +100,9 @@ public abstract class Animal implements Serializable
         else return false;
     }
 
+    /***
+     * Sets a Random target fot the animal
+     */
     public void setTarget(){
         int mapSide = 500;
 
@@ -106,8 +111,30 @@ public abstract class Animal implements Serializable
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
+    /***
+     * Uses Interects method to know if an animal reached its target
+     * @return
+     */
     public Boolean isArrived(){
         return this.intersects(this.target);
+    }
+
+    //-- Getter and Setter --//
+
+    public Position getPosition(){ return this.position; }
+
+    public Position getTarget() {
+        return target;
+    }
+
+    public void setTarget(int newX, int newY) {
+
+        this.target.setX(newX);
+        this.target.setY(newY);
+    }
+
+    public Velocity getVelocity() {
+        return velocity;
     }
 
     public int getName() {

@@ -8,11 +8,19 @@ import java.util.Random;
 
 public class Turtle extends Animal
 {
+    /***
+     * Empty constructor
+     */
     public Turtle()
     {
 
     }
 
+    /***
+     * Adult Turtle constructor
+     * @param Name
+     * @param Sex
+     */
     public Turtle(String Name, String Sex)
     {
         averageSize = 3;
@@ -25,8 +33,14 @@ public class Turtle extends Animal
         velocity = new Velocity(5);
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
-    
-    // Baby Turtle
+
+    /***
+     * Baby Turtle constructor
+     * @param Name
+     * @param Sex
+     * @param Father
+     * @param Mother
+     */
     public Turtle(String Name, String Sex, Animal Father, Animal Mother)
     {
         this(Name, Sex);
@@ -37,6 +51,10 @@ public class Turtle extends Animal
 
     }
 
+    /***
+     * Implementation for the growth of a turtle
+     * @param Age
+     */
     @Override
     public void growth(int Age)
     {

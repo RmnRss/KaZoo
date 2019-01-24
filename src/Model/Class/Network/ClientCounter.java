@@ -1,26 +1,44 @@
 package Model.Class.Network;
 
 /***
- * Not used yet
+ * Counts the number of clients connected to the server
  */
-public class ClientCounter {
+public class ClientCounter
+{
+    private int count;
 
-    private int compteurClient;
-
+    /***
+     * Constructor intitialize the
+     */
     public ClientCounter() {
-        this.compteurClient=0;
+        this.count =0;
     }
 
-    public synchronized void incCompteur(){
-        compteurClient++;
+    /***
+     * Adds one to the counter
+     * Adds a client
+     */
+    public synchronized void incCount()
+    {
+        count++;
     }
 
-    public synchronized void decCompteur(){
-        compteurClient--;
+    /**
+     * Decrease the counter from one
+     * Removes one Client
+     */
+    public synchronized void decCount()
+    {
+        count--;
     }
 
-    public int getCompteurClient() {
-        return compteurClient;
+    /***
+     * Returns the number of clients connected to the server
+     * @return
+     */
+    public int getCount()
+    {
+        return count;
     }
 
 }

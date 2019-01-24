@@ -1,86 +1,64 @@
 package Model.Class.Network;
 
+import Model.Class.Zoo.Animals.Animal;
+import Model.Class.Zoo.Zoo;
+
 import java.net.*;
 import java.io.*;
-import java.util.Arrays;
 
 /***
  * Not fonctionnal yet
  */
 class Service implements Runnable
 {
-    private Socket maSocket;
-    private ClientCounter count;
+    private Socket clientSocket;
+    private ClientCounter counter;
     private String msg = "null";
+    private Zoo serverZoo;
 
-    public Service(Socket clientSocket, ClientCounter pCount)
+    /***
+     * Constructor
+     * @param clientSocket
+     * @param pCount
+     */
+
+    public Service(Socket clientSocket, ClientCounter pCount, Zoo serverZoo)
     {
-        this.maSocket = clientSocket;
-        this.count = pCount;
+        this.clientSocket = clientSocket;
+        this.counter = pCount;
+        this.serverZoo = serverZoo;
     }
 
+    /***
+     * Contains the task the Service should handle
+     */
     public void run()
     {
 
-        //Count client
-        count.incCompteur();
-        System.out.println(count.getCompteurClient() + " Connexion(s)");
+        //Counting clients
+        counter.incCount();
+        System.out.println(counter.getCount() + " Client(s)");
 
         try {
 
-            BufferedReader bfFromClient = new BufferedReader(new InputStreamReader(maSocket.getInputStream()));
-            PrintWriter pwToClient = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-            while (!msg.equals("stop"))
+            Zoo tempZoo = (Zoo)in.readObject();
+
+            for (Animal animal : tempZoo.getAnimalsInZoo())
             {
-                //Reception du message
-                msg = bfFromClient.readLine();
-                System.out.println( "Message client : " + msg );
-                Thread.sleep(500);
-
-                //Parsing du message
-                String[] msgPart = msg.split(" ");
-                int a = Integer.parseInt(msgPart[1]);
-                int b = Integer.parseInt(msgPart[2]);
-
-                //Choix de l'operation
-                //Et calcul
-                switch (msgPart[0])
-                {
-                    case "ADD":
-                        msg = Integer.toString(a+b);
-                        break;
-
-                    case "SOUS" :
-                        msg = Integer.toString(a-b);
-                        break;
-
-                    case "MUL":
-                        msg = Integer.toString(a*b);
-                        break;
-
-                    case "DIV":
-                        msg = Integer.toString(a/b);
-                        break;
-
-                    default:
-                        msg = "Operation invalide";
-                        break;
-                }
-
-                //Envoie du resutlat
-                pwToClient = new PrintWriter(new OutputStreamWriter(maSocket.getOutputStream()));
-                pwToClient.println("Le resultat est " + msg);
-                pwToClient.flush();
+                serverZoo.addAnimal(animal);
             }
 
+            if (clientSocket.isClosed())
+            {
             //Affichage de la déconnexion d'un client
-            count.decCompteur();
-            System.out.println(count.getCompteurClient() + " Connexions");
+            counter.decCount();
+            System.out.println("Déconnexion d'un client");
+            System.out.println(counter.getCount() + " Clients");
+            }
 
-            pwToClient.close();
-            bfFromClient.close();
-            maSocket.close();
+            //clientSocket.close();
 
         } catch (Exception e) {
             System.err.println("Erreur : " + e);

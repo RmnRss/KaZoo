@@ -23,7 +23,7 @@ import java.net.Socket;
 public class Client extends Application
 {
     public static final int PORT = 6789;
-    private Socket clientSocket = new Socket("192.168.43.92", PORT);
+    private Socket clientSocket = new Socket("localhost", PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 
     private Zoo clientKaZoo = new Zoo();
@@ -107,7 +107,7 @@ public class Client extends Application
                 {
                     double t = (currentNanoTime - startNanoTime) / 10000000000.0;
 
-                    pigloo.move(t);
+                    pigloo.move(0.5);
 
                     int i = 0;
                     Boolean isObstacle = false;
@@ -117,7 +117,6 @@ public class Client extends Application
                         if(pigloo.intersects(clientKaZoo.getObstaclesInZoo().get(i).getPosition()))
                         {
                             isObstacle = true;
-                            System.out.println(isObstacle);
                         }
                         else
                         {
@@ -129,10 +128,10 @@ public class Client extends Application
                         pigloo.setTarget();
                     }
 
-                    System.out.println(t);
                     gc.drawImage(map , 0,0 );
                     pigloo.render(gc, imgPenguin);
                     franklin.render(gc, imgTurtle);
+                    winny.render(gc, imgBear);
 
                 }
                 else

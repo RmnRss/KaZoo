@@ -20,19 +20,24 @@ public class Server {
     public static void main(String args[]) throws Exception {
         ServerSocket serSocket = new ServerSocket(PORT);
         System.out.println("Attente de connexions, serveur prêt");
+        try
+        {
+            Zoo KaZoo = new Zoo("");
 
-        Zoo KaZoo = new Zoo("");
+            Socket cSocket = serSocket.accept();
+            System.out.println("Connexion client");
 
-        Socket cSocket = serSocket.accept();
-        System.out.println("Connexion client");
-
-        while (cSocket.isConnected()){
             ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
             Zoo tempZoo = (Zoo)in.readObject();
 
             for (Animal animal : tempZoo.getAnimalsInZoo()) {
                 KaZoo.addAnimal(animal);
             }
+        } catch (Exception e)
+        {
+            System.err.println("Erreur : " + e);
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 }

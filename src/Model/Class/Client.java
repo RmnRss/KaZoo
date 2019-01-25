@@ -1,11 +1,15 @@
 package Model.Class;
 
+import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Animals.Penguin;
 import Model.Class.Zoo.Animals.Turtle;
 import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,8 +17,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
+import java.util.EventListener;
 
 /***
  * Client class Runs the interface and connects to the server
@@ -26,9 +33,17 @@ public class Client extends Application
 
     private Socket clientSocket = new Socket("localhost", PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+    ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
     private Zoo clientKaZoo = new Zoo();
     private String name;
+
+    // Images declaration
+    private Image map = new Image("resources/img/map.png");
+
+    private Image imgTurtle = new Image("resources/img/circle.png");
+    private Image imgPenguin = new Image("resources/img/rectangle.png");
+    private Image imgBear = new Image("resources/img/triangle.png");
 
     /***
      * Empty Constructor
@@ -52,13 +67,6 @@ public class Client extends Application
         // Side of a square in px
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
-
-        // Images declaration
-        Image map = new Image("resources/img/map.png");
-
-        Image imgTurtle = new Image("resources/img/circle.png");
-        Image imgPenguin = new Image("resources/img/rectangle.png");
-        Image imgBear = new Image("resources/img/triangle.png");
 
         Penguin pigloo = new Penguin("Pigloo","Bonhomme");
         Turtle franklin = new Turtle("Franklin", "Bro");
@@ -104,45 +112,16 @@ public class Client extends Application
             public void handle(long currentNanoTime)
             {
                 //TO DO : Make this part dynamic
-                if(!pigloo.isArrived())
-                {
-                    double t = (currentNanoTime - startNanoTime) / 10000000000.0;
-
-                    pigloo.move(0.5);
-
-                    int i = 0;
-                    Boolean isObstacle = false;
-
-                    while(i < clientKaZoo.getObstaclesInZoo().size() && !isObstacle)
-                    {
-                        if(pigloo.intersects(clientKaZoo.getObstaclesInZoo().get(i).getPosition()))
-                        {
-                            isObstacle = true;
-                        }
-                        else
-                        {
-                            i++;
-                        }
-                    }
-                    if(isObstacle)
-                    {
-                        pigloo.setTarget();
-                    }
-
-                    gc.drawImage(map , 0,0 );
-                    pigloo.render(gc, imgPenguin);
-                    franklin.render(gc, imgTurtle);
-                    winny.render(gc, imgBear);
-
-                }
-                else
-                {
-                    pigloo.setTarget();
-                }
-
+                double t = (currentNanoTime - startNanoTime) / 10000000000.0;
+                gc.drawImage(map , 0,0 );
+                moveAnimals(gc);
+                System.out.println(clientKaZoo.getAnimalsInZoo().size());
                 try {
                     sendInfoToServer();
+                    receiveInfoFromServer();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
@@ -152,6 +131,8 @@ public class Client extends Application
         window.show();
     }
 
+
+
     /***
      * Called every frame sends information about the zoo to the server
      * @throws IOException
@@ -159,6 +140,81 @@ public class Client extends Application
     public void sendInfoToServer() throws IOException {
         out.writeObject(clientKaZoo);
         out.flush();
+    }
+
+    public void receiveInfoFromServer() throws IOException, ClassNotFoundException {
+        Zoo tempZoo = (Zoo)in.readObject();
+        for (Animal animal : tempZoo.getAnimalsInZoo()) {
+            clientKaZoo.addAnimal(animal);
+        }
+    }
+
+    @FXML
+    public void exitApplication(ActionEvent event) throws IOException {
+        Platform.exit();
+    }
+
+    @Override
+    public void stop() throws IOException, InterruptedException {
+        System.out.println("Closing");
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        out.write("Exit");
+        out.flush();
+        Thread.sleep(5000);
+    }
+
+    /***
+     * Refreshes position then displays animals
+     * @param gc
+     */
+    public void moveAnimals(GraphicsContext gc){
+        for (Animal animal : clientKaZoo.getAnimalsInZoo()) {
+            if(!animal.isArrived())
+            {
+                animal.move(0.5);
+
+                int i = 0;
+                Boolean isObstacle = false;
+
+                while(i < clientKaZoo.getObstaclesInZoo().size() && !isObstacle)
+                {
+                    if(animal.intersects(clientKaZoo.getObstaclesInZoo().get(i).getPosition()))
+                    {
+                        isObstacle = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                if(isObstacle)
+                {
+                    animal.setTarget();
+                }
+            }
+            else
+            {
+                animal.setTarget();
+            }
+
+            if(animal instanceof Bear){
+                System.out.println("Bear");
+                animal.render(gc, imgBear);
+            }
+            else
+            {
+                if(animal instanceof Penguin)
+                {
+                    System.out.println("Penguin");
+                    animal.render(gc, imgPenguin);
+                }
+                else
+                {
+                    System.out.println("Turtle");
+                    animal.render(gc, imgTurtle);
+                }
+            }
+        }
     }
 
     //-- Getter and Setter --//

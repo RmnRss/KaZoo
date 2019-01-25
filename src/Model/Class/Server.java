@@ -3,7 +3,10 @@ package Model.Class;
 import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Zoo;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,11 +31,24 @@ public class Server {
             System.out.println("Connexion client");
 
             ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
+            ObjectOutputStream out = new ObjectOutputStream(cSocket.getOutputStream());
+            BufferedReader bf = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
             Zoo tempZoo = (Zoo)in.readObject();
 
             for (Animal animal : tempZoo.getAnimalsInZoo()) {
                 KaZoo.addAnimal(animal);
             }
+
+            out.writeObject(KaZoo);
+            out.flush();
+
+            String message = bf.readLine();
+            if(message.equals("Exit")){
+                cSocket.close();
+                System.out.println("Closed");
+            }
+
+
         } catch (Exception e)
         {
             System.err.println("Erreur : " + e);

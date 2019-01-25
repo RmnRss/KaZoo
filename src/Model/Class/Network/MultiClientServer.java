@@ -13,7 +13,6 @@ public class MultiClientServer
     public static void main(String[] arguments)
     {
         ClientCounter count = new ClientCounter();
-        Zoo KaZoo = new Zoo("");
 
         try
         {
@@ -30,7 +29,7 @@ public class MultiClientServer
                 System.out.println("Connexion en cours...");
 
                 // Creation du service dans un nouveau processus
-                Thread t = new Thread(new Service(s, count, KaZoo));
+                Thread t = new Thread(new Service(s, count));
 
                 // Lance le thread
                 t.start();

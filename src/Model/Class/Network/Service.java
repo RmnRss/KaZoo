@@ -14,7 +14,7 @@ class Service implements Runnable
     private Socket clientSocket;
     private ClientCounter counter;
     private String msg = "null";
-    private Zoo serverZoo;
+    private Zoo serverZoo = new Zoo("");
 
     /***
      * Constructor
@@ -22,11 +22,10 @@ class Service implements Runnable
      * @param pCount
      */
 
-    public Service(Socket clientSocket, ClientCounter pCount, Zoo serverZoo)
+    public Service(Socket clientSocket, ClientCounter pCount)
     {
         this.clientSocket = clientSocket;
         this.counter = pCount;
-        this.serverZoo = serverZoo;
     }
 
     /***
@@ -42,21 +41,30 @@ class Service implements Runnable
         try {
 
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            Zoo tempZoo = (Zoo)in.readObject();
 
-            for (Animal animal : tempZoo.getAnimalsInZoo())
-            {
-                serverZoo.addAnimal(animal);
+            while(true) {
+                Zoo tempZoo = (Zoo) in.readObject();
+
+                for (Animal animal : tempZoo.getAnimalsInZoo()) {
+                    serverZoo.addAnimal(animal);
+                }
+
+                System.out.println(serverZoo.getAnimalsInZoo().size());
+
+                out.writeObject(serverZoo);
+                out.flush();
+
+                if (clientSocket.isClosed())
+                {
+                    //Affichage de la déconnexion d'un client
+                    counter.decCount();
+                    System.out.println("Déconnexion d'un client");
+                    System.out.println(counter.getCount() + " Clients");
+                }
             }
 
-            if (clientSocket.isClosed())
-            {
-            //Affichage de la déconnexion d'un client
-            counter.decCount();
-            System.out.println("Déconnexion d'un client");
-            System.out.println(counter.getCount() + " Clients");
-            }
 
             //clientSocket.close();
 

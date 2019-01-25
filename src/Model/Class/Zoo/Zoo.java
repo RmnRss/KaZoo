@@ -74,7 +74,12 @@ public class Zoo implements Serializable
      * @param newAnimal
      */
     public void addAnimal(Animal newAnimal){
-        if(!this.animalsInZoo.containsKey(newAnimal.getName())){
+        if(this.animalsInZoo.containsKey(newAnimal.getName())){
+            //overrides current animal
+            this.animalsInZoo.replace(newAnimal.getName(), newAnimal);
+        }
+        else
+        {
             this.animalsInZoo.put(newAnimal.getName(), newAnimal);
         }
 

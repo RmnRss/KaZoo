@@ -34,8 +34,8 @@ public class Client extends Application
     private String ipRomain = "192.168.43.92";
     private String ipSandra = "192.168.43.106";
 
-    //private Socket clientSocket = new Socket("localhost", PORT);
-    private Socket clientSocket = new Socket(ipRomain, PORT);
+    private Socket clientSocket = new Socket("localhost", PORT);
+    //private Socket clientSocket = new Socket(ipRomain, PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
@@ -71,10 +71,23 @@ public class Client extends Application
         // Side of a square in px
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
+        /*
+        name = "Michel";
+        Penguin pigloo = new Penguin("Pig","Bonhomme");
+        Turtle franklin = new Turtle("Fran", "Bro");
+        Bear winny = new Bear("Win", "Fragile");
 
+
+        name = "Didier";
         Penguin pigloo = new Penguin("Pigloo","Bonhomme");
         Turtle franklin = new Turtle("Franklin", "Bro");
         Bear winny = new Bear("Winny", "Fragile");
+        */
+        name = "Thierry";
+        Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme");
+        Turtle franklin = new Turtle("fefq", "Bro");
+        Bear winny = new Bear("erzgrz", "Fragile");
+
 
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
@@ -118,11 +131,14 @@ public class Client extends Application
                 //TO DO : Make this part dynamic
                 double t = (currentNanoTime - startNanoTime) / 10000000000.0;
                 gc.drawImage(map , 0,0 );
-                moveAnimals(gc);
+
                 System.out.println(clientKaZoo.getAnimalsInZoo().size());
                 try {
-                    sendInfoToServer();
                     receiveInfoFromServer();
+                    displayAnimals(gc);
+                    moveAnimals(gc);
+                    sendInfoToServer();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -147,10 +163,13 @@ public class Client extends Application
     }
 
     public void receiveInfoFromServer() throws IOException, ClassNotFoundException {
+        /*
         Zoo tempZoo = (Zoo)in.readObject();
         for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
             clientKaZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
         }
+        */
+        clientKaZoo = (Zoo)in.readObject();
     }
 
     @FXML
@@ -201,6 +220,12 @@ public class Client extends Application
             {
                 animal.setTarget();
             }
+        }
+    }
+
+    public void displayAnimals(GraphicsContext gc){
+        for (String animalName : clientKaZoo.getAnimalsInZoo().keySet()) {
+            Animal animal = clientKaZoo.getAnimalsInZoo().get(animalName);
 
             if(animal instanceof Bear){
                 System.out.println("Bear");
@@ -220,6 +245,7 @@ public class Client extends Application
                 }
             }
         }
+
     }
 
     //-- Getter and Setter --//

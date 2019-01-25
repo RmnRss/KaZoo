@@ -144,8 +144,8 @@ public class Client extends Application
 
     public void receiveInfoFromServer() throws IOException, ClassNotFoundException {
         Zoo tempZoo = (Zoo)in.readObject();
-        for (Animal animal : tempZoo.getAnimalsInZoo()) {
-            clientKaZoo.addAnimal(animal);
+        for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
+            clientKaZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
         }
     }
 
@@ -168,7 +168,8 @@ public class Client extends Application
      * @param gc
      */
     public void moveAnimals(GraphicsContext gc){
-        for (Animal animal : clientKaZoo.getAnimalsInZoo()) {
+        for (String animalName : clientKaZoo.getAnimalsInZoo().keySet()) {
+            Animal animal = clientKaZoo.getAnimalsInZoo().get(animalName);
             if(!animal.isArrived())
             {
                 animal.move(0.5);

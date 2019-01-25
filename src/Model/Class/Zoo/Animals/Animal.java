@@ -3,9 +3,6 @@ package Model.Class.Zoo.Animals;
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
-import Model.Class.Zoo.Obstacle;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
@@ -17,7 +14,7 @@ import javafx.scene.image.Image;
  */
 public abstract class Animal implements Serializable
 {
-    protected int name;
+    protected String name;
 
     protected int age;
 
@@ -137,11 +134,11 @@ public abstract class Animal implements Serializable
         return velocity;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 

@@ -35,8 +35,8 @@ public class Server {
             BufferedReader bf = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
             Zoo tempZoo = (Zoo)in.readObject();
 
-            for (Animal animal : tempZoo.getAnimalsInZoo()) {
-                KaZoo.addAnimal(animal);
+            for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
+                KaZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
             }
 
             out.writeObject(KaZoo);

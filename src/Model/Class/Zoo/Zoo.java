@@ -5,6 +5,7 @@ import Model.Class.Client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /***
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public class Zoo implements Serializable
 {
-    private List<Animal> animalsInZoo = new ArrayList<Animal>();
+    private HashMap<String, Animal> animalsInZoo = new HashMap<>();
     private List<Obstacle> obstaclesInZoo = new ArrayList<Obstacle>();
-    private List<Client> clientsInZoo = new ArrayList<Client>();
+    private HashMap<String, Client> clientsInZoo = new HashMap<>();
 
     /***
      * Common constructor implementing obstacles that are used as maps borders.
@@ -42,11 +43,11 @@ public class Zoo implements Serializable
 
     //-- Getter and Setter --//
 
-    public List<Animal> getAnimalsInZoo() {
+    public HashMap<String, Animal> getAnimalsInZoo() {
         return animalsInZoo;
     }
 
-    public void setAnimalsInZoo(List<Animal> animalsInZoo) {
+    public void setAnimalsInZoo(HashMap<String, Animal> animalsInZoo) {
         this.animalsInZoo = animalsInZoo;
     }
 
@@ -58,11 +59,11 @@ public class Zoo implements Serializable
         this.obstaclesInZoo = obstaclesInZoo;
     }
 
-    public List<Client> getClientsInZoo() {
+    public HashMap<String, Client> getClientsInZoo() {
         return clientsInZoo;
     }
 
-    public void setClientsInZoo(List<Client> clientsInZoo) {
+    public void setClientsInZoo(HashMap<String, Client> clientsInZoo) {
         this.clientsInZoo = clientsInZoo;
     }
 
@@ -73,7 +74,10 @@ public class Zoo implements Serializable
      * @param newAnimal
      */
     public void addAnimal(Animal newAnimal){
-        this.animalsInZoo.add(newAnimal);
+        if(!this.animalsInZoo.containsKey(newAnimal.getName())){
+            this.animalsInZoo.put(newAnimal.getName(), newAnimal);
+        }
+
     }
 
     /***
@@ -82,7 +86,7 @@ public class Zoo implements Serializable
      */
     public void addClient (Client newClient)
     {
-        this.clientsInZoo.add(newClient);
+        this.clientsInZoo.put(newClient.getName(), newClient);
     }
 
     /***

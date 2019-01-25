@@ -26,6 +26,8 @@ public class Penguin extends Animal
      */
     public Penguin(String Name, String Sex)
     {
+        name = Name;
+        sex = Sex;
         averageSize = 5;
         litter = 1;
 

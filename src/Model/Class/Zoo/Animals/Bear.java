@@ -23,6 +23,8 @@ public class Bear extends Animal
      */
     public Bear(String Name, String Sex)
     {
+        name = Name;
+        sex = Sex;
         averageSize = 15;
         litter = 2;
 

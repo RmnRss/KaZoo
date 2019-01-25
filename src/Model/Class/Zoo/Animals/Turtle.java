@@ -23,6 +23,8 @@ public class Turtle extends Animal
      */
     public Turtle(String Name, String Sex)
     {
+        name = Name;
+        sex = Sex;
         averageSize = 3;
         litter = 2;
 

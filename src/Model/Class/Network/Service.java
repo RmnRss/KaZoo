@@ -47,8 +47,8 @@ class Service implements Runnable
             while(true) {
                 Zoo tempZoo = (Zoo) in.readObject();
 
-                for (Animal animal : tempZoo.getAnimalsInZoo()) {
-                    serverZoo.addAnimal(animal);
+                for (String animal : tempZoo.getAnimalsInZoo().keySet()) {
+                    serverZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animal));
                 }
 
                 System.out.println(serverZoo.getAnimalsInZoo().size());

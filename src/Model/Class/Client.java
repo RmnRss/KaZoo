@@ -31,7 +31,11 @@ public class Client extends Application
 {
     public static final int PORT = 6789;
 
-    private Socket clientSocket = new Socket("localhost", PORT);
+    private String ipRomain = "192.168.43.92";
+    private String ipSandra = "192.168.43.106";
+
+    //private Socket clientSocket = new Socket("localhost", PORT);
+    private Socket clientSocket = new Socket(ipRomain, PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 

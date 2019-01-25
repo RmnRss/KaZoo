@@ -14,7 +14,7 @@ class Service implements Runnable
     private Socket clientSocket;
     private ClientCounter counter;
     private String msg = "null";
-    private Zoo serverZoo = new Zoo("");
+    private Zoo serverZoo;
 
     /***
      * Constructor
@@ -22,10 +22,11 @@ class Service implements Runnable
      * @param pCount
      */
 
-    public Service(Socket clientSocket, ClientCounter pCount)
+    public Service(Socket clientSocket, ClientCounter pCount, Zoo serverZoo)
     {
         this.clientSocket = clientSocket;
         this.counter = pCount;
+        this.serverZoo = serverZoo;
     }
 
     /***

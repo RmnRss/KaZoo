@@ -9,10 +9,10 @@ public class MultiClientServer
 {
     public static final int PORT = 6789;
 
-
     public static void main(String[] arguments)
     {
         ClientCounter count = new ClientCounter();
+        Zoo serverZoo = new Zoo("");
 
         try
         {
@@ -29,7 +29,7 @@ public class MultiClientServer
                 System.out.println("Connexion en cours...");
 
                 // Creation du service dans un nouveau processus
-                Thread t = new Thread(new Service(s, count));
+                Thread t = new Thread(new Service(s, count, serverZoo));
 
                 // Lance le thread
                 t.start();

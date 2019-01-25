@@ -23,6 +23,7 @@ import java.net.Socket;
 public class Client extends Application
 {
     public static final int PORT = 6789;
+
     private Socket clientSocket = new Socket("localhost", PORT);
     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 

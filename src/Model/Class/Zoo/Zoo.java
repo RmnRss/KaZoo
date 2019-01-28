@@ -47,7 +47,7 @@ public class Zoo implements Serializable
         return animalsInZoo;
     }
 
-    public void setAnimalsInZoo(HashMap<String, Animal> animalsInZoo) {
+    public synchronized void setAnimalsInZoo(HashMap<String, Animal> animalsInZoo) {
         this.animalsInZoo = animalsInZoo;
     }
 
@@ -55,7 +55,7 @@ public class Zoo implements Serializable
         return obstaclesInZoo;
     }
 
-    public void setObstaclesInZoo(List<Obstacle> obstaclesInZoo) {
+    public synchronized void setObstaclesInZoo(List<Obstacle> obstaclesInZoo) {
         this.obstaclesInZoo = obstaclesInZoo;
     }
 
@@ -63,17 +63,17 @@ public class Zoo implements Serializable
         return clientsInZoo;
     }
 
-    public void setClientsInZoo(HashMap<String, Client> clientsInZoo) {
+    public synchronized void setClientsInZoo(HashMap<String, Client> clientsInZoo) {
         this.clientsInZoo = clientsInZoo;
     }
 
     //-- Methods --//
 
     /***
-     * Adds a specific animal to the Zoo
+     * Adds a specific animal to the Zoo or overides it, if it already exists
      * @param newAnimal
      */
-    public void addAnimal(Animal newAnimal){
+    public synchronized void addAnimal(Animal newAnimal){
         if(this.animalsInZoo.containsKey(newAnimal.getName())){
             //overrides current animal
             this.animalsInZoo.replace(newAnimal.getName(), newAnimal);
@@ -89,7 +89,7 @@ public class Zoo implements Serializable
      * Adds a specific client to the Zoo
      * @param newClient
      */
-    public void addClient (Client newClient)
+    public synchronized void addClient (Client newClient)
     {
         this.clientsInZoo.put(newClient.getName(), newClient);
     }
@@ -98,7 +98,7 @@ public class Zoo implements Serializable
      * Adds a specific obstacle to the Zoo
      * @param newObstacle
      */
-    public void addObstacle (Obstacle newObstacle)
+    public synchronized void addObstacle (Obstacle newObstacle)
     {
         this.obstaclesInZoo.add(newObstacle);
     }

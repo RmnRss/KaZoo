@@ -27,6 +27,8 @@ class Service implements Runnable
         this.clientSocket = clientSocket;
         this.counter = pCount;
         this.serverZoo = serverZoo;
+
+        System.out.println("Constructor : " + serverZoo.hashCode());
     }
 
     /***
@@ -39,23 +41,31 @@ class Service implements Runnable
         counter.incCount();
         System.out.println(counter.getCount() + " Client(s)");
 
+        int clientNumber = counter.getCount();
+
         try {
 
-            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-
+            ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
             while(true) {
-                Zoo tempZoo = (Zoo) in.readObject();
 
-                for (String animal : tempZoo.getAnimalsInZoo().keySet()) {
-                    serverZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animal));
+                System.out.println("Client number : " + clientNumber);
+                //System.out.println("Server Hash in service : " + serverZoo.hashCode());
+
+                System.out.println("Sending...");
+                outputStream.writeObject(serverZoo);
+                outputStream.flush();
+                System.out.println("Send ServerZoo of size : " + serverZoo.getAnimalsInZoo().size());
+
+                System.out.println("Receiving...");
+                Zoo tempZoo = (Zoo) inputStream.readObject();
+
+                System.out.println("Received : " + tempZoo.getAnimalsInZoo().size());
+
+                for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
+                    serverZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
                 }
-
-                System.out.println(serverZoo.getAnimalsInZoo().size());
-
-                out.writeObject(serverZoo);
-                out.flush();
 
                 if (clientSocket.isClosed())
                 {

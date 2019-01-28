@@ -8,7 +8,6 @@ import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,10 +17,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
-import java.util.EventListener;
 
 /***
  * Client class Runs the interface and connects to the server
@@ -36,8 +33,6 @@ public class Client extends Application
 
     private Socket clientSocket = new Socket("localhost", PORT);
     //private Socket clientSocket = new Socket(ipRomain, PORT);
-    ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-    ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
     private Zoo clientKaZoo = new Zoo();
     private String name;
@@ -48,6 +43,10 @@ public class Client extends Application
     private Image imgTurtle = new Image("resources/img/circle.png");
     private Image imgPenguin = new Image("resources/img/rectangle.png");
     private Image imgBear = new Image("resources/img/triangle.png");
+
+    private ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+    private ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
+
 
     /***
      * Empty Constructor
@@ -68,26 +67,29 @@ public class Client extends Application
     @Override
     public void start(Stage window) throws Exception
     {
-        // Side of a square in px
+        // Side of a square inputStream px
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
-        /*
+
+
         name = "Michel";
         Penguin pigloo = new Penguin("Pig","Bonhomme");
         Turtle franklin = new Turtle("Fran", "Bro");
         Bear winny = new Bear("Win", "Fragile");
 
-
+        /*
         name = "Didier";
         Penguin pigloo = new Penguin("Pigloo","Bonhomme");
         Turtle franklin = new Turtle("Franklin", "Bro");
         Bear winny = new Bear("Winny", "Fragile");
         */
+
+        /*
         name = "Thierry";
         Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme");
         Turtle franklin = new Turtle("fefq", "Bro");
         Bear winny = new Bear("erzgrz", "Fragile");
-
+        */
 
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
@@ -106,7 +108,7 @@ public class Client extends Application
         //Linking canvas to our root
         root.getChildren().add(zooCanvas);
 
-        // Object to draw in the Canvas
+        // Object to draw inputStream the Canvas
         GraphicsContext gc = zooCanvas.getGraphicsContext2D();
 
         // Drawing images
@@ -132,7 +134,7 @@ public class Client extends Application
                 double t = (currentNanoTime - startNanoTime) / 10000000000.0;
                 gc.drawImage(map , 0,0 );
 
-                System.out.println(clientKaZoo.getAnimalsInZoo().size());
+                System.out.println("Size clientZoo :" + clientKaZoo.getAnimalsInZoo().size());
                 try {
                     receiveInfoFromServer();
                     displayAnimals(gc);
@@ -158,18 +160,30 @@ public class Client extends Application
      * @throws IOException
      */
     public void sendInfoToServer() throws IOException {
-        out.writeObject(clientKaZoo);
-        out.flush();
+        System.out.println("Sending...");
+        outputStream.writeObject(clientKaZoo);
+        outputStream.flush();
+        System.out.println("Sent : " + clientKaZoo.getAnimalsInZoo().size());
     }
 
+    /***
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void receiveInfoFromServer() throws IOException, ClassNotFoundException {
-        /*
-        Zoo tempZoo = (Zoo)in.readObject();
+
+        System.out.println("Receiving...");
+
+        Zoo tempZoo = (Zoo) inputStream.readObject();
+
+        System.out.println("Received : " + tempZoo.getAnimalsInZoo().size());
+
         for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
             clientKaZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
         }
-        */
-        clientKaZoo = (Zoo)in.readObject();
+        /*
+        clientKaZoo = (Zoo)inputStream.readObject();*/
     }
 
     @FXML
@@ -228,19 +242,16 @@ public class Client extends Application
             Animal animal = clientKaZoo.getAnimalsInZoo().get(animalName);
 
             if(animal instanceof Bear){
-                System.out.println("Bear");
                 animal.render(gc, imgBear);
             }
             else
             {
                 if(animal instanceof Penguin)
                 {
-                    System.out.println("Penguin");
                     animal.render(gc, imgPenguin);
                 }
                 else
                 {
-                    System.out.println("Turtle");
                     animal.render(gc, imgTurtle);
                 }
             }
@@ -254,7 +265,7 @@ public class Client extends Application
         return name;
     }
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 }

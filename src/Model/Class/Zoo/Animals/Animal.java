@@ -49,31 +49,32 @@ public abstract class Animal implements Serializable
      */
     public void move(double time)
     {
+        // TO DO : Smooth vertical and horizontal movements
         int deltaPosX, deltaPosY;
         deltaPosX = (int)target.getX() - position.getX();
         deltaPosY = (int)target.getY() - position.getY();
 
-        // Déplacement vers la droite
+        // Move to the right
         if(deltaPosX > 0){
             position.setX((int)(position.getX() + (velocity.getVelocityX() * time)));
         }
-        else // Déplacement vers la gauche
+        else // Move to the left
         {
             position.setX((int)(position.getX() - (velocity.getVelocityX() * time)));
         }
 
-        // Déplacement vers le bas
+        // Move downwards
         if(deltaPosY > 0){
             position.setY((int)(position.getY() + (velocity.getVelocityY() * time)));
         }
-        else // Déplacement vers la haut
+        else // Move upwards
         {
             position.setY((int)(position.getY() - (velocity.getVelocityY() * time)));
         }
     }
 
     /***
-     * Easier way to draw an animal of the canvas
+     * Easier way to draw an animal on the canvas
      * @param gc
      * @param theImage
      */

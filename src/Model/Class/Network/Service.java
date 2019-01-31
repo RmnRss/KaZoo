@@ -1,6 +1,5 @@
 package Model.Class.Network;
 
-import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
@@ -14,21 +13,19 @@ class Service implements Runnable
     private Socket clientSocket;
     private ClientCounter counter;
     private String msg = "null";
-    Zoo zoo;
+    Zoo serviceZoo;
 
     /***
-     * Constructor
+     * Service constructor
      * @param clientSocket
-     * @param pCount
+     * @param clientCounter
+     * @param serverZoo
      */
-
-    public Service(Socket clientSocket, ClientCounter pCount, Zoo zooLol)
+    public Service(Socket clientSocket, ClientCounter clientCounter, Zoo serverZoo)
     {
         this.clientSocket = clientSocket;
-        this.counter = pCount;
-        this.zoo = zooLol;
-
-        System.out.println("Constructor : " + zooLol.hashCode());
+        this.counter = clientCounter;
+        this.serviceZoo = serverZoo;
     }
 
     /***
@@ -37,38 +34,29 @@ class Service implements Runnable
     public void run()
     {
         boolean isStopped = false;
+        String message;
 
         try
         {
+            // Initialize the streams for every client
             ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-            //BufferedReader bf = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
             while (!isStopped)
             {
-                //Reading client object
+                // Reading client object
                 Zoo clientZoo = (Zoo)in.readObject();
 
-                /*for (String animalName : clientZoo.getAnimalsInZoo().keySet()) {
-                    zoo.addAnimal(clientZoo.getAnimalsInZoo().get(animalName));
-                }*/
+                // Merging animals of the general serviceZoo with the ones from the client
+                serviceZoo.syncAnimals(clientZoo);
 
-                zoo.syncAnimals(clientZoo);
+                // Moving animals in the general serviceZoo
+                serviceZoo.moveAnimals();
 
-                System.out.println(">> before " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
-
-                zoo.moveAnimals();
-
-                System.out.println(">> after " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
-
-                //Sending to client
+                // Sending modified Zoo to the client
                 out.reset();
-                out.writeObject(zoo);
-
+                out.writeObject(serviceZoo);
                 out.flush();
-
-                //String message = bf.readLine();
             }
 
             clientSocket.close();

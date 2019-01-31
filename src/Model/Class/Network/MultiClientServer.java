@@ -1,12 +1,12 @@
 package Model.Class.Network;
 
-import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Zoo;
-
 import java.net.*;
-import java.io.*;
-import java.util.HashMap;
 
+/***
+ * Multi thread server
+ * Launches a thread for every client
+ */
 public class MultiClientServer
 {
     public static final int PORT = 6789;
@@ -16,29 +16,35 @@ public class MultiClientServer
         ClientCounter count = new ClientCounter();
         Zoo serverZoo = new Zoo("");
 
+        boolean isStopped = false;
+
         try
         {
             // Sockets
-            ServerSocket socketAttente;
-            socketAttente = new ServerSocket(PORT);
+            ServerSocket serverSocket;
+            serverSocket = new ServerSocket(PORT);
 
             System.out.println("Attente d'une connexion...");
 
+            // While server is online
+            // For every client creates a new sockets
+            // Launches a new thread running a Service
             do
             {
-                // Attente bloquante
-                Socket clientSocket = socketAttente.accept();
+                // Waits for a connexion to the server socket
+                Socket clientSocket = serverSocket.accept();
                 System.out.println("Connexion en cours...");
 
-                // Creation du service dans un nouveau processus
-                Thread t = new Thread(new Service(clientSocket, count, serverZoo));
+                // Creates a new threads running another service
+                Service newService = new Service(clientSocket, count, serverZoo);
+                Thread t = new Thread(newService);
 
-                // Lance le thread
+                // Launches the thread
                 t.start();
 
-            } while (true);
+            } while (!isStopped);
 
-            // socketAttente.close();
+            serverSocket.close();
         } catch (Exception e)
         {
             System.err.println("Erreur : " + e);

@@ -86,6 +86,10 @@ public class Zoo implements Serializable
 
     }
 
+    /***
+     * Synchronized two list of animals from two different zoo into one
+     * @param otherZoo
+     */
     public synchronized void syncAnimals(Zoo otherZoo)
     {
         for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
@@ -96,11 +100,6 @@ public class Zoo implements Serializable
             if(animalsInZoo.containsKey(animalStr))
             {
                 animalsInZoo.replace(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
-
-                System.out.println(">> 1 " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getName() + " " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
-
-                System.out.println(">> 2 " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
-
             }
             else
             {
@@ -110,7 +109,7 @@ public class Zoo implements Serializable
     }
 
     /***
-     * Refreshes position
+     * Refreshes position of every animal in the zoo
      */
     public synchronized void moveAnimals()
     {

@@ -1,6 +1,5 @@
 package Model.Class;
 
-import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Zoo;
 
@@ -11,9 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static javafx.application.Application.launch;
-
 /***
+ * Single thread server
  * Received all information about all zoo and merged them into one
  * Then sends those information to all clients so they can all display it
  */

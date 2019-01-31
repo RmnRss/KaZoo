@@ -71,15 +71,15 @@ public class Client extends Application
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
 
-        /*name = "Michel";
+        name = "Michel";
         Penguin pigloo = new Penguin("Pig","Bonhomme");
         Turtle franklin = new Turtle("Fran", "Bro");
-        Bear winny = new Bear("Win", "Fragile");*/
+        Bear winny = new Bear("Win", "Fragile");
 
-        name = "Didier";
+        /*name = "Didier";
         Penguin pigloo = new Penguin("Pigloo","Bonhomme");
         Turtle franklin = new Turtle("Franklin", "Bro");
-        Bear winny = new Bear("Winny", "Fragile");
+        Bear winny = new Bear("Winny", "Fragile");*/
 
         /*name = "Thierry";
         Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme");

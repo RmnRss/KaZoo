@@ -3,6 +3,7 @@ package Model.Class.Zoo.Animals;
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
+import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
@@ -54,23 +55,39 @@ public abstract class Animal implements Serializable
         deltaPosX = (int)target.getX() - position.getX();
         deltaPosY = (int)target.getY() - position.getY();
 
-        // Move to the right
-        if(deltaPosX > 0){
-            position.setX((int)(position.getX() + (velocity.getVelocityX() * time)));
-        }
-        else // Move to the left
+        //Horizontal movement
+        if(deltaPosX == 0)
         {
-            position.setX((int)(position.getX() - (velocity.getVelocityX() * time)));
+            // X position stays the same
+        }else{
+            if(deltaPosX > 0){
+                // Move to the right
+                position.setX((int)(position.getX() + (velocity.getVelocityX() * time)));
+            }
+            else
+            {
+                // Move to the left
+                position.setX((int)(position.getX() - (velocity.getVelocityX() * time)));
+            }
         }
 
-        // Move downwards
-        if(deltaPosY > 0){
-            position.setY((int)(position.getY() + (velocity.getVelocityY() * time)));
-        }
-        else // Move upwards
+
+        if(deltaPosY == 0)
         {
-            position.setY((int)(position.getY() - (velocity.getVelocityY() * time)));
+            // Y position stays the same
+        }else{
+
+            if(deltaPosY > 0){
+                // Move downwards
+                position.setY((int)(position.getY() + (velocity.getVelocityY() * time)));
+            }
+            else
+            {
+                // Move upwards
+                position.setY((int)(position.getY() - (velocity.getVelocityY() * time)));
+            }
         }
+
     }
 
     /***

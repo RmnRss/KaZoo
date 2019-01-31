@@ -1,9 +1,11 @@
 package Model.Class.Network;
 
+import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
 import java.io.*;
+import java.util.HashMap;
 
 public class MultiClientServer
 {
@@ -25,11 +27,11 @@ public class MultiClientServer
             do
             {
                 // Attente bloquante
-                Socket s = socketAttente.accept();
+                Socket clientSocket = socketAttente.accept();
                 System.out.println("Connexion en cours...");
 
                 // Creation du service dans un nouveau processus
-                Thread t = new Thread(new Service(s, count, serverZoo));
+                Thread t = new Thread(new Service(clientSocket, count, serverZoo));
 
                 // Lance le thread
                 t.start();

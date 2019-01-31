@@ -2,6 +2,7 @@ package Model.Class.Zoo;
 
 import Model.Class.Zoo.Animals.*;
 import Model.Class.Client;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -83,6 +84,66 @@ public class Zoo implements Serializable
             this.animalsInZoo.put(newAnimal.getName(), newAnimal);
         }
 
+    }
+
+    public synchronized void syncAnimals(Zoo otherZoo)
+    {
+        for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
+        {
+
+            System.out.println("Syncing...");
+
+            if(animalsInZoo.containsKey(animalStr))
+            {
+                animalsInZoo.replace(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
+
+                System.out.println(">> 1 " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getName() + " " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + getAnimalsInZoo().get(getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
+
+                System.out.println(">> 2 " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + otherZoo.getAnimalsInZoo().get(otherZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
+
+            }
+            else
+            {
+                animalsInZoo.put(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
+            }
+        }
+    }
+
+    /***
+     * Refreshes position
+     */
+    public synchronized void moveAnimals()
+    {
+        for (String animalName : this.getAnimalsInZoo().keySet()) {
+            Animal animal = this.getAnimalsInZoo().get(animalName);
+            if(!animal.isArrived())
+            {
+                animal.move(0.5);
+
+                int i = 0;
+                Boolean isObstacle = false;
+
+                while(i < this.getObstaclesInZoo().size() && !isObstacle)
+                {
+                    if(animal.intersects(this.getObstaclesInZoo().get(i).getPosition()))
+                    {
+                        isObstacle = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                if(isObstacle)
+                {
+                    animal.setTarget();
+                }
+            }
+            else
+            {
+                animal.setTarget();
+            }
+        }
     }
 
     /***

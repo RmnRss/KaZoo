@@ -1,6 +1,6 @@
 package Model.Class.Network;
 
-import Model.Class.Zoo.Animals.Animal;
+import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
@@ -14,7 +14,7 @@ class Service implements Runnable
     private Socket clientSocket;
     private ClientCounter counter;
     private String msg = "null";
-    private Zoo serverZoo;
+    Zoo zoo;
 
     /***
      * Constructor
@@ -22,13 +22,13 @@ class Service implements Runnable
      * @param pCount
      */
 
-    public Service(Socket clientSocket, ClientCounter pCount, Zoo serverZoo)
+    public Service(Socket clientSocket, ClientCounter pCount, Zoo zooLol)
     {
         this.clientSocket = clientSocket;
         this.counter = pCount;
-        this.serverZoo = serverZoo;
+        this.zoo = zooLol;
 
-        System.out.println("Constructor : " + serverZoo.hashCode());
+        System.out.println("Constructor : " + zooLol.hashCode());
     }
 
     /***
@@ -36,50 +36,46 @@ class Service implements Runnable
      */
     public void run()
     {
+        boolean isStopped = false;
 
-        //Counting clients
-        counter.incCount();
-        System.out.println(counter.getCount() + " Client(s)");
+        try
+        {
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-        int clientNumber = counter.getCount();
+            //BufferedReader bf = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        try {
+            while (!isStopped)
+            {
+                //Reading client object
+                Zoo clientZoo = (Zoo)in.readObject();
 
-            ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
-            ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                /*for (String animalName : clientZoo.getAnimalsInZoo().keySet()) {
+                    zoo.addAnimal(clientZoo.getAnimalsInZoo().get(animalName));
+                }*/
 
-            while(true) {
+                zoo.syncAnimals(clientZoo);
 
-                System.out.println("Client number : " + clientNumber);
-                //System.out.println("Server Hash in service : " + serverZoo.hashCode());
+                System.out.println(">> before " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + clientZoo.getAnimalsInZoo().get(clientZoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
 
-                System.out.println("Sending...");
-                outputStream.writeObject(serverZoo);
-                outputStream.flush();
-                System.out.println("Send ServerZoo of size : " + serverZoo.getAnimalsInZoo().size());
+                zoo.moveAnimals();
 
-                System.out.println("Receiving...");
-                Zoo tempZoo = (Zoo) inputStream.readObject();
+                System.out.println(">> after " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getName() + " " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getX()+ " " + zoo.getAnimalsInZoo().get(zoo.getAnimalsInZoo().keySet().iterator().next()).getPosition().getY());
 
-                System.out.println("Received : " + tempZoo.getAnimalsInZoo().size());
+                //Sending to client
+                out.reset();
+                out.writeObject(zoo);
 
-                for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
-                    serverZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
-                }
+                out.flush();
 
-                if (clientSocket.isClosed())
-                {
-                    //Affichage de la déconnexion d'un client
-                    counter.decCount();
-                    System.out.println("Déconnexion d'un client");
-                    System.out.println(counter.getCount() + " Clients");
-                }
+                //String message = bf.readLine();
             }
 
+            clientSocket.close();
+            System.out.println("Closed");
 
-            //clientSocket.close();
-
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
             System.exit(1);

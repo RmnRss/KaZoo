@@ -1,6 +1,7 @@
 package Model.Class;
 
 import Model.Class.Zoo.Animals.Animal;
+import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Zoo;
 
 import java.io.BufferedReader;
@@ -20,9 +21,12 @@ public class Server {
     public static final int PORT = 6789;
 
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String args[]) throws Exception
+    {
         ServerSocket serSocket = new ServerSocket(PORT);
         System.out.println("Attente de connexions, serveur prêt");
+        boolean isStopped = false;
+
         try
         {
             Zoo KaZoo = new Zoo("");
@@ -30,23 +34,31 @@ public class Server {
             Socket cSocket = serSocket.accept();
             System.out.println("Connexion client");
 
-            ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
             ObjectOutputStream out = new ObjectOutputStream(cSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(cSocket.getInputStream());
+
             BufferedReader bf = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
-            Zoo tempZoo = (Zoo)in.readObject();
 
-            for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
-                KaZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
+            while (!isStopped)
+            {
+                //Reading client object
+                Zoo clientZoo = (Zoo)in.readObject();
+
+                for (String animalName : clientZoo.getAnimalsInZoo().keySet()) {
+                    KaZoo.addAnimal(clientZoo.getAnimalsInZoo().get(animalName));
+                }
+
+                KaZoo.addAnimal(new Bear("Boobs", "Fragile"));
+
+                //Sending to client
+                out.writeObject(KaZoo);
+                out.flush();
+
+                //String message = bf.readLine();
             }
 
-            out.writeObject(KaZoo);
-            out.flush();
-
-            String message = bf.readLine();
-            if(message.equals("Exit")){
-                cSocket.close();
+                serSocket.close();
                 System.out.println("Closed");
-            }
 
 
         } catch (Exception e)

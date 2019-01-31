@@ -2,6 +2,7 @@ package Model.Class.Zoo.Animals;
 
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
+import Model.Class.Client;
 import javafx.geometry.Rectangle2D;
 
 import java.util.Random;
@@ -21,10 +22,11 @@ public class Turtle extends Animal
      * @param Name
      * @param Sex
      */
-    public Turtle(String Name, String Sex)
+    public Turtle(String Name, String Sex, Client owner)
     {
         name = Name;
         sex = Sex;
+        owner = owner;
         averageSize = 3;
         litter = 2;
 
@@ -43,9 +45,9 @@ public class Turtle extends Animal
      * @param Father
      * @param Mother
      */
-    public Turtle(String Name, String Sex, Animal Father, Animal Mother)
+    public Turtle(String Name, String Sex, Client owner, Animal Father, Animal Mother)
     {
-        this(Name, Sex);
+        this(Name, Sex, owner);
         size = 1;
         father = Father;
         mother = Mother;

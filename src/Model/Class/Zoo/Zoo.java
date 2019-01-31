@@ -5,9 +5,7 @@ import Model.Class.Client;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /***
  * Zoo class : contains all information of a zoo
@@ -136,6 +134,36 @@ public class Zoo implements Serializable
                 if(isObstacle)
                 {
                     animal.setTarget();
+                }
+
+                i = 0;
+                Boolean isReproductor = false;
+
+                Iterator<Map.Entry<String, Animal>> iterator = this.getAnimalsInZoo().entrySet().iterator();
+                while(iterator.hasNext() && !isReproductor)
+                {
+                    Map.Entry<String, Animal> entry = iterator.next();
+                    if(animal.intersects(this.getAnimalsInZoo().get(entry.getKey()).getPosition()))
+                    {
+                        if(this.getAnimalsInZoo().get(entry.getKey()).getClass().getName().equals(animal.getClass().getName()) && animal.getSex() != this.getAnimalsInZoo().get(entry.getKey()).getSex())
+                        {
+                            isReproductor = true;
+                        }
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                if(isReproductor)
+                {
+                    animal.setTarget();
+                    System.out.println("Faisons des bébés !");
+                    switch (animal.getClass().getName()){
+                        case "Bear":
+                            
+
+                    }
                 }
             }
             else

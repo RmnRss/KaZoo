@@ -2,6 +2,7 @@ package Model.Class.Zoo.Animals;
 
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
+import Model.Class.Client;
 import javafx.geometry.Rectangle2D;
 
 import java.util.Random;
@@ -24,10 +25,11 @@ public class Penguin extends Animal
      * @param Name
      * @param Sex
      */
-    public Penguin(String Name, String Sex)
+    public Penguin(String Name, String Sex, Client owner)
     {
         name = Name;
         sex = Sex;
+        owner = owner;
         averageSize = 5;
         litter = 1;
 
@@ -46,9 +48,9 @@ public class Penguin extends Animal
      * @param Father
      * @param Mother
      */
-    public Penguin(String Name, String Sex, Animal Father, Animal Mother)
+    public Penguin(String Name, String Sex, Client owner, Animal Father, Animal Mother)
     {
-        this(Name, Sex);
+        this(Name, Sex, owner);
         size = 1;
         father = Father;
         mother = Mother;

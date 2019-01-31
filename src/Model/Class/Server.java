@@ -46,7 +46,7 @@ public class Server {
                     KaZoo.addAnimal(clientZoo.getAnimalsInZoo().get(animalName));
                 }
 
-                KaZoo.addAnimal(new Bear("Boobs", "Fragile"));
+                //KaZoo.addAnimal(new Bear("Boobs", "Fragile"));
 
                 //Sending to client
                 out.writeObject(KaZoo);

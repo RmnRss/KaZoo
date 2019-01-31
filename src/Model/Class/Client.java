@@ -72,19 +72,20 @@ public class Client extends Application
         window.setTitle("clientKaZoo");
 
         name = "Michel";
-        Penguin pigloo = new Penguin("Pig","Bonhomme");
-        Turtle franklin = new Turtle("Fran", "Bro");
-        Bear winny = new Bear("Win", "Fragile");
+        Penguin pigloo = new Penguin("Pig","Bonhomme", this);
+        Turtle franklin = new Turtle("Fran", "Bro", this);
+        Bear winny = new Bear("Win", "Fragile", this);
+
 
         /*name = "Didier";
-        Penguin pigloo = new Penguin("Pigloo","Bonhomme");
-        Turtle franklin = new Turtle("Franklin", "Bro");
-        Bear winny = new Bear("Winny", "Fragile");*/
+        Penguin pigloo = new Penguin("Pigloo","Bonhomme", this);
+        Turtle franklin = new Turtle("Franklin", "Bro", this);
+        Bear winny = new Bear("Winny", "Fragile", this);*/
 
         /*name = "Thierry";
-        Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme");
-        Turtle franklin = new Turtle("fefq", "Bro");
-        Bear winny = new Bear("erzgrz", "Fragile");*/
+        Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme", this);
+        Turtle franklin = new Turtle("fefq", "Bro", this);
+        Bear winny = new Bear("erzgrz", "Fragile", this);*/
 
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);

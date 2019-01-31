@@ -1,6 +1,5 @@
 package Model.Class.Network;
 
-import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
@@ -14,21 +13,19 @@ class Service implements Runnable
     private Socket clientSocket;
     private ClientCounter counter;
     private String msg = "null";
-    private Zoo serverZoo;
+    Zoo serviceZoo;
 
     /***
-     * Constructor
+     * Service constructor
      * @param clientSocket
-     * @param pCount
+     * @param clientCounter
+     * @param serverZoo
      */
-
-    public Service(Socket clientSocket, ClientCounter pCount, Zoo serverZoo)
+    public Service(Socket clientSocket, ClientCounter clientCounter, Zoo serverZoo)
     {
         this.clientSocket = clientSocket;
-        this.counter = pCount;
-        this.serverZoo = serverZoo;
-
-        System.out.println("Constructor : " + serverZoo.hashCode());
+        this.counter = clientCounter;
+        this.serviceZoo = serverZoo;
     }
 
     /***
@@ -36,50 +33,37 @@ class Service implements Runnable
      */
     public void run()
     {
+        boolean isStopped = false;
+        String message;
 
-        //Counting clients
-        counter.incCount();
-        System.out.println(counter.getCount() + " Client(s)");
+        try
+        {
+            // Initialize the streams for every client
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-        int clientNumber = counter.getCount();
+            while (!isStopped)
+            {
+                // Reading client object
+                Zoo clientZoo = (Zoo)in.readObject();
 
-        try {
+                // Merging animals of the general serviceZoo with the ones from the client
+                serviceZoo.syncAnimals(clientZoo);
 
-            ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
-            ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                // Moving animals in the general serviceZoo
+                serviceZoo.moveAnimals();
 
-            while(true) {
-
-                System.out.println("Client number : " + clientNumber);
-                //System.out.println("Server Hash in service : " + serverZoo.hashCode());
-
-                System.out.println("Sending...");
-                outputStream.writeObject(serverZoo);
-                outputStream.flush();
-                System.out.println("Send ServerZoo of size : " + serverZoo.getAnimalsInZoo().size());
-
-                System.out.println("Receiving...");
-                Zoo tempZoo = (Zoo) inputStream.readObject();
-
-                System.out.println("Received : " + tempZoo.getAnimalsInZoo().size());
-
-                for (String animalName : tempZoo.getAnimalsInZoo().keySet()) {
-                    serverZoo.addAnimal(tempZoo.getAnimalsInZoo().get(animalName));
-                }
-
-                if (clientSocket.isClosed())
-                {
-                    //Affichage de la déconnexion d'un client
-                    counter.decCount();
-                    System.out.println("Déconnexion d'un client");
-                    System.out.println(counter.getCount() + " Clients");
-                }
+                // Sending modified Zoo to the client
+                out.reset();
+                out.writeObject(serviceZoo);
+                out.flush();
             }
 
+            clientSocket.close();
+            System.out.println("Closed");
 
-            //clientSocket.close();
-
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
             System.exit(1);

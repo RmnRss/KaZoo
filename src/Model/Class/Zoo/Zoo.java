@@ -2,6 +2,7 @@ package Model.Class.Zoo;
 
 import Model.Class.Zoo.Animals.*;
 import Model.Class.Client;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -83,6 +84,65 @@ public class Zoo implements Serializable
             this.animalsInZoo.put(newAnimal.getName(), newAnimal);
         }
 
+    }
+
+    /***
+     * Synchronized two list of animals from two different zoo into one
+     * @param otherZoo
+     */
+    public synchronized void syncAnimals(Zoo otherZoo)
+    {
+        for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
+        {
+
+            System.out.println("Syncing...");
+
+            if(animalsInZoo.containsKey(animalStr))
+            {
+                animalsInZoo.replace(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
+            }
+            else
+            {
+                animalsInZoo.put(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
+            }
+        }
+    }
+
+    /***
+     * Refreshes position of every animal in the zoo
+     */
+    public synchronized void moveAnimals()
+    {
+        for (String animalName : this.getAnimalsInZoo().keySet()) {
+            Animal animal = this.getAnimalsInZoo().get(animalName);
+            if(!animal.isArrived())
+            {
+                animal.move(0.5);
+
+                int i = 0;
+                Boolean isObstacle = false;
+
+                while(i < this.getObstaclesInZoo().size() && !isObstacle)
+                {
+                    if(animal.intersects(this.getObstaclesInZoo().get(i).getPosition()))
+                    {
+                        isObstacle = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+                if(isObstacle)
+                {
+                    animal.setTarget();
+                }
+            }
+            else
+            {
+                animal.setTarget();
+            }
+        }
     }
 
     /***

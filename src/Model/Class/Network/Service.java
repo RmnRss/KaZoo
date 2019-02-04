@@ -45,11 +45,14 @@ class Service implements Runnable
             ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
+            Zoo clientZoo = (Zoo)in.readObject();
+            serviceZoo.syncPlayer(clientZoo);
+
             while (!isStopped)
             {
                 System.out.println("Client n°" + clientNumber);
                 // Reading client object
-                Zoo clientZoo = (Zoo)in.readObject();
+                clientZoo = (Zoo)in.readObject();
 
                 // Merging animals of the general serviceZoo with the ones from the client
                 serviceZoo.syncAnimals(clientZoo);

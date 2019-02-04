@@ -198,6 +198,17 @@ public class Zoo implements Serializable
         this.playersInZoo.put(newPlayer.getName(), newPlayer);
     }
 
+    public synchronized void syncPlayer(Zoo otherZoo)
+    {
+        for(String playerStr : otherZoo.getPlayersInZoo().keySet())
+        {
+
+            //System.out.println("Syncing...");
+
+            this.addPlayer(otherZoo.getPlayersInZoo().get(playerStr));
+        }
+    }
+
     /***
      * Adds a specific obstacle to the Zoo
      * @param newObstacle

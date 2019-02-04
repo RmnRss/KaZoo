@@ -42,9 +42,9 @@ public class Client extends Application
     // Images declaration
     private Image map = new Image("resources/img/map.png");
 
-    private Image imgTurtle = new Image("resources/img/circle.png");
-    private Image imgPenguin = new Image("resources/img/rectangle.png");
-    private Image imgBear = new Image("resources/img/triangle.png");
+    private Image imgBear;
+    private Image imgPenguin;
+    private Image imgTurtle;
 
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
@@ -72,16 +72,18 @@ public class Client extends Application
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
 
-        /*name = "Michel";
+
+        Player michel = new Player("Michel");
         Penguin pigloo = new Penguin("Pig","Male", this.name);
         Turtle franklin = new Turtle("Fran", "Male", this.name);
-        Bear winny = new Bear("Win", "Female", this.name);*/
+        Bear winny = new Bear("Win", "Female", this.name);
+        clientKaZoo.addPlayer(michel);
 
 
-        name = "Didier";
+        /*name = "Didier";
         Penguin pigloo = new Penguin("Pigloo","Male", this.name);
         Turtle franklin = new Turtle("Franklin", "Male", this.name);
-        Bear winny = new Bear("Winny", "Male", this.name);
+        Bear winny = new Bear("Winny", "Male", this.name);*/
 
         /*name = "Thierry";
         Penguin pigloo = new Penguin("vdvqsdcs","Male", this.name);
@@ -112,9 +114,6 @@ public class Client extends Application
         // 0,0 (top left corner)
 
         gc.drawImage(map,0 ,0 );
-        franklin.render(gc, imgTurtle);
-        winny.render(gc, imgBear);
-        pigloo.render(gc,imgPenguin);
 
         // Other way to draw
         // gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getX(), pigloo.getSprite().getY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
@@ -125,6 +124,9 @@ public class Client extends Application
         clientSocket = new Socket("localhost", PORT);
         outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         inputStream = new ObjectInputStream(clientSocket.getInputStream());
+
+        assignColorToPlayer();
+        sendInfoToServer();
 
         // Starting animating images
         // Drawing loops
@@ -142,7 +144,7 @@ public class Client extends Application
 
                     sendInfoToServer();
                     receiveInfoFromServer();
-                    display(clientKaZoo.getAnimalsInZoo(), gc);
+                    displayAll(gc);
 
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -198,29 +200,52 @@ public class Client extends Application
     }
 
 
-    public void display(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
+    public void display(Player thePlayer, HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
         for (String animalName : animalsToDisplay.keySet()){
             Animal animal = animalsToDisplay.get(animalName);
 
-            if(animal instanceof Bear){
-                animal.render(gc, imgBear);
-                display(animal.getBabies(), gc);
-            }
-            else
-            {
-                if(animal instanceof Penguin) {
-                    animal.render(gc, imgPenguin);
-                    display(animal.getBabies(), gc);
-                }
-                else
-                {
-                    if(animal instanceof Turtle) {
-                        animal.render(gc, imgTurtle);
-                        display(animal.getBabies(), gc);
+            if (animal instanceof Bear) {
+                animal.render(gc, selectImgBear(thePlayer.getColor()));
+                display(thePlayer, animal.getBabies(), gc);
+            } else {
+                if (animal instanceof Penguin) {
+                    animal.render(gc, selectImgPenguin(thePlayer.getColor()));
+                    display(thePlayer, animal.getBabies(), gc);
+                } else {
+                    if (animal instanceof Turtle) {
+                        animal.render(gc, selectImgTurtle(thePlayer.getColor()));
+                        display(thePlayer, animal.getBabies(), gc);
                     }
                 }
             }
         }
+    }
+
+    public void displayAll(GraphicsContext gc){
+        for(String playerName : clientKaZoo.getPlayersInZoo().keySet()){
+            Player aPlayer = clientKaZoo.getPlayersInZoo().get(playerName);
+            display(aPlayer, aPlayer.getPlayerAnimals(), gc);
+        }
+    }
+
+    public void assignColorToPlayer(){
+        int color = 0;
+        for(String playerName : clientKaZoo.getPlayersInZoo().keySet()){
+            clientKaZoo.getPlayersInZoo().get(playerName).setColor(color);
+            color++;
+        }
+    }
+
+    public Image selectImgBear(int color){
+        return new Image("resources/img/triangle" + color + ".png");
+    }
+
+    public Image selectImgPenguin(int color){
+        return new Image("resources/img/rectangle" + color + ".png");
+    }
+
+    public Image selectImgTurtle(int color){
+        return new Image("resources/img/circle" + color + ".png");
     }
 
     //-- Getter and Setter --//

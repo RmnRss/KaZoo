@@ -7,6 +7,7 @@ import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Random;
 import javafx.scene.image.Image;
 
@@ -19,13 +20,14 @@ public abstract class Animal implements Serializable
 
     protected int age;
 
-    protected Client owner;
+    protected String owner;
 
     protected String sex;
     protected float averageSize;
     protected float size;
 
     protected int litter;
+    protected HashMap<String, Animal> babies;
 
     protected Animal father;
     protected Animal mother;
@@ -36,6 +38,8 @@ public abstract class Animal implements Serializable
 
     protected Position target;
 
+    protected Boolean canHaveBabies;
+
 
     /***
      * Function
@@ -43,6 +47,9 @@ public abstract class Animal implements Serializable
      * Changing size and sprites depending on its age
      * ***/
     abstract void growth(int Age);
+
+    @Override
+    public abstract String toString();
 
     /***
      * Handles the movements of an animal
@@ -108,8 +115,9 @@ public abstract class Animal implements Serializable
      */
     public boolean intersects(Position target)
     {
-        Boolean inX = position.getX() > (target.getX() - 5) && position.getX() < (target.getX() + 5);
-        Boolean inY = position.getY() > (target.getY() - 5) && position.getY() < (target.getY() + 5);
+        int range = 20;
+        Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
+        Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
 
         if(inX && inY) return true;
         else return false;
@@ -168,11 +176,11 @@ public abstract class Animal implements Serializable
         this.age = age;
     }
 
-    public Client getOwner() {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(Client owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
@@ -224,4 +232,23 @@ public abstract class Animal implements Serializable
         this.mother = mother;
     }
 
+    public HashMap<String, Animal> getBabies() {
+        return babies;
+    }
+
+    public synchronized void setBabies(HashMap<String, Animal> babies) {
+        this.babies = babies;
+    }
+
+    public Boolean getCanHaveBabies() {
+        return canHaveBabies;
+    }
+
+    public synchronized void setCanHaveBabies() {
+        this.canHaveBabies = !canHaveBabies;
+    }
+
+    public Boolean isAnAdult(){
+        return this.getAge() > 2;
+    }
 }

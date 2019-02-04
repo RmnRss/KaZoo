@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
@@ -71,21 +72,21 @@ public class Client extends Application
         int mapSide = 500 ;
         window.setTitle("clientKaZoo");
 
-        name = "Michel";
-        Penguin pigloo = new Penguin("Pig","Bonhomme", this);
-        Turtle franklin = new Turtle("Fran", "Bro", this);
-        Bear winny = new Bear("Win", "Fragile", this);
+        /*name = "Michel";
+        Penguin pigloo = new Penguin("Pig","Male", this.name);
+        Turtle franklin = new Turtle("Fran", "Male", this.name);
+        Bear winny = new Bear("Win", "Female", this.name);*/
 
 
-        /*name = "Didier";
-        Penguin pigloo = new Penguin("Pigloo","Bonhomme", this);
-        Turtle franklin = new Turtle("Franklin", "Bro", this);
-        Bear winny = new Bear("Winny", "Fragile", this);*/
+        name = "Didier";
+        Penguin pigloo = new Penguin("Pigloo","Male", this.name);
+        Turtle franklin = new Turtle("Franklin", "Male", this.name);
+        Bear winny = new Bear("Winny", "Male", this.name);
 
         /*name = "Thierry";
-        Penguin pigloo = new Penguin("vdvqsdcs","Bonhomme", this);
-        Turtle franklin = new Turtle("fefq", "Bro", this);
-        Bear winny = new Bear("erzgrz", "Fragile", this);*/
+        Penguin pigloo = new Penguin("vdvqsdcs","Male", this.name);
+        Turtle franklin = new Turtle("fefq", "Male", this.name);
+        Bear winny = new Bear("erzgrz", "Female", this.name);*/
 
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
@@ -141,7 +142,7 @@ public class Client extends Application
 
                     sendInfoToServer();
                     receiveInfoFromServer();
-                    displayAnimals(gc);
+                    display(clientKaZoo.getAnimalsInZoo(), gc);
 
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -196,28 +197,30 @@ public class Client extends Application
         sleep(1000);
     }
 
-    public void displayAnimals(GraphicsContext gc)
-    {
-        for (String animalName : clientKaZoo.getAnimalsInZoo().keySet())
-        {
-            Animal animal = clientKaZoo.getAnimalsInZoo().get(animalName);
+
+    public void display(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
+        for (String animalName : animalsToDisplay.keySet()){
+            Animal animal = animalsToDisplay.get(animalName);
 
             if(animal instanceof Bear){
                 animal.render(gc, imgBear);
+                display(animal.getBabies(), gc);
             }
             else
             {
-                if(animal instanceof Penguin)
-                {
+                if(animal instanceof Penguin) {
                     animal.render(gc, imgPenguin);
+                    display(animal.getBabies(), gc);
                 }
                 else
                 {
-                    animal.render(gc, imgTurtle);
+                    if(animal instanceof Turtle) {
+                        animal.render(gc, imgTurtle);
+                        display(animal.getBabies(), gc);
+                    }
                 }
             }
         }
-
     }
 
     //-- Getter and Setter --//

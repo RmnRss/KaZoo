@@ -5,6 +5,7 @@ import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import javafx.geometry.Rectangle2D;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /***
@@ -25,13 +26,16 @@ public class Penguin extends Animal
      * @param Name
      * @param Sex
      */
-    public Penguin(String Name, String Sex, Client owner)
+    public Penguin(String Name, String Sex, String Owner)
     {
+        babies = new HashMap<>();
         name = Name;
         sex = Sex;
-        owner = owner;
+        owner = Owner;
         averageSize = 5;
         litter = 1;
+        age = 5;
+        canHaveBabies = isAnAdult();
 
         Random r = new Random();
         int mapSide = 500;
@@ -48,13 +52,14 @@ public class Penguin extends Animal
      * @param Father
      * @param Mother
      */
-    public Penguin(String Name, String Sex, Client owner, Animal Father, Animal Mother)
+    public Penguin(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
-        this(Name, Sex, owner);
+        this(Name, Sex, Owner);
         size = 1;
         father = Father;
         mother = Mother;
         age = 0;
+        canHaveBabies = isAnAdult();
     }
 
     /***
@@ -90,6 +95,11 @@ public class Penguin extends Animal
                 //sprite = ;
                 break;
         }
+    }
+
+    @Override
+    public String toString(){
+        return "Penguin";
     }
 
 

@@ -35,6 +35,9 @@ class Service implements Runnable
     {
         boolean isStopped = false;
         String message;
+        int clientNumber;
+        counter.incCount();
+        clientNumber = counter.getCount();
 
         try
         {
@@ -44,6 +47,7 @@ class Service implements Runnable
 
             while (!isStopped)
             {
+                System.out.println("Client n°" + clientNumber);
                 // Reading client object
                 Zoo clientZoo = (Zoo)in.readObject();
 

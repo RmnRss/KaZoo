@@ -5,6 +5,7 @@ import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import javafx.geometry.Rectangle2D;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class Bear extends Animal
@@ -22,13 +23,16 @@ public class Bear extends Animal
      * @param Name
      * @param Sex
      */
-    public Bear(String Name, String Sex, Client owner)
+    public Bear(String Name, String Sex, String Owner)
     {
+        babies = new HashMap<>();
         name = Name;
         sex = Sex;
-        owner = owner;
+        owner = Owner;
         averageSize = 15;
         litter = 2;
+        age = 5;
+        canHaveBabies = isAnAdult();
 
         Random r = new Random();
         int mapSide = 500;
@@ -45,13 +49,21 @@ public class Bear extends Animal
      * @param Father
      * @param Mother
      */
-    public Bear(String Name, String Sex, Client owner, Animal Father, Animal Mother)
+    public Bear(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
-        this(Name, Sex, owner);
+        this(Name, Sex, Owner);
         size = 5;
         father = Father;
         mother = Mother;
         age = 0;
+        canHaveBabies = isAnAdult();
+
+        Random r = new Random();
+        int mapSide = 500;
+
+        position = mother.getPosition();
+        velocity = new Velocity(5);
+        target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
 
     }
 
@@ -88,5 +100,10 @@ public class Bear extends Animal
                 //sprite = ;
                 break;
         }
+    }
+
+    @Override
+    public String toString(){
+        return "Bear";
     }
 }

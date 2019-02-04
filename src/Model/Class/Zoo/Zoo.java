@@ -1,10 +1,12 @@
 package Model.Class.Zoo;
 
+import Model.Class.Network.TempReproduction;
+import Model.Class.Player;
 import Model.Class.Zoo.Animals.*;
 import Model.Class.Client;
-import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /***
@@ -14,7 +16,7 @@ public class Zoo implements Serializable
 {
     private HashMap<String, Animal> animalsInZoo = new HashMap<>();
     private List<Obstacle> obstaclesInZoo = new ArrayList<Obstacle>();
-    private HashMap<String, Client> clientsInZoo = new HashMap<>();
+    private HashMap<String, Player> playersInZoo = new HashMap<>();
 
     /***
      * Common constructor implementing obstacles that are used as maps borders.
@@ -58,12 +60,12 @@ public class Zoo implements Serializable
         this.obstaclesInZoo = obstaclesInZoo;
     }
 
-    public HashMap<String, Client> getClientsInZoo() {
-        return clientsInZoo;
+    public HashMap<String, Player> getPlayersInZoo() {
+        return playersInZoo;
     }
 
-    public synchronized void setClientsInZoo(HashMap<String, Client> clientsInZoo) {
-        this.clientsInZoo = clientsInZoo;
+    public synchronized void setPlayersInZoo(HashMap<String, Player> playersInZoo) {
+        this.playersInZoo = playersInZoo;
     }
 
     //-- Methods --//
@@ -73,6 +75,7 @@ public class Zoo implements Serializable
      * @param newAnimal
      */
     public synchronized void addAnimal(Animal newAnimal){
+
         if(this.animalsInZoo.containsKey(newAnimal.getName())){
             //overrides current animal
             this.animalsInZoo.replace(newAnimal.getName(), newAnimal);
@@ -80,6 +83,10 @@ public class Zoo implements Serializable
         else
         {
             this.animalsInZoo.put(newAnimal.getName(), newAnimal);
+        }
+
+        for (String babyName : newAnimal.getBabies().keySet()){
+            addAnimal(newAnimal.getBabies().get(babyName));
         }
 
     }
@@ -93,24 +100,16 @@ public class Zoo implements Serializable
         for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
         {
 
-            System.out.println("Syncing...");
+            //System.out.println("Syncing...");
 
-            if(animalsInZoo.containsKey(animalStr))
-            {
-                animalsInZoo.replace(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
-            }
-            else
-            {
-                animalsInZoo.put(animalStr, otherZoo.getAnimalsInZoo().get(animalStr));
-            }
+            this.addAnimal(otherZoo.getAnimalsInZoo().get(animalStr));
         }
     }
 
     /***
      * Refreshes position of every animal in the zoo
      */
-    public synchronized void moveAnimals()
-    {
+    public synchronized void moveAnimals() throws InterruptedException {
         for (String animalName : this.getAnimalsInZoo().keySet()) {
             Animal animal = this.getAnimalsInZoo().get(animalName);
             if(!animal.isArrived())
@@ -136,33 +135,50 @@ public class Zoo implements Serializable
                     animal.setTarget();
                 }
 
-                i = 0;
-                Boolean isReproductor = false;
+                Boolean hadBabies = false;
 
                 Iterator<Map.Entry<String, Animal>> iterator = this.getAnimalsInZoo().entrySet().iterator();
-                while(iterator.hasNext() && !isReproductor)
+                while(iterator.hasNext() && !hadBabies)
                 {
                     Map.Entry<String, Animal> entry = iterator.next();
-                    if(animal.intersects(this.getAnimalsInZoo().get(entry.getKey()).getPosition()))
-                    {
-                        if(this.getAnimalsInZoo().get(entry.getKey()).getClass().getName().equals(animal.getClass().getName()) && animal.getSex() != this.getAnimalsInZoo().get(entry.getKey()).getSex())
-                        {
-                            isReproductor = true;
-                        }
-                    }
-                    else
-                    {
-                        i++;
-                    }
-                }
-                if(isReproductor)
-                {
-                    animal.setTarget();
-                    System.out.println("Faisons des bébés !");
-                    switch (animal.getClass().getName()){
-                        case "Bear":
-                            
+                    Animal otherAnimal = this.getAnimalsInZoo().get(entry.getKey());
+                    if(otherAnimal != animal && animal.isAnAdult() && animal.getCanHaveBabies()) {
+                        if (animal.intersects(otherAnimal.getPosition())) {
+                            if (otherAnimal.getClass().getName().equals(animal.getClass().getName()) && !animal.getSex().equals(otherAnimal.getSex())) {
+                                if(animal instanceof Bear){
+                                    byte[] array = new byte[10]; // length is bounded by 7
+                                    new Random().nextBytes(array);
+                                    String name = new String(array, Charset.forName("UTF-8"));
+                                    String[] sexes = {"Male", "Female"};
+                                    Random random = new Random();
 
+                                    if (animal.getSex().equals("Female")) {
+                                        System.out.println("Coucou");
+                                        animal.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], animal.getOwner(), otherAnimal, animal));
+                                        System.out.println("nb bébés : " + animal.getBabies().size());
+                                        animal.setCanHaveBabies();
+                                        otherAnimal.setCanHaveBabies();
+                                    }
+
+                                }
+                                else
+                                {
+                                    if(animal instanceof Penguin){
+
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                                animal.setTarget();
+                                otherAnimal.setTarget();
+                                hadBabies = true;
+                                TempReproduction newTempReproduction = new TempReproduction(animal, otherAnimal);
+                                Thread waitingReproduction = new Thread(newTempReproduction);
+                                waitingReproduction.start();
+                            }
+                        }
                     }
                 }
             }
@@ -175,11 +191,11 @@ public class Zoo implements Serializable
 
     /***
      * Adds a specific client to the Zoo
-     * @param newClient
+     * @param newPlayer
      */
-    public synchronized void addClient (Client newClient)
+    public synchronized void addPlayer (Player newPlayer)
     {
-        this.clientsInZoo.put(newClient.getName(), newClient);
+        this.playersInZoo.put(newPlayer.getName(), newPlayer);
     }
 
     /***

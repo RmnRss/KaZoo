@@ -5,6 +5,7 @@ import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import javafx.geometry.Rectangle2D;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class Turtle extends Animal
@@ -22,13 +23,16 @@ public class Turtle extends Animal
      * @param Name
      * @param Sex
      */
-    public Turtle(String Name, String Sex, Client owner)
+    public Turtle(String Name, String Sex, String Owner)
     {
+        babies = new HashMap<>();
         name = Name;
         sex = Sex;
-        owner = owner;
+        owner = Owner;
         averageSize = 3;
         litter = 2;
+        age = 5;
+        canHaveBabies = isAnAdult();
 
         Random r = new Random();
         int mapSide = 500;
@@ -45,13 +49,14 @@ public class Turtle extends Animal
      * @param Father
      * @param Mother
      */
-    public Turtle(String Name, String Sex, Client owner, Animal Father, Animal Mother)
+    public Turtle(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
-        this(Name, Sex, owner);
+        this(Name, Sex, Owner);
         size = 1;
         father = Father;
         mother = Mother;
         age = 0;
+        canHaveBabies = isAnAdult();
 
     }
 
@@ -88,5 +93,10 @@ public class Turtle extends Animal
                 //sprite = ;
                 break;
         }
+    }
+
+    @Override
+    public String toString(){
+        return "Turtle";
     }
 }

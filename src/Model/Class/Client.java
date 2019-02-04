@@ -74,16 +74,17 @@ public class Client extends Application
 
 
         Player michel = new Player("Michel");
-        Penguin pigloo = new Penguin("Pig","Male", this.name);
-        Turtle franklin = new Turtle("Fran", "Male", this.name);
-        Bear winny = new Bear("Win", "Female", this.name);
+        Penguin pigloo = new Penguin("Pig","Male", michel.getName());
+        Turtle franklin = new Turtle("Fran", "Male", michel.getName());
+        Bear winny = new Bear("Win", "Female", michel.getName());
         clientKaZoo.addPlayer(michel);
 
 
-        /*name = "Didier";
-        Penguin pigloo = new Penguin("Pigloo","Male", this.name);
-        Turtle franklin = new Turtle("Franklin", "Male", this.name);
-        Bear winny = new Bear("Winny", "Male", this.name);*/
+        /*Player didier = new Player("Didier");
+        Penguin pigloo = new Penguin("Pigloo","Male", didier.getName());
+        Turtle franklin = new Turtle("Franklin", "Male", didier.getName());
+        Bear winny = new Bear("Winny", "Male", didier.getName());
+        clientKaZoo.addPlayer(didier);*/
 
         /*name = "Thierry";
         Penguin pigloo = new Penguin("vdvqsdcs","Male", this.name);
@@ -93,6 +94,9 @@ public class Client extends Application
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
         clientKaZoo.addAnimal(winny);
+
+        michel.setPlayerAnimals(clientKaZoo.getAnimalsInZoo());
+        //didier.setPlayerAnimals(clientKaZoo.getAnimalsInZoo());
 
         // Base group that contains all our nodes (all scene objects)
         Group root = new Group();
@@ -125,7 +129,6 @@ public class Client extends Application
         outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         inputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-        assignColorToPlayer();
         sendInfoToServer();
 
         // Starting animating images
@@ -144,7 +147,7 @@ public class Client extends Application
 
                     sendInfoToServer();
                     receiveInfoFromServer();
-                    displayAll(gc);
+                    display(clientKaZoo.getAnimalsInZoo(), gc);
 
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -181,6 +184,7 @@ public class Client extends Application
         Zoo zooFromServer = (Zoo) inputStream.readObject();
 
         // Merging Zoo
+        clientKaZoo.syncPlayer(zooFromServer);
         clientKaZoo.syncAnimals(zooFromServer);
     }
 
@@ -200,41 +204,35 @@ public class Client extends Application
     }
 
 
-    public void display(Player thePlayer, HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
+    public void display(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
         for (String animalName : animalsToDisplay.keySet()){
             Animal animal = animalsToDisplay.get(animalName);
+            Player player = clientKaZoo.getPlayersInZoo().get(animal.getOwner());
 
             if (animal instanceof Bear) {
-                animal.render(gc, selectImgBear(thePlayer.getColor()));
-                display(thePlayer, animal.getBabies(), gc);
+                animal.render(gc, selectImgBear(player.getColor()));
+                System.out.println(player.getColor());
+                display(animal.getBabies(), gc);
             } else {
                 if (animal instanceof Penguin) {
-                    animal.render(gc, selectImgPenguin(thePlayer.getColor()));
-                    display(thePlayer, animal.getBabies(), gc);
+                    animal.render(gc, selectImgPenguin(player.getColor()));
+                    display(animal.getBabies(), gc);
                 } else {
                     if (animal instanceof Turtle) {
-                        animal.render(gc, selectImgTurtle(thePlayer.getColor()));
-                        display(thePlayer, animal.getBabies(), gc);
+                        animal.render(gc, selectImgTurtle(player.getColor()));
+                        display(animal.getBabies(), gc);
                     }
                 }
             }
         }
     }
 
-    public void displayAll(GraphicsContext gc){
+    /*public void displayAll(GraphicsContext gc){
         for(String playerName : clientKaZoo.getPlayersInZoo().keySet()){
             Player aPlayer = clientKaZoo.getPlayersInZoo().get(playerName);
             display(aPlayer, aPlayer.getPlayerAnimals(), gc);
         }
-    }
-
-    public void assignColorToPlayer(){
-        int color = 0;
-        for(String playerName : clientKaZoo.getPlayersInZoo().keySet()){
-            clientKaZoo.getPlayersInZoo().get(playerName).setColor(color);
-            color++;
-        }
-    }
+    }*/
 
     public Image selectImgBear(int color){
         return new Image("resources/img/triangle" + color + ".png");

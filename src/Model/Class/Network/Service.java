@@ -1,5 +1,6 @@
 package Model.Class.Network;
 
+import Model.Class.Player;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
@@ -46,11 +47,17 @@ class Service implements Runnable
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
             Zoo clientZoo = (Zoo)in.readObject();
+
             serviceZoo.syncPlayer(clientZoo);
+            System.out.println("Il y a " + serviceZoo.getPlayersInZoo().size() + " players dans le zoo");
+            Player aPlayer = serviceZoo.getPlayersInZoo().get(clientZoo.getPlayersInZoo().keySet().iterator().next());
+            aPlayer.setColor(clientNumber-1);
+            System.out.println("Couleur du client n° " + clientNumber + ": " + aPlayer.getColor());
+
 
             while (!isStopped)
             {
-                System.out.println("Client n°" + clientNumber);
+                //System.out.println("Client n°" + clientNumber);
                 // Reading client object
                 clientZoo = (Zoo)in.readObject();
 
@@ -73,7 +80,8 @@ class Service implements Runnable
         {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
-            System.exit(1);
+            counter.decCount();
+            //System.exit(1);
         }
     }
 }

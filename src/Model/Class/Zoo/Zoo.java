@@ -146,19 +146,7 @@ public class Zoo implements Serializable
                         if (animal.intersects(otherAnimal.getPosition())) {
                             if (otherAnimal.getClass().getName().equals(animal.getClass().getName()) && !animal.getSex().equals(otherAnimal.getSex())) {
                                 if(animal instanceof Bear){
-                                    byte[] array = new byte[10]; // length is bounded by 7
-                                    new Random().nextBytes(array);
-                                    String name = new String(array, Charset.forName("UTF-8"));
-                                    String[] sexes = {"Male", "Female"};
-                                    Random random = new Random();
-
-                                    if (animal.getSex().equals("Female")) {
-                                        System.out.println("Coucou");
-                                        animal.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], animal.getOwner(), otherAnimal, animal));
-                                        System.out.println("nb bébés : " + animal.getBabies().size());
-                                        animal.setCanHaveBabies();
-                                        otherAnimal.setCanHaveBabies();
-                                    }
+                                    animal.haveBabiesWith(otherAnimal);
 
                                 }
                                 else
@@ -195,7 +183,14 @@ public class Zoo implements Serializable
      */
     public synchronized void addPlayer (Player newPlayer)
     {
-        this.playersInZoo.put(newPlayer.getName(), newPlayer);
+        if(this.playersInZoo.containsKey(newPlayer.getName())){
+            //overrides current animal
+            this.playersInZoo.replace(newPlayer.getName(), newPlayer);
+        }
+        else
+        {
+            this.playersInZoo.put(newPlayer.getName(), newPlayer);
+        }
     }
 
     public synchronized void syncPlayer(Zoo otherZoo)

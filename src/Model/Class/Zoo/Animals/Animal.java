@@ -7,6 +7,7 @@ import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Random;
 import javafx.scene.image.Image;
@@ -55,7 +56,7 @@ public abstract class Animal implements Serializable
      * Handles the movements of an animal
      * @param time
      */
-    public void move(double time)
+    public synchronized void move(double time)
     {
         // TO DO : Smooth vertical and horizontal movements
         int deltaPosX, deltaPosY;
@@ -113,7 +114,7 @@ public abstract class Animal implements Serializable
      * @param target
      * @return
      */
-    public boolean intersects(Position target)
+    public synchronized boolean intersects(Position target)
     {
         int range = 20;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
@@ -126,7 +127,7 @@ public abstract class Animal implements Serializable
     /***
      * Sets a Random target fot the animal
      */
-    public void setTarget(){
+    public synchronized void setTarget(){
         int mapSide = 500;
 
         Random r = new Random();
@@ -138,7 +139,7 @@ public abstract class Animal implements Serializable
      * Uses Interects method to know if an animal reached its target
      * @return
      */
-    public Boolean isArrived(){
+    public synchronized Boolean isArrived(){
         return this.intersects(this.target);
     }
 
@@ -150,7 +151,7 @@ public abstract class Animal implements Serializable
         return target;
     }
 
-    public void setTarget(int newX, int newY) {
+    public synchronized void setTarget(int newX, int newY) {
 
         this.target.setX(newX);
         this.target.setY(newY);
@@ -250,5 +251,21 @@ public abstract class Animal implements Serializable
 
     public Boolean isAnAdult(){
         return this.getAge() > 2;
+    }
+
+    public synchronized void haveBabiesWith(Animal otherAnimal){
+        byte[] array = new byte[10]; // length is bounded by 7
+        new Random().nextBytes(array);
+        String name = new String(array, Charset.forName("UTF-8"));
+        String[] sexes = {"Male", "Female"};
+        Random random = new Random();
+
+        if (this.getSex().equals("Female")) {
+            System.out.println("Coucou");
+            this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
+            System.out.println("nb bébés : " + this.getBabies().size());
+            this.setCanHaveBabies();
+            otherAnimal.setCanHaveBabies();
+        }
     }
 }

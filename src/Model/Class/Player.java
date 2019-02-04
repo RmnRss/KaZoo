@@ -20,7 +20,7 @@ public class Player implements Serializable {
         return playerAnimals;
     }
 
-    public void setPlayerAnimals(HashMap<String, Animal> newPlayerAnimals) {
+    public synchronized void setPlayerAnimals(HashMap<String, Animal> newPlayerAnimals) {
         this.playerAnimals = newPlayerAnimals;
     }
 
@@ -36,7 +36,7 @@ public class Player implements Serializable {
         return color;
     }
 
-    public void setColor(int color) {
+    public synchronized void setColor(int color) {
         this.color = color;
     }
 }

@@ -14,7 +14,7 @@ public class MultiClientServer
     public static void main(String[] arguments)
     {
         ClientCounter count = new ClientCounter();
-        Zoo serverZoo = new Zoo("");
+        Zoo serverZoo = new Zoo();
 
         boolean isStopped = false;
 

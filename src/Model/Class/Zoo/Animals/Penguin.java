@@ -67,7 +67,7 @@ public class Penguin extends Animal
      * @param Age
      */
     @Override
-    public void growth(int Age)
+    public synchronized void growth(int Age)
     {
         Random r = new Random();
         switch (Age)

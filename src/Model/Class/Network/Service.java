@@ -16,7 +16,8 @@ class Service implements Runnable
     private ObjectInputStream in;
 
     private ClientCounter counter;
-    private String msg = "null";
+
+    private Player playerInService;
     Zoo serviceZoo;
 
     /***
@@ -51,32 +52,26 @@ class Service implements Runnable
             in = new ObjectInputStream(clientSocket.getInputStream());
 
             // Reading the zoo from the client
-            Zoo clientZoo = (Zoo)in.readObject();
+            playerInService = (Player)in.readObject();
 
             // Updating the player list with the new player
-            serviceZoo.syncPlayer(clientZoo);
-            System.out.println("Il y a " + serviceZoo.getPlayersInZoo().size() + " players dans le zoo");
-            Player newPlayer = serviceZoo.getPlayersInZoo().get(clientZoo.getPlayersInZoo().keySet().iterator().next());
-            newPlayer.setColor(clientNumber-1);
-            System.out.println("Couleur du client n° " + clientNumber + ": " + newPlayer.getColor());
+            serviceZoo.addPlayer(playerInService);
+            playerInService.setColor(clientNumber-1);
 
             // While the client is online
             while (!isStopped)
             {
-                // System.out.println("Client n°" + clientNumber);
-                // Reading client zoo
-                clientZoo = (Zoo)in.readObject();
-
-                // Merging animals of the general serviceZoo with the ones from the client
-                serviceZoo.syncAnimals(clientZoo);
-
-                // Moving animals in the general serviceZoo
-                serviceZoo.moveAnimals();
-
                 // Sending modified Zoo to the client
                 out.reset();
                 out.writeObject(serviceZoo);
                 out.flush();
+
+                // System.out.println("Client n°" + clientNumber);
+                // Reading client zoo
+                playerInService = (Player) in.readObject();
+
+                // Merging animals of the general serviceZoo with the ones from the client
+                serviceZoo.updatePlayer(playerInService);
             }
 
             clientSocket.close();
@@ -100,7 +95,8 @@ class Service implements Runnable
     void closeService(ObjectInputStream in, ObjectOutputStream out, Socket cSocket){
 
         // TODO: Remove animals of the disconnecting player
-        
+        serviceZoo.removePlayer(playerInService);
+
         try {
             out.close();
         } catch (IOException e) {

@@ -72,7 +72,7 @@ public class Bear extends Animal
      * @param Age
      */
     @Override
-    public void growth(int Age)
+    public synchronized void growth(int Age)
     {
         // TODO : Implement method
 

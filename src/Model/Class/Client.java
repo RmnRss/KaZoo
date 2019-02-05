@@ -172,6 +172,10 @@ public class Client extends Application
         Zoo zooFromServer = (Zoo) inputStream.readObject();
 
         clientKaZoo = zooFromServer;
+
+        if(clientKaZoo.getPlayersInZoo().containsKey(currentPlayer.getName())){
+            currentPlayer.setColor(clientKaZoo.getPlayersInZoo().get(currentPlayer.getName()).getColor());
+        }
         // Merging Zoo
         // clientKaZoo.syncPlayer(zooFromServer);
         // clientKaZoo.syncAnimals(zooFromServer);

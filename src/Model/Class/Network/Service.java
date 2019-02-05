@@ -53,10 +53,11 @@ class Service implements Runnable
 
             // Reading the zoo from the client
             playerInService = (Player)in.readObject();
+            playerInService.setColor(clientNumber-1);
 
             // Updating the player list with the new player
             serviceZoo.addPlayer(playerInService);
-            playerInService.setColor(clientNumber-1);
+
 
             // While the client is online
             while (!isStopped)

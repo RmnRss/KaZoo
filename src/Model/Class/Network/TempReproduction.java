@@ -21,7 +21,6 @@ public class TempReproduction implements Runnable
             Thread.sleep(5000);
             mother.setCanHaveBabies(true);
             father.setCanHaveBabies(true);
-            System.out.println("Let's go for doing babies !");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

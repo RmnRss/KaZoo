@@ -20,15 +20,13 @@ public class MultiClientServer
 
         try
         {
-            // Sockets
+            // Creating the server socket
             ServerSocket serverSocket;
             serverSocket = new ServerSocket(PORT);
 
             System.out.println("Attente d'une connexion...");
 
             // While server is online
-            // For every client creates a new sockets
-            // Launches a new thread running a Service
             do
             {
                 // Waits for a connexion to the server socket
@@ -45,6 +43,7 @@ public class MultiClientServer
             } while (!isStopped);
 
             serverSocket.close();
+
         } catch (Exception e)
         {
             System.err.println("Erreur : " + e);

@@ -1,4 +1,4 @@
-package Model.Class;
+package Model.Class.Network;
 
 import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Zoo;

@@ -2,6 +2,9 @@ package Model.Class.Animations;
 
 import java.io.Serializable;
 
+/***
+ * Position of an entity in the game (on the canvas)
+ */
 public class Position implements Serializable {
     private int positionX;
     private int positionY;

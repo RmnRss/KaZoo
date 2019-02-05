@@ -59,7 +59,6 @@ public abstract class Animal implements Serializable
      */
     public synchronized void move(double time)
     {
-        // TO DO : Smooth vertical and horizontal movements
         int deltaPosX, deltaPosY;
         deltaPosX = (int)target.getX() - position.getX();
         deltaPosY = (int)target.getY() - position.getY();
@@ -137,7 +136,7 @@ public abstract class Animal implements Serializable
     }
 
     /***
-     * Uses Interects method to know if an animal reached its target
+     * Uses intersect method to know if an animal reached its target
      * @return
      */
     public synchronized Boolean isArrived(){
@@ -254,7 +253,16 @@ public abstract class Animal implements Serializable
         return this.getAge() > 2;
     }
 
-    public synchronized void haveBabiesWith(Animal otherAnimal) {
+    /***
+     * Makes an animal reproduce with another one on some conditions
+     * Disable reproduction for a while after coitus
+     * Creates a random number of baby animals
+     * @param otherAnimal
+     */
+    public synchronized void haveBabiesWith(Animal otherAnimal)
+    {
+        // TODO : Move this to every class
+        // Initialization of reproduction rules and consequences
         byte[] array = new byte[10];
         new Random().nextBytes(array);
         String name = new String(array, Charset.forName("UTF-8"));

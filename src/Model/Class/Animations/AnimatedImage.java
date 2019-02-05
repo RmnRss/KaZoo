@@ -2,6 +2,9 @@ package Model.Class.Animations;
 
 import javafx.scene.image.Image;
 
+/***
+ * Class to use mulitple images to create an animation
+ */
 public class AnimatedImage {
 
     private Image[] frames;

@@ -2,7 +2,11 @@ package Model.Class.Network;
 
 import Model.Class.Zoo.Animals.Animal;
 
-public class TempReproduction implements Runnable{
+/***
+ * Temporizing thread to avoid multiple coitus at a time
+ */
+public class TempReproduction implements Runnable
+{
     private Animal mother;
     private Animal father;
 

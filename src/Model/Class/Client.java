@@ -7,8 +7,6 @@ import Model.Class.Zoo.Animals.Turtle;
 import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +14,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
@@ -68,10 +65,11 @@ public class Client extends Application
     @Override
     public void start(Stage window) throws Exception
     {
-        // Side of a square inputStream px
-        int mapSide = 500 ;
         window.setTitle("clientKaZoo");
 
+        /*
+        *       DATA SETS
+        */
 
         Player michel = new Player("Michel");
         Penguin pigloo = new Penguin("Pig","Male", michel.getName());
@@ -82,7 +80,7 @@ public class Client extends Application
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
         clientKaZoo.addAnimal(winny);
-        michel.setPlayerAnimals(clientKaZoo.getAnimalsInZoo());
+        michel.setOwnedAnimals(clientKaZoo.getAnimalsInZoo());
 
         /*Player didier = new Player("Didier");
         Penguin pigloo = new Penguin("Pigloo","Male", didier.getName());
@@ -93,14 +91,16 @@ public class Client extends Application
         clientKaZoo.addAnimal(pigloo);
         clientKaZoo.addAnimal(franklin);
         clientKaZoo.addAnimal(winny);
-        didier.setPlayerAnimals(clientKaZoo.getAnimalsInZoo());*/
+        didier.setOwnedAnimals(clientKaZoo.getAnimalsInZoo());*/
 
         /*name = "Thierry";
         Penguin pigloo = new Penguin("vdvqsdcs","Male", this.name);
         Turtle franklin = new Turtle("fefq", "Male", this.name);
         Bear winny = new Bear("erzgrz", "Female", this.name);*/
 
-
+        /*
+        *       JAVAFX INIT
+        */
 
         // Base group that contains all our nodes (all scene objects)
         Group root = new Group();
@@ -110,6 +110,7 @@ public class Client extends Application
         window.setScene(zooScene);
 
         //Creating Canvas
+        int mapSide = 500;
         Canvas zooCanvas = new Canvas(mapSide, mapSide);
 
         //Linking canvas to our root
@@ -118,16 +119,12 @@ public class Client extends Application
         // Object to draw inputStream the Canvas
         GraphicsContext gc = zooCanvas.getGraphicsContext2D();
 
-        // Drawing images
-        // 0,0 (top left corner)
-
-        gc.drawImage(map,0 ,0 );
-
         // Other way to draw
         // gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getX(), pigloo.getSprite().getY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
 
-        // Initializing time
-        final long startNanoTime = System.nanoTime();
+        /*
+         *          NETWORK INITIALISATION
+         */
 
         clientSocket = new Socket("localhost", PORT);
         outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -135,14 +132,16 @@ public class Client extends Application
 
         sendInfoToServer();
 
-        // Starting animating images
-        // Drawing loops
-        // Also used to received and send information
+        final long startNanoTime = System.nanoTime();
+
+        // Main loop used to draw on the canvas avery frame
+        // Also used to update the local zoo of the client from the server
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
-                //TO DO : Make this part dynamic
+                // TODO : Make this part dynamic
+
                 double t = (currentNanoTime - startNanoTime) / 10000000000.0;
                 gc.drawImage(map , 0,0 );
 
@@ -177,7 +176,8 @@ public class Client extends Application
     }
 
     /***
-     * Called to receive information
+     * Called to receive information : Zoo from the server
+     * Then syncs the players and the animals
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -192,22 +192,27 @@ public class Client extends Application
         clientKaZoo.syncAnimals(zooFromServer);
     }
 
-    @FXML
-    public void exitApplication(ActionEvent event) throws IOException {
-        Platform.exit();
-    }
-
+    /***
+     * Called when the window closed
+     * Closes the streams and the client
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public void stop() throws IOException, InterruptedException
     {
         System.out.println("Closing");
 
-        // TO DO:
-        // Send shutdown message to server
         sleep(1000);
+
+        // TODO : close streams and socket
     }
 
-
+    /***
+     * Displays a list of animals of the canvas
+     * @param animalsToDisplay
+     * @param gc
+     */
     public void display(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc){
         for (String animalName : animalsToDisplay.keySet()){
             Animal animal = animalsToDisplay.get(animalName);
@@ -230,14 +235,32 @@ public class Client extends Application
         }
     }
 
+    /***
+     * Allows to select the color of a bear
+     * The color parameters allows to select the right image with the corresponding color
+     * @param color
+     * @return
+     */
     public Image selectImgBear(int color){
         return new Image("resources/img/triangle" + color + ".png");
     }
 
+    /***
+     * Allows to select the color of a penguin
+     * The color parameters allows to select the right image with the corresponding color
+     * @param color
+     * @return
+     */
     public Image selectImgPenguin(int color){
         return new Image("resources/img/rectangle" + color + ".png");
     }
 
+    /***
+     * Allows to select the color of a turtle
+     * The color parameters allows to select the right image with the corresponding color
+     * @param color
+     * @return
+     */
     public Image selectImgTurtle(int color){
         return new Image("resources/img/circle" + color + ".png");
     }

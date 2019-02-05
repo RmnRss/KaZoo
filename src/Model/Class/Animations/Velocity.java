@@ -2,6 +2,9 @@ package Model.Class.Animations;
 
 import java.io.Serializable;
 
+/***
+ * Velocity of an entity in the game
+ */
 public class Velocity implements Serializable {
     private int velocityX;
     private int velocityY;

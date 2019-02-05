@@ -71,7 +71,8 @@ public class Zoo implements Serializable
     //-- Methods --//
 
     /***
-     * Adds a specific animal to the Zoo or overides it, if it already exists
+     * Adds a specific animal to the Zoo or overrides it if it already exists
+     * Also add babies of said animals to the list of the zoo
      * @param newAnimal
      */
     public synchronized void addAnimal(Animal newAnimal){
@@ -99,19 +100,22 @@ public class Zoo implements Serializable
     {
         for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
         {
-
-            //System.out.println("Syncing...");
-
+            //System.out.println("Synchronizing animals...");
             this.addAnimal(otherZoo.getAnimalsInZoo().get(animalStr));
         }
     }
 
     /***
      * Refreshes position of every animal in the zoo
+     * And checks for mate to have coitus with
      */
-    public synchronized void moveAnimals() {
-        for (String animalName : this.getAnimalsInZoo().keySet()) {
+    public synchronized void moveAnimals()
+    {
+        for (String animalName : this.getAnimalsInZoo().keySet())
+        {
             Animal animal = this.getAnimalsInZoo().get(animalName);
+
+            // Movement part
             if(!animal.isArrived())
             {
                 animal.move(0.5);
@@ -135,6 +139,7 @@ public class Zoo implements Serializable
                     animal.setTarget();
                 }
 
+                // Mating part
                 Boolean hadBabies = false;
 
                 Iterator<Map.Entry<String, Animal>> iterator = this.getAnimalsInZoo().entrySet().iterator();
@@ -160,7 +165,8 @@ public class Zoo implements Serializable
     }
 
     /***
-     * Adds a specific client to the Zoo
+     * Adds a specific player to the Zoo if its not already in
+     * Otherwise overrides the player
      * @param newPlayer
      */
     public synchronized void addPlayer (Player newPlayer)
@@ -175,14 +181,16 @@ public class Zoo implements Serializable
         }
     }
 
+    /***
+     * Synchronizes players from different zoo
+     * @param otherZoo
+     */
     public synchronized void syncPlayer(Zoo otherZoo)
     {
-        for(String playerStr : otherZoo.getPlayersInZoo().keySet())
+        for(String playerName : otherZoo.getPlayersInZoo().keySet())
         {
-
-            //System.out.println("Syncing...");
-
-            this.addPlayer(otherZoo.getPlayersInZoo().get(playerStr));
+            //System.out.println("Synchronizing players...");
+            this.addPlayer(otherZoo.getPlayersInZoo().get(playerName));
         }
     }
 

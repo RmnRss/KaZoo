@@ -68,29 +68,25 @@ public class Turtle extends Animal
     public void growth(int Age)
     {
         Random r = new Random();
+
         switch (Age)
         {
-            //Baby
+            // Baby stage
             case 0:
-                //sprite = ;
                 break;
-            //Child
+            // Child stage
             case 2:
                 size = size + r.nextInt(2-(int) size);
-                //sprite = ;
                 break;
-            //Adult
+            // Adult stage
             case 5:
                 size = size + r.nextInt((int)((averageSize+1)-size));
-                //sprite = ;
                 break;
-            //Old
+            // Old stage
             case 15:
-                //sprite = ;
                 break;
-            //Ded
+            // Death
             case 20:
-                //sprite = ;
                 break;
         }
     }

@@ -74,30 +74,27 @@ public class Bear extends Animal
     @Override
     public void growth(int Age)
     {
+        // TODO : Implement method
+
         Random r = new Random();
         switch (Age)
         {
-            //Baby
+            // Baby Stage
             case 0:
-                //sprite = ;
                 break;
-            //Child
+            // Child Stage
             case 2:
                 size = size + r.nextInt(8-(int) size);
-                //sprite = ;
                 break;
-            //Adult
+            // Adult Stage
             case 5:
                 size = size + r.nextInt((int)((averageSize+1)-size));
-                //sprite = ;
                 break;
-            //Old
+            // Old Stage
             case 15:
-                //sprite = ;
                 break;
-            //Ded
+            // Death
             case 20:
-                //sprite = ;
                 break;
         }
     }

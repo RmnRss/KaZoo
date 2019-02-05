@@ -5,12 +5,22 @@ import javafx.geometry.Rectangle2D;
 
 import java.io.Serializable;
 
+/***
+ * Class of an obstacle
+ */
 public class Obstacle implements Serializable
 {
     private Position position;
     private int width;
     private int height;
 
+    /***
+     * Constructor taking position and size on the canvas
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     public Obstacle(int x, int y, int width, int height) {
         position = new Position(x, y);
         this.width = width;

@@ -1,27 +1,35 @@
 package Model.Class;
 
 import Model.Class.Zoo.Animals.Animal;
-import Model.Class.Zoo.Zoo;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
+/***
+ * Player class
+ * The color attribute represents the color chosen to display the animals owned by the player
+ */
 public class Player implements Serializable {
-    private HashMap<String, Animal> playerAnimals;
+
+    private HashMap<String, Animal> ownedAnimals;
     private String name;
     private int color;
 
+    /***
+     * Constructor setting the name of the player
+     * @param name
+     */
     public Player(String name) {
-        playerAnimals = new HashMap<>();
+        ownedAnimals = new HashMap<>();
         this.name = name;
     }
 
-    public HashMap<String, Animal> getPlayerAnimals() {
-        return playerAnimals;
+    public HashMap<String, Animal> getOwnedAnimals() {
+        return ownedAnimals;
     }
 
-    public synchronized void setPlayerAnimals(HashMap<String, Animal> newPlayerAnimals) {
-        this.playerAnimals = newPlayerAnimals;
+    public synchronized void setOwnedAnimals(HashMap<String, Animal> newPlayerAnimals) {
+        this.ownedAnimals = newPlayerAnimals;
     }
 
     public String getName() {

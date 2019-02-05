@@ -3,6 +3,7 @@ package Model.Class.Zoo.Animals;
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
+import Model.Class.Network.TempReproduction;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -116,7 +117,7 @@ public abstract class Animal implements Serializable
      */
     public synchronized boolean intersects(Position target)
     {
-        int range = 20;
+        int range = 50;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
         Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
 
@@ -245,27 +246,47 @@ public abstract class Animal implements Serializable
         return canHaveBabies;
     }
 
-    public synchronized void setCanHaveBabies() {
-        this.canHaveBabies = !canHaveBabies;
+    public synchronized void setCanHaveBabies(Boolean CanOrNotCanHaveBabies) {
+        this.canHaveBabies = CanOrNotCanHaveBabies;
     }
 
     public Boolean isAnAdult(){
         return this.getAge() > 2;
     }
 
-    public synchronized void haveBabiesWith(Animal otherAnimal){
-        byte[] array = new byte[10]; // length is bounded by 7
+    public synchronized void haveBabiesWith(Animal otherAnimal) {
+        byte[] array = new byte[10];
         new Random().nextBytes(array);
         String name = new String(array, Charset.forName("UTF-8"));
         String[] sexes = {"Male", "Female"};
         Random random = new Random();
 
         if (this.getSex().equals("Female")) {
-            System.out.println("Coucou");
-            this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
-            System.out.println("nb bébés : " + this.getBabies().size());
-            this.setCanHaveBabies();
-            otherAnimal.setCanHaveBabies();
+            if (this instanceof Bear) {
+
+                if(this.getCanHaveBabies()) {
+                    System.out.println("Creating baby...");
+                    this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
+                }
+                this.setCanHaveBabies(false);
+                otherAnimal.setCanHaveBabies(false);
+                this.setTarget();
+                otherAnimal.setTarget();
+
+                TempReproduction newTempReproduction = new TempReproduction(this, otherAnimal);
+                Thread waitingReproduction = new Thread(newTempReproduction);
+                waitingReproduction.start();
+            }
+            else
+            {
+                if (this instanceof Penguin) {
+
+                }
+                else {
+
+                }
+            }
         }
+
     }
 }

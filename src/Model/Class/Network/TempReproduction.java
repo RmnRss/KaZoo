@@ -14,11 +14,10 @@ public class TempReproduction implements Runnable{
     @Override
     public void run() {
         try {
-            System.out.println(mother.getCanHaveBabies() + " " + father.getCanHaveBabies());
             Thread.sleep(5000);
-            mother.setCanHaveBabies();
-            father.setCanHaveBabies();
-            System.out.println(mother.getCanHaveBabies() + " " + father.getCanHaveBabies());
+            mother.setCanHaveBabies(true);
+            father.setCanHaveBabies(true);
+            System.out.println("Let's go for doing babies !");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

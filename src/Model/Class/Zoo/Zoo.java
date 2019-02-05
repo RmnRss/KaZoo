@@ -109,7 +109,7 @@ public class Zoo implements Serializable
     /***
      * Refreshes position of every animal in the zoo
      */
-    public synchronized void moveAnimals() throws InterruptedException {
+    public synchronized void moveAnimals() {
         for (String animalName : this.getAnimalsInZoo().keySet()) {
             Animal animal = this.getAnimalsInZoo().get(animalName);
             if(!animal.isArrived())
@@ -145,26 +145,8 @@ public class Zoo implements Serializable
                     if(otherAnimal != animal && animal.isAnAdult() && animal.getCanHaveBabies()) {
                         if (animal.intersects(otherAnimal.getPosition())) {
                             if (otherAnimal.getClass().getName().equals(animal.getClass().getName()) && !animal.getSex().equals(otherAnimal.getSex())) {
-                                if(animal instanceof Bear){
-                                    animal.haveBabiesWith(otherAnimal);
-
-                                }
-                                else
-                                {
-                                    if(animal instanceof Penguin){
-
-                                    }
-                                    else
-                                    {
-
-                                    }
-                                }
-                                animal.setTarget();
-                                otherAnimal.setTarget();
+                                animal.haveBabiesWith(otherAnimal);
                                 hadBabies = true;
-                                TempReproduction newTempReproduction = new TempReproduction(animal, otherAnimal);
-                                Thread waitingReproduction = new Thread(newTempReproduction);
-                                waitingReproduction.start();
                             }
                         }
                     }

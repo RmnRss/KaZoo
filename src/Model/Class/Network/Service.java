@@ -70,6 +70,7 @@ class Service implements Runnable
                 // System.out.println("Client n°" + clientNumber);
                 // Reading client zoo
                 playerInService = (Player) in.readObject();
+                System.out.println("Couleur de " + playerInService.getName() + " : " + playerInService.getColor());
 
                 // Merging animals of the general serviceZoo with the ones from the client
                 serviceZoo.updatePlayer(playerInService);

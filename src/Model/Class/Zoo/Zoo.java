@@ -69,7 +69,7 @@ public class Zoo implements Serializable
      */
     public synchronized void updatePlayer (Player newPlayer)
     {
-        System.out.println("Updating player...");
+        //System.out.println("Updating player...");
 
         if(this.playersInZoo.containsKey(newPlayer.getName()))
         {

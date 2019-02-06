@@ -1,6 +1,6 @@
 package Model.Class.Network;
 
-import Model.Class.Player;
+import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Zoo;
 
 import java.net.*;
@@ -51,13 +51,14 @@ class Service implements Runnable
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
 
-            // Reading the zoo from the client
+            // Reading the player object from the client
             playerInService = (Player)in.readObject();
             playerInService.setColor(clientNumber-1);
 
             // Updating the player list with the new player
             serviceZoo.addPlayer(playerInService);
 
+            System.out.println(playerInService.getName() + " is now online");
 
             // While the client is online
             while (!isStopped)
@@ -67,22 +68,19 @@ class Service implements Runnable
                 out.writeObject(serviceZoo);
                 out.flush();
 
-                // System.out.println("Client n°" + clientNumber);
                 // Reading client zoo
                 playerInService = (Player) in.readObject();
 
-                System.out.println(playerInService.getName() + " a " + playerInService.getAllAnimals().size());
                 // Merging animals of the general serviceZoo with the ones from the client
                 serviceZoo.updatePlayer(playerInService);
             }
-
-            clientSocket.close();
-            System.out.println("Closed");
 
         } catch (Exception e)
         {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
+
+            // Removes a player from the zoo and the count
             counter.decCount();
             closeService(in, out, clientSocket);
         }
@@ -90,13 +88,15 @@ class Service implements Runnable
 
     /***
      * Closes the different streams and socket of the service
+     * Called when an excpetion is caught by the service
      * @param in
      * @param out
      * @param cSocket
      */
-    void closeService(ObjectInputStream in, ObjectOutputStream out, Socket cSocket){
+    void closeService(ObjectInputStream in, ObjectOutputStream out, Socket cSocket)
+    {
+        System.out.println(playerInService.getName() + " disconnecting");
 
-        // TODO: Remove animals of the disconnecting player
         serviceZoo.removePlayer(playerInService);
 
         try {

@@ -1,13 +1,9 @@
 package Model.Class.Zoo.Animals;
 
-import Model.Class.Animations.Position;
-import Model.Class.Animations.Velocity;
-import Model.Class.Client;
-import Model.Class.Network.TempReproduction;
-import Model.Class.Player;
-import javafx.geometry.Rectangle2D;
+import Model.Class.Zoo.Entity.Position;
+import Model.Class.Zoo.Entity.Velocity;
+import Model.Class.Zoo.Player;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -63,28 +59,7 @@ public class Turtle extends Animal
     @Override
     public synchronized void growth(int Age)
     {
-        Random r = new Random();
-
-        switch (Age)
-        {
-            // Baby stage
-            case 0:
-                break;
-            // Child stage
-            case 2:
-                size = size + r.nextInt(2-(int) size);
-                break;
-            // Adult stage
-            case 5:
-                size = size + r.nextInt((int)((averageSize+1)-size));
-                break;
-            // Old stage
-            case 15:
-                break;
-            // Death
-            case 20:
-                break;
-        }
+        // TODO : Implement method
     }
 
     @Override

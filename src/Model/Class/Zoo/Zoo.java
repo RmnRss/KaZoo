@@ -1,7 +1,7 @@
 package Model.Class.Zoo;
 
-import Model.Class.Player;
 import Model.Class.Zoo.Animals.*;
+import Model.Class.Zoo.Entity.Obstacle;
 
 import java.io.Serializable;
 import java.util.*;
@@ -60,8 +60,6 @@ public class Zoo implements Serializable
 
     //-- Methods --//
 
-
-
     /***
      * Adds a specific player to the Zoo if its not already in
      * Otherwise overrides the player
@@ -102,30 +100,19 @@ public class Zoo implements Serializable
         }
     }
 
-
-    public boolean playerIsOnline(String playerName){
-        return this.playersInZoo.containsKey(playerName);
-    }
-
     /***
-     * Adds a specific obstacle to the Zoo
-     * @param newObstacle
+     * Returns a list containing all animals in the zoo
      */
-    public synchronized void addObstacle (Obstacle newObstacle)
+    public HashMap<String, Animal> getAnimalsInZoo()
     {
-        this.obstaclesInZoo.add(newObstacle);
-    }
-
-    /***
-     * Select all animals in zoo
-     */
-    public HashMap<String, Animal> getAnimalsInZoo(){
         HashMap<String, Animal> allAnimals = new HashMap<>();
+
         for (String playerName : this.getPlayersInZoo().keySet()) {
             for (String animalName : this.getPlayersInZoo().get(playerName).getPlayerAnimals().keySet()){
                 allAnimals.put(animalName, this.getPlayersInZoo().get(playerName).getPlayerAnimals().get(animalName));
             }
         }
+
         return allAnimals;
     }
 

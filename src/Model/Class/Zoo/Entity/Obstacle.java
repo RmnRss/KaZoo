@@ -1,4 +1,4 @@
-package Model.Class.Zoo;
+package Model.Class.Zoo.Entity;
 
 import Model.Class.Zoo.Entity.Position;
 

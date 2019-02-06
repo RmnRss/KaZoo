@@ -1,7 +1,7 @@
-package Model.Class;
+package Model.Class.Zoo;
 
 import Model.Class.Zoo.Animals.Animal;
-import Model.Class.Zoo.Obstacle;
+import Model.Class.Zoo.Entity.Obstacle;
 
 import java.io.Serializable;
 import java.util.HashMap;

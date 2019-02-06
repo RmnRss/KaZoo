@@ -1,5 +1,6 @@
-package Model.Class;
+package Model.Class.Network;
 
+import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Animals.Penguin;
@@ -64,15 +65,15 @@ public class Client extends Application
          *       Comments and uncomment to add a specific player and its animal to the server
          */
 
-        /*currentPlayer = new Player("Michel");
+        currentPlayer = new Player("Michel");
         Penguin pigloo = new Penguin("Loulou","Male", currentPlayer, "adult");
         Turtle franklin = new Turtle("Foufou", "Male", currentPlayer, "adult");
-        Bear winny = new Bear("Yvette", "Female", currentPlayer, "adult");*/
+        Bear winny = new Bear("Yvette", "Female", currentPlayer, "adult");
 
-        currentPlayer = new Player("Didier");
+        /*currentPlayer = new Player("Didier");
         Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer, "adult");
         Turtle franklin = new Turtle("Franklin", "Male", currentPlayer, "adult");
-        Bear winny = new Bear("Winny", "Male", currentPlayer, "adult");
+        Bear winny = new Bear("Winny", "Male", currentPlayer, "adult");*/
 
         clientKaZoo.addPlayer(currentPlayer);
         currentPlayer.addOrUpdateAnimal(pigloo);

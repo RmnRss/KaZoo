@@ -1,13 +1,9 @@
 package Model.Class.Zoo.Animals;
 
-import Model.Class.Animations.Position;
-import Model.Class.Animations.Velocity;
-import Model.Class.Client;
-import Model.Class.Network.TempReproduction;
-import Model.Class.Player;
-import javafx.geometry.Rectangle2D;
+import Model.Class.Zoo.Entity.Position;
+import Model.Class.Zoo.Entity.Velocity;
+import Model.Class.Zoo.Player;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -65,28 +61,6 @@ public class Bear extends Animal
     public synchronized void growth(int Age)
     {
         // TODO : Implement method
-
-        Random r = new Random();
-        switch (Age)
-        {
-            // Baby Stage
-            case 0:
-                break;
-            // Child Stage
-            case 2:
-                size = size + r.nextInt(8-(int) size);
-                break;
-            // Adult Stage
-            case 5:
-                size = size + r.nextInt((int)((averageSize+1)-size));
-                break;
-            // Old Stage
-            case 15:
-                break;
-            // Death
-            case 20:
-                break;
-        }
     }
 
     @Override

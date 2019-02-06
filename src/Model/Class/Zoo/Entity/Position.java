@@ -1,4 +1,4 @@
-package Model.Class.Animations;
+package Model.Class.Zoo.Entity;
 
 import java.io.Serializable;
 

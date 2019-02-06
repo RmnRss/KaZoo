@@ -2,7 +2,6 @@ package Model.Class.Zoo.Animals;
 
 import Model.Class.Zoo.Entity.Position;
 import Model.Class.Zoo.Entity.Velocity;
-import Model.Class.Network.TempReproduction;
 import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Entity.Obstacle;
 import javafx.scene.canvas.GraphicsContext;

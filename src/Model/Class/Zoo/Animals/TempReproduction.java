@@ -1,6 +1,4 @@
-package Model.Class.Network;
-
-import Model.Class.Zoo.Animals.Animal;
+package Model.Class.Zoo.Animals;
 
 /***
  * Temporizing thread to avoid multiple coitus at a time

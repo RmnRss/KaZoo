@@ -107,9 +107,6 @@ public class Client extends Application
         // Object to draw inputStream the Canvas
         GraphicsContext gc = zooCanvas.getGraphicsContext2D();
 
-        // Other way to draw
-        //gc.drawImage(pigloo.getSprite().getImage(), 0,0 , pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight(), pigloo.getSprite().getX(), pigloo.getSprite().getY(), pigloo.getSprite().getWidth(), pigloo.getSprite().getHeight());
-
         /*
          *          NETWORK INITIALISATION
          */
@@ -135,6 +132,7 @@ public class Client extends Application
                     receivedZooFromServer();
                     display(gc);
                     currentPlayer.moveAnimals(clientKaZoo.getObstaclesInZoo(), clientKaZoo.getAnimalsInZoo());
+                    displayObstacles(gc);
                     sendPlayerToServer();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -225,6 +223,17 @@ public class Client extends Application
                 }
             }
         }
+    }
+
+    /***
+     * Displays a list of animals of the canvas
+     * @param gc
+     */
+    public void displayObstacles(GraphicsContext gc)
+    {
+        gc.drawImage(new Image("resources/img/lightTree.png"), 102, 289);
+        gc.drawImage(new Image("resources/img/darkTree.png"), 332, 32);
+        gc.drawImage(new Image("resources/img/rocks.png"), 410, 283);
     }
 
     /***

@@ -24,8 +24,8 @@ public class Zoo implements Serializable
         Obstacle bottomBorder = new Obstacle(-1, 501, 501, 1);
         Obstacle leftBorder = new Obstacle(-1, -1, 1, 501);
 
-        Obstacle bottomLeftTree = new Obstacle(102, 290, 80, 115);
-        Obstacle topRightTree = new Obstacle(330, 25, 80, 115);
+        Obstacle bottomLeftTree = new Obstacle(133, 332, 20, 80);
+        Obstacle topRightTree = new Obstacle(361, 70, 20, 80);
 
         Obstacle middleRightRocks = new Obstacle(405, 283, 80, 50);
 

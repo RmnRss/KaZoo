@@ -1,7 +1,6 @@
 package Model.Class.Zoo;
 
-import Model.Class.Animations.Position;
-import javafx.geometry.Rectangle2D;
+import Model.Class.Zoo.Entity.Position;
 
 import java.io.Serializable;
 

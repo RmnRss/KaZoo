@@ -51,7 +51,7 @@ public class Player implements Serializable
     }
 
     /***
-     * Adds a specific animal to the Zoo or overrides it
+     * Adds a specific animal to the player or overrides it
      * Only added if its owner is a connected player
      * Also add babies of said animals to the list of the zoo
      * @param newAnimal
@@ -72,9 +72,7 @@ public class Player implements Serializable
     }
 
     /***
-     * Adds a specific animal to the Zoo or overrides it
-     * Only added if its owner is a connected player
-     * Also add babies of said animals to the list of the zoo
+     * Add or updates babies of an animal
      * @param newAnimal
      */
     public synchronized void addOrUpdateBabies(Animal newAnimal)
@@ -144,7 +142,12 @@ public class Player implements Serializable
         }
     }
 
-    public HashMap<String, Animal> getAllAnimals(){
+    /***
+     * returns a list containing all animals owned by a player
+     * @return
+     */
+    public HashMap<String, Animal> getAllAnimals()
+    {
         HashMap<String, Animal> allAnimals = new HashMap<>();
         for (String animalName : this.playerAnimals.keySet()) {
             allAnimals.put(animalName, this.playerAnimals.get(animalName));

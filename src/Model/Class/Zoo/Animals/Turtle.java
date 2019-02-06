@@ -38,7 +38,7 @@ public class Turtle extends Animal
         int mapSide = 500;
 
         position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
-        velocity = new Velocity(5);
+        velocity = new Velocity(1);
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
     }
 
@@ -56,8 +56,8 @@ public class Turtle extends Animal
         father = Father;
         mother = Mother;
         age = 0;
-        canHaveBabies = isAnAdult();
 
+        position = mother.getPosition();
     }
 
     /***

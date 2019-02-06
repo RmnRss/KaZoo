@@ -59,40 +59,40 @@ public abstract class Animal implements Serializable
      */
     public synchronized void move(double time)
     {
-        int deltaPosX, deltaPosY;
-        deltaPosX = (int)target.getX() - position.getX();
-        deltaPosY = (int)target.getY() - position.getY();
+        double deltaPosX, deltaPosY;
+        deltaPosX = target.getX() - position.getX();
+        deltaPosY = target.getY() - position.getY();
 
         //Horizontal movement
-        if(deltaPosX == 0)
+        if(deltaPosX >= -1 && deltaPosX <= 1)
         {
             // X position stays the same
         }else{
             if(deltaPosX > 0){
                 // Move to the right
-                position.setX((int)(position.getX() + (velocity.getVelocityX() * time)));
+                position.setX((position.getX() + (velocity.getVelocityX() * time)));
             }
             else
             {
                 // Move to the left
-                position.setX((int)(position.getX() - (velocity.getVelocityX() * time)));
+                position.setX((position.getX() - (velocity.getVelocityX() * time)));
             }
         }
 
 
-        if(deltaPosY == 0)
+        if(deltaPosY >= -1 && deltaPosY <= 1)
         {
             // Y position stays the same
         }else{
 
             if(deltaPosY > 0){
                 // Move downwards
-                position.setY((int)(position.getY() + (velocity.getVelocityY() * time)));
+                position.setY((position.getY() + (velocity.getVelocityY() * time)));
             }
             else
             {
                 // Move upwards
-                position.setY((int)(position.getY() - (velocity.getVelocityY() * time)));
+                position.setY((position.getY() - (velocity.getVelocityY() * time)));
             }
         }
 
@@ -116,7 +116,7 @@ public abstract class Animal implements Serializable
      */
     public synchronized boolean intersects(Position target)
     {
-        int range = 50;
+        int range = 5;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
         Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
 
@@ -151,7 +151,7 @@ public abstract class Animal implements Serializable
         return target;
     }
 
-    public synchronized void setTarget(int newX, int newY) {
+    public synchronized void setTarget(double newX, double newY) {
 
         this.target.setX(newX);
         this.target.setY(newY);

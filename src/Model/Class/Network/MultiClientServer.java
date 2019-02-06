@@ -48,7 +48,7 @@ public class MultiClientServer
         {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
-            System.exit(1);
+            //System.exit(1);
         }
     }
 }

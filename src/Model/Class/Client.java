@@ -153,7 +153,7 @@ public class Client extends Application
      */
     public void sendPlayerToServer() throws IOException
     {
-        System.out.println("Sending player...");
+        //System.out.println("Sending player...");
         outputStream.reset();
         outputStream.writeObject(currentPlayer);
         outputStream.flush();
@@ -167,7 +167,7 @@ public class Client extends Application
      */
     public void receivedZooFromServer() throws IOException, ClassNotFoundException
     {
-        System.out.println("Receiving...");
+        //System.out.println("Receiving...");
         // Receiving Zoos
         Zoo zooFromServer = (Zoo) inputStream.readObject();
 

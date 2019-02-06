@@ -56,14 +56,8 @@ public class Bear extends Animal
         father = Father;
         mother = Mother;
         age = 0;
-        canHaveBabies = isAnAdult();
-
-        Random r = new Random();
-        int mapSide = 500;
 
         position = mother.getPosition();
-        velocity = new Velocity(5);
-        target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
 
     }
 

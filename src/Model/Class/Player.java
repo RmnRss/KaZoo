@@ -1,6 +1,7 @@
 package Model.Class;
 
 import Model.Class.Zoo.Animals.Animal;
+import Model.Class.Zoo.Animals.Turtle;
 import Model.Class.Zoo.Obstacle;
 import Model.Class.Zoo.Zoo;
 
@@ -103,6 +104,10 @@ public class Player implements Serializable
             // Movement part
             if(!animal.isArrived())
             {
+                if(animal instanceof Turtle){
+                    System.out.println("Position : X = " + animal.getPosition().getX() + ", Y = " + animal.getPosition().getY());
+                    System.out.println("Target : X = " + animal.getTarget().getX() + ", Y = " + animal.getTarget().getY());
+                }
                 animal.move(0.5);
 
                 int i = 0;
@@ -144,7 +149,10 @@ public class Player implements Serializable
             }
             else
             {
+                System.out.println(animal.getName() + " is arrived");
                 animal.setTarget();
+
+
             }
         }
 

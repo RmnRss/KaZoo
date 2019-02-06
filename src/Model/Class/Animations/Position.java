@@ -6,31 +6,31 @@ import java.io.Serializable;
  * Position of an entity in the game (on the canvas)
  */
 public class Position implements Serializable {
-    private int positionX;
-    private int positionY;
+    private double positionX;
+    private double positionY;
 
-    public Position(int positionX, int positionY) {
+    public Position(double positionX, double positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
     }
 
-    public int getX() {
+    public double getX() {
         return positionX;
     }
 
-    public void setX(int positionX) {
+    public void setX(double positionX) {
         this.positionX = positionX;
     }
 
-    public int getY() {
+    public double getY() {
         return positionY;
     }
 
-    public void setY(int positionY) {
+    public void setY(double positionY) {
         this.positionY = positionY;
     }
 
-    public void setPosition(int x, int y)
+    public void setPosition(double x, double y)
     {
         positionX = x;
         positionY = y;

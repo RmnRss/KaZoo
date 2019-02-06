@@ -6,37 +6,37 @@ import java.io.Serializable;
  * Velocity of an entity in the game
  */
 public class Velocity implements Serializable {
-    private int velocityX;
-    private int velocityY;
+    private double velocityX;
+    private double velocityY;
 
-    public Velocity(int velocity) {
+    public Velocity(double velocity) {
         this.velocityX = velocity;
         this.velocityY = velocity;
     }
 
-    public int getVelocityX() {
+    public double getVelocityX() {
         return velocityX;
     }
 
-    public void setVelocityX(int velocityX) {
+    public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
     }
 
-    public int getVelocityY() {
+    public double getVelocityY() {
         return velocityY;
     }
 
-    public void setVelocityY(int velocityY) {
+    public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 
-    public void setVelocity(int newVelocity)
+    public void setVelocity(double newVelocity)
     {
         velocityX = newVelocity;
         velocityY = newVelocity;
     }
 
-    public void addVelocity(int velocityToAdd)
+    public void addVelocity(double velocityToAdd)
     {
         velocityX += velocityToAdd;
         velocityY += velocityToAdd;

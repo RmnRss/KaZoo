@@ -4,6 +4,7 @@ import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import Model.Class.Network.TempReproduction;
+import Model.Class.Zoo.Obstacle;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -116,9 +117,26 @@ public abstract class Animal implements Serializable
      */
     public synchronized boolean intersects(Position target)
     {
-        int range = 5;
+        double range = 5;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
         Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
+
+        if(inX && inY) return true;
+        else return false;
+    }
+
+    /***
+     * Checks if the position of an animal is close to the obstacle
+     * @param anObstacle
+     * @return
+     */
+    public synchronized boolean hitObstacle(Obstacle anObstacle)
+    {
+        double width = anObstacle.getWidth();
+        double height = anObstacle.getHeight();
+
+        Boolean inX = position.getX() > anObstacle.getPosition().getX() && position.getX() < (anObstacle.getPosition().getX() + width)  || position.getX() + size > anObstacle.getPosition().getX() && position.getX() < (anObstacle.getPosition().getX() + width);
+        Boolean inY = position.getY() > anObstacle.getPosition().getY() && position.getY() < (anObstacle.getPosition().getY() + height) || position.getY() + size > anObstacle.getPosition().getY() && position.getY() < (anObstacle.getPosition().getY() + height);
 
         if(inX && inY) return true;
         else return false;

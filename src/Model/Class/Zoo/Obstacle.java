@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class Obstacle implements Serializable
 {
     private Position position;
-    private int width;
-    private int height;
+    private double width;
+    private double height;
 
     /***
      * Constructor taking position and size on the canvas
@@ -21,7 +21,7 @@ public class Obstacle implements Serializable
      * @param width
      * @param height
      */
-    public Obstacle(int x, int y, int width, int height) {
+    public Obstacle(double x, double y, double width, double height){
         position = new Position(x, y);
         this.width = width;
         this.height = height;
@@ -35,7 +35,7 @@ public class Obstacle implements Serializable
         this.position = position;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
@@ -43,7 +43,7 @@ public class Obstacle implements Serializable
         this.width = width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 

@@ -92,6 +92,17 @@ public class Player implements Serializable
     }
 
     /***
+     * Removes an animal owned by a player from the list of animals
+     * @param animalName
+     */
+    public synchronized void removeAnimal(String animalName){
+        if(this.playerAnimals.containsKey(animalName))
+        {
+            this.playerAnimals.remove(animalName);
+        }
+    }
+
+    /***
      * Refreshes position of every animal in the zoo
      * And checks for mate to have coitus with
      */
@@ -104,27 +115,24 @@ public class Player implements Serializable
             // Movement part
             if(!animal.isArrived())
             {
-                if(animal instanceof Turtle){
-                    System.out.println("Position : X = " + animal.getPosition().getX() + ", Y = " + animal.getPosition().getY());
-                    System.out.println("Target : X = " + animal.getTarget().getX() + ", Y = " + animal.getTarget().getY());
-                }
                 animal.move(0.5);
 
                 int i = 0;
-                Boolean isObstacle = false;
+                Boolean collision = false;
 
-                while(i < obstaclesInZoo.size() && !isObstacle)
+                while(i < obstaclesInZoo.size() && !collision)
                 {
-                    if(animal.intersects(obstaclesInZoo.get(i).getPosition()))
+                    if(animal.hitObstacle(obstaclesInZoo.get(i)))
                     {
-                        isObstacle = true;
+                        System.out.println("BOUM");
+                        collision = true;
                     }
                     else
                     {
                         i++;
                     }
                 }
-                if(isObstacle)
+                if(collision)
                 {
                     animal.setTarget();
                 }
@@ -149,10 +157,7 @@ public class Player implements Serializable
             }
             else
             {
-                System.out.println(animal.getName() + " is arrived");
                 animal.setTarget();
-
-
             }
         }
 

@@ -29,6 +29,7 @@ public class Turtle extends Animal
         name = Name;
         sex = Sex;
         owner = Owner;
+        size = 30;
         averageSize = 3;
         litter = 2;
         age = 5;
@@ -52,7 +53,7 @@ public class Turtle extends Animal
     public Turtle(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
         this(Name, Sex, Owner);
-        size = 1;
+        size = 15;
         father = Father;
         mother = Mother;
         age = 0;

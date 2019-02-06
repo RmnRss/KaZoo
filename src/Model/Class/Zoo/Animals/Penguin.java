@@ -32,6 +32,7 @@ public class Penguin extends Animal
         name = Name;
         sex = Sex;
         owner = Owner;
+        size = 30;
         averageSize = 5;
         litter = 1;
         age = 5;
@@ -55,7 +56,7 @@ public class Penguin extends Animal
     public Penguin(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
         this(Name, Sex, Owner);
-        size = 1;
+        size = 15;
         father = Father;
         mother = Mother;
         age = 0;

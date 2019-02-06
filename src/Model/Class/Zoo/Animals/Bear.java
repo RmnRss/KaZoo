@@ -29,6 +29,7 @@ public class Bear extends Animal
         name = Name;
         sex = Sex;
         owner = Owner;
+        size = 30;
         averageSize = 15;
         litter = 2;
         age = 5;
@@ -52,7 +53,7 @@ public class Bear extends Animal
     public Bear(String Name, String Sex, String Owner, Animal Father, Animal Mother)
     {
         this(Name, Sex, Owner);
-        size = 5;
+        size = 15;
         father = Father;
         mother = Mother;
         age = 0;

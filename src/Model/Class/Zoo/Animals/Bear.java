@@ -43,6 +43,8 @@ public class Bear extends Animal
         position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
         velocity = new Velocity(5);
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
+
+        imageUrl = "resources/img/triangle";
     }
 
     /***
@@ -62,6 +64,7 @@ public class Bear extends Animal
 
         position = mother.getPosition();
 
+        imageUrl = "resources/img/btriangle";
     }
 
     /***

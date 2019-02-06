@@ -27,6 +27,8 @@ public abstract class Animal implements Serializable
 
     protected String owner;
 
+    protected String imageUrl;
+
     protected String sex;
     protected float averageSize;
     protected float size;
@@ -300,5 +302,12 @@ public abstract class Animal implements Serializable
         }
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
 }

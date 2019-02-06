@@ -118,6 +118,7 @@ public class Zoo implements Serializable
     public boolean playerIsOnline(String playerName){
         return this.playersInZoo.containsKey(playerName);
     }
+
     /***
      * Adds a specific obstacle to the Zoo
      * @param newObstacle

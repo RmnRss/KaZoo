@@ -68,18 +68,18 @@ public class Client extends Application
         window.setTitle("clientKaZoo");
 
         /*
-        *       DATA SETS
-        */
+         *       DATA SETS
+         */
 
-        currentPlayer = new Player("Michel");
+        /*currentPlayer = new Player("Michel");
         Penguin pigloo = new Penguin("Loulou","Male", currentPlayer.getName());
         Turtle franklin = new Turtle("Foufou", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Yvette", "Female", currentPlayer.getName());
+        Bear winny = new Bear("Yvette", "Female", currentPlayer.getName());*/
 
-        /*currentPlayer = new Player("Didier");
+        currentPlayer = new Player("Didier");
         Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer.getName());
         Turtle franklin = new Turtle("Franklin", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Winny", "Male", currentPlayer.getName());*/
+        Bear winny = new Bear("Winny", "Male", currentPlayer.getName());
 
         clientKaZoo.addPlayer(currentPlayer);
         currentPlayer.addOrUpdateAnimal(pigloo);
@@ -87,8 +87,8 @@ public class Client extends Application
         currentPlayer.addOrUpdateAnimal(winny);
 
         /*
-        *       JAVAFX INIT
-        */
+         *       JAVAFX INIT
+         */
 
         // Base group that contains all our nodes (all scene objects)
         Group root = new Group();
@@ -208,20 +208,8 @@ public class Client extends Application
             Animal animal = animalsToDisplay.get(animalName);
             Player player = clientKaZoo.getPlayersInZoo().get(animal.getOwner());
 
-            if (animal instanceof Bear) {
-                animal.render(gc, selectImgBear(player.getColor()));
-                displayAnimals(animal.getBabies(), gc);
-            } else {
-                if (animal instanceof Penguin) {
-                    animal.render(gc, selectImgPenguin(player.getColor()));
-                    displayAnimals(animal.getBabies(), gc);
-                } else {
-                    if (animal instanceof Turtle) {
-                        animal.render(gc, selectImgTurtle(player.getColor()));
-                        displayAnimals(animal.getBabies(), gc);
-                    }
-                }
-            }
+            animal.render(gc, selectImgColor(animal, player.getColor()));
+            displayAnimals(animal.getBabies(), gc);
         }
     }
 
@@ -249,32 +237,12 @@ public class Client extends Application
     }
 
     /***
-     * Allows to select the color of a bear
+     * Allows to select the color of an animal
      * The color parameters allows to select the right image with the corresponding color
      * @param color
      * @return
      */
-    public Image selectImgBear(int color){
-        return new Image("resources/img/triangle" + color + ".png");
-    }
-
-    /***
-     * Allows to select the color of a penguin
-     * The color parameters allows to select the right image with the corresponding color
-     * @param color
-     * @return
-     */
-    public Image selectImgPenguin(int color){
-        return new Image("resources/img/rectangle" + color + ".png");
-    }
-
-    /***
-     * Allows to select the color of a turtle
-     * The color parameters allows to select the right image with the corresponding color
-     * @param color
-     * @return
-     */
-    public Image selectImgTurtle(int color){
-        return new Image("resources/img/circle" + color + ".png");
+    public Image selectImgColor(Animal anAnimal , int color){
+        return new Image(anAnimal.getImageUrl() + color + ".png");
     }
 }

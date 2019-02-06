@@ -43,6 +43,8 @@ public class Turtle extends Animal
         position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
         velocity = new Velocity(1);
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
+
+        imageUrl = "resources/img/circle";
     }
 
     /***
@@ -61,6 +63,8 @@ public class Turtle extends Animal
         age = 0;
 
         position = mother.getPosition();
+
+        imageUrl = "resources/img/bcircle";
     }
 
     /***

@@ -46,6 +46,8 @@ public class Penguin extends Animal
         position = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
         velocity = new Velocity(3);
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
+
+        imageUrl = "resources/img/rectangle";
     }
 
     /***
@@ -65,6 +67,8 @@ public class Penguin extends Animal
         canHaveBabies = isAnAdult();
 
         position = mother.getPosition();
+
+        imageUrl = "resources/img/brectangle";
     }
 
     /***

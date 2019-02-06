@@ -18,7 +18,7 @@ public class TempReproduction implements Runnable
     @Override
     public void run() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
             mother.setCanHaveBabies(true);
             father.setCanHaveBabies(true);
         } catch (InterruptedException e) {

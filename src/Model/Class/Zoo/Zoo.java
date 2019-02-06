@@ -83,7 +83,7 @@ public class Zoo implements Serializable
 
         if(this.playersInZoo.containsKey(newPlayer.getName()))
         {
-            //overrides current animal
+            //overrides current animals
             this.playersInZoo.replace(newPlayer.getName(), newPlayer);
         }
     }
@@ -102,18 +102,6 @@ public class Zoo implements Serializable
         }
     }
 
-    /***
-     * Synchronizes players from different zoo
-     * @param otherZoo
-     */
-    public synchronized void syncPlayer(Zoo otherZoo)
-    {
-        for(String playerName : otherZoo.getPlayersInZoo().keySet())
-        {
-            //System.out.println("Synchronizing players...");
-            this.addPlayer(otherZoo.getPlayersInZoo().get(playerName));
-        }
-    }
 
     public boolean playerIsOnline(String playerName){
         return this.playersInZoo.containsKey(playerName);
@@ -126,19 +114,6 @@ public class Zoo implements Serializable
     public synchronized void addObstacle (Obstacle newObstacle)
     {
         this.obstaclesInZoo.add(newObstacle);
-    }
-
-    /***
-     * Synchronises two list of animals from two different zoo into one
-     * @param otherZoo
-     */
-    public synchronized void syncAnimals(Zoo otherZoo)
-    {
-        /*for(String animalStr : otherZoo.getAnimalsInZoo().keySet())
-        {
-            //System.out.println("Synchronizing animals...");
-            this.addOrUpdateAnimal(otherZoo.getAnimalsInZoo().get(animalStr));
-        }*/
     }
 
     /***

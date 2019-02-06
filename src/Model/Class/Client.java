@@ -72,14 +72,14 @@ public class Client extends Application
          */
 
         /*currentPlayer = new Player("Michel");
-        Penguin pigloo = new Penguin("Loulou","Male", currentPlayer.getName());
-        Turtle franklin = new Turtle("Foufou", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Yvette", "Female", currentPlayer.getName());*/
+        Penguin pigloo = new Penguin("Loulou","Male", currentPlayer, "notAbaby");
+        Turtle franklin = new Turtle("Foufou", "Male", currentPlayer, "notAbaby");
+        Bear winny = new Bear("Yvette", "Female", currentPlayer, "notABaby");*/
 
         currentPlayer = new Player("Didier");
-        Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer.getName());
-        Turtle franklin = new Turtle("Franklin", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Winny", "Male", currentPlayer.getName());
+        Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer, "notAbaby");
+        Turtle franklin = new Turtle("Franklin", "Male", currentPlayer, "notAbaby");
+        Bear winny = new Bear("Winny", "Male", currentPlayer, "notAbaby");
 
         clientKaZoo.addPlayer(currentPlayer);
         currentPlayer.addOrUpdateAnimal(pigloo);
@@ -174,7 +174,6 @@ public class Client extends Application
         if(clientKaZoo.getPlayersInZoo().containsKey(currentPlayer.getName())){
             currentPlayer.setColor(clientKaZoo.getPlayersInZoo().get(currentPlayer.getName()).getColor());
         }
-        System.out.println("Taille du zoo : " + clientKaZoo.getAnimalsInZoo().size());
         // Merging Zoo
         // clientKaZoo.syncPlayer(zooFromServer);
         // clientKaZoo.syncAnimals(zooFromServer);
@@ -206,7 +205,7 @@ public class Client extends Application
         for (String animalName : animalsToDisplay.keySet())
         {
             Animal animal = animalsToDisplay.get(animalName);
-            Player player = clientKaZoo.getPlayersInZoo().get(animal.getOwner());
+            Player player = clientKaZoo.getPlayersInZoo().get(animal.getOwner().getName());
 
             animal.render(gc, selectImgColor(animal, player.getColor()));
             displayAnimals(animal.getBabies(), gc);

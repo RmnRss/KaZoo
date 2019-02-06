@@ -4,6 +4,7 @@ import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import Model.Class.Network.TempReproduction;
+import Model.Class.Player;
 import javafx.geometry.Rectangle2D;
 
 import java.nio.charset.Charset;
@@ -25,7 +26,7 @@ public class Turtle extends Animal
      * @param Name
      * @param Sex
      */
-    public Turtle(String Name, String Sex, String Owner)
+    public Turtle(String Name, String Sex, Player Owner, String status)
     {
         babies = new HashMap<>();
         name = Name;
@@ -45,26 +46,14 @@ public class Turtle extends Animal
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
 
         imageUrl = "resources/img/circle";
-    }
 
-    /***
-     * Baby Turtle constructor
-     * @param Name
-     * @param Sex
-     * @param Father
-     * @param Mother
-     */
-    public Turtle(String Name, String Sex, String Owner, Animal Father, Animal Mother)
-    {
-        this(Name, Sex, Owner);
-        size = 15;
-        father = Father;
-        mother = Mother;
-        age = 0;
-
-        position = mother.getPosition();
-
-        imageUrl = "resources/img/bcircle";
+        if(status.equals("baby")){
+            age = 0;
+            canHaveBabies = isAnAdult();
+            size = 15;
+            velocity = new Velocity(0.5);
+            imageUrl = "resources/img/bcircle";
+        }
     }
 
     /***
@@ -101,29 +90,5 @@ public class Turtle extends Animal
     @Override
     public String toString(){
         return "Turtle";
-    }
-
-    @Override
-    public synchronized void haveBabiesWith(Animal otherAnimal) {
-        // Initialization of reproduction rules and consequences
-        byte[] array = new byte[10];
-        new Random().nextBytes(array);
-        String name = new String(array, Charset.forName("UTF-8"));
-        String[] sexes = {"Male", "Female"};
-        Random random = new Random();
-
-        if(this.getCanHaveBabies()) {
-            System.out.println("Creating baby...");
-            if(this.getSex() == "Female") this.getBabies().put(name, new Turtle(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
-            else this.getBabies().put(name, new Turtle(name, sexes[random.nextInt(1)], this.getOwner(), this, otherAnimal));
-        }
-        this.setCanHaveBabies(false);
-        otherAnimal.setCanHaveBabies(false);
-        this.setTarget();
-        otherAnimal.setTarget();
-
-        TempReproduction newTempReproduction = new TempReproduction(this, otherAnimal);
-        Thread waitingReproduction = new Thread(newTempReproduction);
-        waitingReproduction.start();
     }
 }

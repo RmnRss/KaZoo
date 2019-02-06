@@ -1,15 +1,11 @@
 package Model.Class;
 
 import Model.Class.Zoo.Animals.Animal;
-import Model.Class.Zoo.Animals.Turtle;
 import Model.Class.Zoo.Obstacle;
-import Model.Class.Zoo.Zoo;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /***
  * Player class
@@ -95,7 +91,7 @@ public class Player implements Serializable
     public synchronized void removeAnimalsOfAPlayer(String playerName){
 
         for (String animalName: this.playerAnimals.keySet()) {
-            if (this.playerAnimals.get(animalName).getOwner().equals(playerName)) {
+            if (this.playerAnimals.get(animalName).getOwner().getName().equals(playerName)) {
                 this.playerAnimals.remove(animalName);
             }
         }
@@ -119,10 +115,9 @@ public class Player implements Serializable
      */
     public synchronized void moveAnimals(List<Obstacle> obstaclesInZoo, HashMap<String, Animal> animalsInZoo)
     {
-        for (String animalName : this.getPlayerAnimals().keySet())
+        for (String animalName : this.getAllAnimals().keySet())
         {
             Animal animal = this.getPlayerAnimals().get(animalName);
-
             // Movement part
             if(!animal.isArrived())
             {
@@ -140,17 +135,23 @@ public class Player implements Serializable
                 if(collision)   animal.setTarget();
 
                 // Mating part
-                int nbBabiesBeforeMating = animal.getBabies().size();
                 animal.mating(animalsInZoo);
-                int nbBabiesAfterMating = animal.getBabies().size();
-
-                if(nbBabiesBeforeMating < nbBabiesAfterMating) this.addOrUpdateBabies(animal);
             }
             else
             {
                 animal.setTarget();
             }
         }
+    }
 
+    public HashMap<String, Animal> getAllAnimals(){
+        HashMap<String, Animal> allAnimals = new HashMap<>();
+        for (String animalName : this.playerAnimals.keySet()) {
+            allAnimals.put(animalName, this.playerAnimals.get(animalName));
+            for(String babyName : this.playerAnimals.get(animalName).getBabies().keySet()){
+                allAnimals.put(babyName, this.playerAnimals.get(animalName).getBabies().get(babyName));
+            }
+        }
+        return allAnimals;
     }
 }

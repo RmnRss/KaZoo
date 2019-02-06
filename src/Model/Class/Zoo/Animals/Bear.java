@@ -4,6 +4,7 @@ import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
 import Model.Class.Client;
 import Model.Class.Network.TempReproduction;
+import Model.Class.Player;
 import javafx.geometry.Rectangle2D;
 
 import java.nio.charset.Charset;
@@ -25,7 +26,7 @@ public class Bear extends Animal
      * @param Name
      * @param Sex
      */
-    public Bear(String Name, String Sex, String Owner)
+    public Bear(String Name, String Sex, Player Owner, String status)
     {
         babies = new HashMap<>();
         name = Name;
@@ -45,26 +46,15 @@ public class Bear extends Animal
         target = new Position(r.nextInt(mapSide), r.nextInt(mapSide));
 
         imageUrl = "resources/img/triangle";
-    }
 
-    /***
-     * Constructor for a baby bear
-     * @param Name
-     * @param Sex
-     * @param Father
-     * @param Mother
-     */
-    public Bear(String Name, String Sex, String Owner, Animal Father, Animal Mother)
-    {
-        this(Name, Sex, Owner);
-        size = 15;
-        father = Father;
-        mother = Mother;
-        age = 0;
-
-        position = mother.getPosition();
-
-        imageUrl = "resources/img/btriangle";
+        if(status.equals("baby")){
+            age = 0;
+            canHaveBabies = isAnAdult();
+            size = 15;
+            velocity = new Velocity(4);
+            imageUrl = "resources/img/btriangle";
+        }
+        
     }
 
     /***
@@ -102,35 +92,6 @@ public class Bear extends Animal
     @Override
     public String toString(){
         return "Bear";
-    }
-
-    @Override
-    public synchronized void haveBabiesWith(Animal otherAnimal) {
-        // Initialization of reproduction rules and consequences
-        byte[] array = new byte[10];
-        new Random().nextBytes(array);
-        String name = new String(array, Charset.forName("UTF-8"));
-        String[] sexes = {"Male", "Female"};
-        Random random = new Random();
-
-        if(this.getCanHaveBabies()) {
-            System.out.println("Creating baby...");
-            if(this.getSex() == "Female") {
-                this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
-            }
-            else {
-                this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), this, otherAnimal));
-            }
-        }
-        this.setCanHaveBabies(false);
-        otherAnimal.setCanHaveBabies(false);
-        this.setTarget();
-        otherAnimal.setTarget();
-
-
-        TempReproduction newTempReproduction = new TempReproduction(this, otherAnimal);
-        Thread waitingReproduction = new Thread(newTempReproduction);
-        waitingReproduction.start();
     }
 
 }

@@ -2,10 +2,9 @@ package Model.Class.Zoo.Animals;
 
 import Model.Class.Animations.Position;
 import Model.Class.Animations.Velocity;
-import Model.Class.Client;
 import Model.Class.Network.TempReproduction;
+import Model.Class.Player;
 import Model.Class.Zoo.Obstacle;
-import javafx.geometry.VerticalDirection;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.io.Serializable;
@@ -25,7 +24,7 @@ public abstract class Animal implements Serializable
 
     protected int age;
 
-    protected String owner;
+    protected Player owner;
 
     protected String imageUrl;
 
@@ -121,7 +120,7 @@ public abstract class Animal implements Serializable
      */
     public synchronized boolean intersects(Position target)
     {
-        double range = 25;
+        double range = 15;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
         Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
 
@@ -199,11 +198,11 @@ public abstract class Animal implements Serializable
         this.age = age;
     }
 
-    public String getOwner() {
+    public Player getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(Player owner) {
         this.owner = owner;
     }
 
@@ -275,13 +274,67 @@ public abstract class Animal implements Serializable
         return this.getAge() > 2;
     }
 
+    public Boolean isAFemale(){ return this.getSex() == "Female"; }
+
+    public synchronized void addBaby(Animal babyToAdd){
+        this.babies.put(babyToAdd.getName(), babyToAdd);
+    }
+
     /***
      * Makes an animal reproduce with another one on some conditions
      * Disable reproduction for a while after coitus
      * Creates a random number of baby animals
      * @param otherAnimal
      */
-    public abstract void haveBabiesWith(Animal otherAnimal);
+
+    public synchronized void haveBabiesWith(Animal otherAnimal) {
+        // Initialization of reproduction rules and consequences
+        byte[] array = new byte[10];
+        new Random().nextBytes(array);
+        String name = new String(array, Charset.forName("UTF-8"));
+        String[] sexes = {"Male", "Female"};
+        Random random = new Random();
+
+        Animal male;
+        Animal female;
+
+        if(this.isAFemale()){
+            female = this;
+            male = otherAnimal;
+        }
+        else
+        {
+            female = otherAnimal;
+            male = this;
+        }
+
+        if(this instanceof Bear) {
+            System.out.println("Creating baby...");
+            Bear babyBear = new Bear(name, sexes[random.nextInt(1)], female.getOwner(), "baby");
+            //female.addBaby(babyBear);
+            female.getOwner().addOrUpdateAnimal(babyBear);
+        }
+        else
+        {
+            if(this instanceof Penguin){
+                System.out.println("Creating baby...");
+                female.getBabies().put(name, new Penguin(name, sexes[random.nextInt(1)], female.getOwner(), "baby"));
+            }
+            else
+            {
+                System.out.println("Creating baby...");
+                female.getBabies().put(name, new Turtle(name, sexes[random.nextInt(1)], female.getOwner(), "baby"));
+            }
+        }
+        female.setCanHaveBabies(false);
+        male.setCanHaveBabies(false);
+        female.setTarget();
+        male.setTarget();
+
+        TempReproduction newTempReproduction = new TempReproduction(female, male);
+        Thread waintingReproduction = new Thread(newTempReproduction);
+        waintingReproduction.start();
+    }
 
     public synchronized void mating(HashMap<String, Animal> animalsInZoo){
         Boolean hadBabies = false;
@@ -292,7 +345,7 @@ public abstract class Animal implements Serializable
             Map.Entry<String, Animal> entry = iterator.next();
             Animal otherAnimal = animalsInZoo.get(entry.getKey());
             if(otherAnimal != this && this.isAnAdult() && this.getCanHaveBabies()) {
-                if (this.intersects(otherAnimal.getPosition())) {
+                if (this.intersects(otherAnimal.getPosition()) && otherAnimal.isAnAdult() && otherAnimal.getCanHaveBabies()) {
                     if (otherAnimal.getClass().getName().equals(this.getClass().getName()) && !this.getSex().equals(otherAnimal.getSex())) {
                         this.haveBabiesWith(otherAnimal);
                         hadBabies = true;

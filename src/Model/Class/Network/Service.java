@@ -71,6 +71,7 @@ class Service implements Runnable
                 // Reading client zoo
                 playerInService = (Player) in.readObject();
 
+                System.out.println(playerInService.getName() + " a " + playerInService.getAllAnimals().size());
                 // Merging animals of the general serviceZoo with the ones from the client
                 serviceZoo.updatePlayer(playerInService);
             }

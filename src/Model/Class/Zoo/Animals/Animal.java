@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import javafx.scene.image.Image;
 
@@ -117,7 +119,7 @@ public abstract class Animal implements Serializable
      */
     public synchronized boolean intersects(Position target)
     {
-        double range = 5;
+        double range = 25;
         Boolean inX = position.getX() > (target.getX() - range) && position.getX() < (target.getX() + range);
         Boolean inY = position.getY() > (target.getY() - range) && position.getY() < (target.getY() + range);
 
@@ -277,42 +279,26 @@ public abstract class Animal implements Serializable
      * Creates a random number of baby animals
      * @param otherAnimal
      */
-    public synchronized void haveBabiesWith(Animal otherAnimal)
-    {
-        // TODO : Move this to every class
-        // Initialization of reproduction rules and consequences
-        byte[] array = new byte[10];
-        new Random().nextBytes(array);
-        String name = new String(array, Charset.forName("UTF-8"));
-        String[] sexes = {"Male", "Female"};
-        Random random = new Random();
+    public abstract void haveBabiesWith(Animal otherAnimal);
 
-        if (this.getSex().equals("Female")) {
-            if (this instanceof Bear) {
+    public synchronized void mating(HashMap<String, Animal> animalsInZoo){
+        Boolean hadBabies = false;
 
-                if(this.getCanHaveBabies()) {
-                    System.out.println("Creating baby...");
-                    this.getBabies().put(name, new Bear(name, sexes[random.nextInt(1)], this.getOwner(), otherAnimal, this));
-                }
-                this.setCanHaveBabies(false);
-                otherAnimal.setCanHaveBabies(false);
-                this.setTarget();
-                otherAnimal.setTarget();
-
-                TempReproduction newTempReproduction = new TempReproduction(this, otherAnimal);
-                Thread waitingReproduction = new Thread(newTempReproduction);
-                waitingReproduction.start();
-            }
-            else
-            {
-                if (this instanceof Penguin) {
-
-                }
-                else {
-
+        Iterator<Map.Entry<String, Animal>> iterator = animalsInZoo.entrySet().iterator();
+        while(iterator.hasNext() && !hadBabies)
+        {
+            Map.Entry<String, Animal> entry = iterator.next();
+            Animal otherAnimal = animalsInZoo.get(entry.getKey());
+            if(otherAnimal != this && this.isAnAdult() && this.getCanHaveBabies()) {
+                if (this.intersects(otherAnimal.getPosition())) {
+                    if (otherAnimal.getClass().getName().equals(this.getClass().getName()) && !this.getSex().equals(otherAnimal.getSex())) {
+                        this.haveBabiesWith(otherAnimal);
+                        hadBabies = true;
+                    }
                 }
             }
         }
-
     }
+
+
 }

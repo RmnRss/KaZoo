@@ -72,6 +72,17 @@ public class Player implements Serializable
             this.playerAnimals.put(newAnimal.getName(), newAnimal);
         }
 
+        addOrUpdateBabies(newAnimal);
+    }
+
+    /***
+     * Adds a specific animal to the Zoo or overrides it
+     * Only added if its owner is a connected player
+     * Also add babies of said animals to the list of the zoo
+     * @param newAnimal
+     */
+    public synchronized void addOrUpdateBabies(Animal newAnimal)
+    {
         for (String babyName : newAnimal.getBabies().keySet()){
             addOrUpdateAnimal(newAnimal.getBabies().get(babyName));
         }
@@ -106,7 +117,7 @@ public class Player implements Serializable
      * Refreshes position of every animal in the zoo
      * And checks for mate to have coitus with
      */
-    public synchronized void moveAnimals(List<Obstacle> obstaclesInZoo)
+    public synchronized void moveAnimals(List<Obstacle> obstaclesInZoo, HashMap<String, Animal> animalsInZoo)
     {
         for (String animalName : this.getPlayerAnimals().keySet())
         {
@@ -117,43 +128,23 @@ public class Player implements Serializable
             {
                 animal.move(0.5);
 
+                // Collision with obstacles part
                 int i = 0;
                 Boolean collision = false;
 
                 while(i < obstaclesInZoo.size() && !collision)
                 {
-                    if(animal.hitObstacle(obstaclesInZoo.get(i)))
-                    {
-                        System.out.println("BOUM");
-                        collision = true;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    if(animal.hitObstacle(obstaclesInZoo.get(i)))   collision = true;
+                    else    i++;
                 }
-                if(collision)
-                {
-                    animal.setTarget();
-                }
+                if(collision)   animal.setTarget();
 
                 // Mating part
-                Boolean hadBabies = false;
+                int nbBabiesBeforeMating = animal.getBabies().size();
+                animal.mating(animalsInZoo);
+                int nbBabiesAfterMating = animal.getBabies().size();
 
-                Iterator<Map.Entry<String, Animal>> iterator = this.getPlayerAnimals().entrySet().iterator();
-                while(iterator.hasNext() && !hadBabies)
-                {
-                    Map.Entry<String, Animal> entry = iterator.next();
-                    Animal otherAnimal = this.getPlayerAnimals().get(entry.getKey());
-                    if(otherAnimal != animal && animal.isAnAdult() && animal.getCanHaveBabies()) {
-                        if (animal.intersects(otherAnimal.getPosition())) {
-                            if (otherAnimal.getClass().getName().equals(animal.getClass().getName()) && !animal.getSex().equals(otherAnimal.getSex())) {
-                                animal.haveBabiesWith(otherAnimal);
-                                hadBabies = true;
-                            }
-                        }
-                    }
-                }
+                if(nbBabiesBeforeMating < nbBabiesAfterMating) this.addOrUpdateBabies(animal);
             }
             else
             {

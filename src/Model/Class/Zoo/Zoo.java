@@ -139,4 +139,18 @@ public class Zoo implements Serializable
             this.addOrUpdateAnimal(otherZoo.getAnimalsInZoo().get(animalStr));
         }*/
     }
+
+    /***
+     * Select all animals in zoo
+     */
+    public HashMap<String, Animal> getAnimalsInZoo(){
+        HashMap<String, Animal> allAnimals = new HashMap<>();
+        for (String playerName : this.getPlayersInZoo().keySet()) {
+            for (String animalName : this.getPlayersInZoo().get(playerName).getPlayerAnimals().keySet()){
+                allAnimals.put(animalName, this.getPlayersInZoo().get(playerName).getPlayerAnimals().get(animalName));
+            }
+        }
+        return allAnimals;
+    }
+
 }

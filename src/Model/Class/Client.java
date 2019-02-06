@@ -71,15 +71,15 @@ public class Client extends Application
         *       DATA SETS
         */
 
-        /*currentPlayer = new Player("Michel");
+        currentPlayer = new Player("Michel");
         Penguin pigloo = new Penguin("Loulou","Male", currentPlayer.getName());
         Turtle franklin = new Turtle("Foufou", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Yvette", "Female", currentPlayer.getName());*/
+        Bear winny = new Bear("Yvette", "Female", currentPlayer.getName());
 
-        currentPlayer = new Player("Didier");
+        /*currentPlayer = new Player("Didier");
         Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer.getName());
         Turtle franklin = new Turtle("Franklin", "Male", currentPlayer.getName());
-        Bear winny = new Bear("Winny", "Male", currentPlayer.getName());
+        Bear winny = new Bear("Winny", "Male", currentPlayer.getName());*/
 
         clientKaZoo.addPlayer(currentPlayer);
         currentPlayer.addOrUpdateAnimal(pigloo);
@@ -134,7 +134,7 @@ public class Client extends Application
                 try {
                     receivedZooFromServer();
                     display(gc);
-                    currentPlayer.moveAnimals(clientKaZoo.getObstaclesInZoo());
+                    currentPlayer.moveAnimals(clientKaZoo.getObstaclesInZoo(), clientKaZoo.getAnimalsInZoo());
                     sendPlayerToServer();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -176,6 +176,7 @@ public class Client extends Application
         if(clientKaZoo.getPlayersInZoo().containsKey(currentPlayer.getName())){
             currentPlayer.setColor(clientKaZoo.getPlayersInZoo().get(currentPlayer.getName()).getColor());
         }
+        System.out.println("Taille du zoo : " + clientKaZoo.getAnimalsInZoo().size());
         // Merging Zoo
         // clientKaZoo.syncPlayer(zooFromServer);
         // clientKaZoo.syncAnimals(zooFromServer);

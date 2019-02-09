@@ -7,13 +7,11 @@ import Model.Class.Zoo.Player;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Bear extends Animal
-{
+public class Bear extends Animal {
     /***
      * Empty Bear constructor
      */
-    public Bear()
-    {
+    public Bear() {
 
     }
 
@@ -22,8 +20,7 @@ public class Bear extends Animal
      * @param Name
      * @param Sex
      */
-    public Bear(String Name, String Sex, Player Owner, String status)
-    {
+    public Bear(String Name, String Sex, Player Owner, String status) {
         babies = new HashMap<>();
         name = Name;
         sex = Sex;
@@ -43,14 +40,14 @@ public class Bear extends Animal
 
         imageUrl = "resources/img/triangle";
 
-        if(status.equals("baby")){
+        if (status.equals("baby")) {
             age = 0;
             canHaveBabies = isAnAdult();
             size = 15;
             velocity = new Velocity(4);
             imageUrl = "resources/img/btriangle";
         }
-        
+
     }
 
     /***
@@ -58,13 +55,12 @@ public class Bear extends Animal
      * @param Age
      */
     @Override
-    public synchronized void growth(int Age)
-    {
+    public synchronized void growth(int Age) {
         // TODO : Implement method
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Bear";
     }
 

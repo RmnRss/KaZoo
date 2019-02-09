@@ -30,8 +30,7 @@ public class Position implements Serializable {
         this.positionY = positionY;
     }
 
-    public void setPosition(double x, double y)
-    {
+    public void setPosition(double x, double y) {
         positionX = x;
         positionY = y;
     }

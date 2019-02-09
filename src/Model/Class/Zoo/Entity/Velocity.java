@@ -30,14 +30,12 @@ public class Velocity implements Serializable {
         this.velocityY = velocityY;
     }
 
-    public void setVelocity(double newVelocity)
-    {
+    public void setVelocity(double newVelocity) {
         velocityX = newVelocity;
         velocityY = newVelocity;
     }
 
-    public void addVelocity(double velocityToAdd)
-    {
+    public void addVelocity(double velocityToAdd) {
         velocityX += velocityToAdd;
         velocityY += velocityToAdd;
     }

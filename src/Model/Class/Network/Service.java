@@ -3,14 +3,15 @@ package Model.Class.Network;
 import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Zoo;
 
-import java.net.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 /***
  * Tasks to realise by the server for every client
  */
-class Service implements Runnable
-{
+class Service implements Runnable {
     private Socket clientSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -26,8 +27,7 @@ class Service implements Runnable
      * @param clientCounter
      * @param serverZoo
      */
-    public Service(Socket clientSocket, ClientCounter clientCounter, Zoo serverZoo)
-    {
+    public Service(Socket clientSocket, ClientCounter clientCounter, Zoo serverZoo) {
         this.clientSocket = clientSocket;
         this.counter = clientCounter;
         this.serviceZoo = serverZoo;
@@ -36,8 +36,7 @@ class Service implements Runnable
     /***
      * Contains the task the Service should handle
      */
-    public void run()
-    {
+    public void run() {
         boolean isStopped = false;
         int clientNumber;
 
@@ -45,15 +44,14 @@ class Service implements Runnable
         counter.incCount();
         clientNumber = counter.getCount();
 
-        try
-        {
+        try {
             // Initializing the streams for every client
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
 
             // Reading the player object from the client
-            playerInService = (Player)in.readObject();
-            playerInService.setColor(clientNumber-1);
+            playerInService = (Player) in.readObject();
+            playerInService.setColor(clientNumber - 1);
 
             // Updating the player list with the new player
             serviceZoo.addPlayer(playerInService);
@@ -61,8 +59,7 @@ class Service implements Runnable
             System.out.println(playerInService.getName() + " is now online");
 
             // While the client is online
-            while (!isStopped)
-            {
+            while (!isStopped) {
                 // Sending modified Zoo to the client
                 out.reset();
                 out.writeObject(serviceZoo);
@@ -75,8 +72,7 @@ class Service implements Runnable
                 serviceZoo.updatePlayer(playerInService);
             }
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Erreur : " + e);
             e.printStackTrace();
 
@@ -93,8 +89,7 @@ class Service implements Runnable
      * @param out
      * @param cSocket
      */
-    void closeService(ObjectInputStream in, ObjectOutputStream out, Socket cSocket)
-    {
+    void closeService(ObjectInputStream in, ObjectOutputStream out, Socket cSocket) {
         System.out.println(playerInService.getName() + " disconnecting");
 
         serviceZoo.removePlayer(playerInService);

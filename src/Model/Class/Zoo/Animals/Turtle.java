@@ -7,13 +7,11 @@ import Model.Class.Zoo.Player;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Turtle extends Animal
-{
+public class Turtle extends Animal {
     /***
      * Empty constructor
      */
-    public Turtle()
-    {
+    public Turtle() {
 
     }
 
@@ -22,8 +20,7 @@ public class Turtle extends Animal
      * @param Name
      * @param Sex
      */
-    public Turtle(String Name, String Sex, Player Owner, String status)
-    {
+    public Turtle(String Name, String Sex, Player Owner, String status) {
         babies = new HashMap<>();
         name = Name;
         sex = Sex;
@@ -43,7 +40,7 @@ public class Turtle extends Animal
 
         imageUrl = "resources/img/circle";
 
-        if(status.equals("baby")){
+        if (status.equals("baby")) {
             age = 0;
             canHaveBabies = isAnAdult();
             size = 15;
@@ -57,13 +54,12 @@ public class Turtle extends Animal
      * @param Age
      */
     @Override
-    public synchronized void growth(int Age)
-    {
+    public synchronized void growth(int Age) {
         // TODO : Implement method
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Turtle";
     }
 }

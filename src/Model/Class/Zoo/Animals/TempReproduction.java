@@ -3,12 +3,11 @@ package Model.Class.Zoo.Animals;
 /***
  * Temporizing thread to avoid multiple coitus at a time
  */
-public class TempReproduction implements Runnable
-{
+public class TempReproduction implements Runnable {
     private Animal mother;
     private Animal father;
 
-    public TempReproduction(Animal TempoMother, Animal TempoFather){
+    public TempReproduction(Animal TempoMother, Animal TempoFather) {
         mother = TempoMother;
         father = TempoFather;
     }

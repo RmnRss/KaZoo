@@ -1,16 +1,17 @@
 package Model.Class.Zoo;
 
-import Model.Class.Zoo.Animals.*;
+import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Entity.Obstacle;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /***
  * Zoo class : contains all information of a zoo
  */
-public class Zoo implements Serializable
-{
+public class Zoo implements Serializable {
     private List<Obstacle> obstaclesInZoo = new ArrayList<Obstacle>();
     private HashMap<String, Player> playersInZoo = new HashMap<>();
 
@@ -65,8 +66,7 @@ public class Zoo implements Serializable
      * Otherwise overrides the player
      * @param newPlayer
      */
-    public synchronized void addPlayer (Player newPlayer)
-    {
+    public synchronized void addPlayer(Player newPlayer) {
         System.out.println("Adding player...");
         this.playersInZoo.put(newPlayer.getName(), newPlayer);
     }
@@ -75,12 +75,10 @@ public class Zoo implements Serializable
      * Update a specific player
      * @param newPlayer
      */
-    public synchronized void updatePlayer (Player newPlayer)
-    {
+    public synchronized void updatePlayer(Player newPlayer) {
         //System.out.println("Updating player...");
 
-        if(this.playersInZoo.containsKey(newPlayer.getName()))
-        {
+        if (this.playersInZoo.containsKey(newPlayer.getName())) {
             //overrides current animals
             this.playersInZoo.replace(newPlayer.getName(), newPlayer);
         }
@@ -90,11 +88,10 @@ public class Zoo implements Serializable
      * Removes a player and its animals from the zoo using its name
      * @param aPlayer
      */
-    public synchronized void removePlayer (Player aPlayer)
-    {
+    public synchronized void removePlayer(Player aPlayer) {
         System.out.println("Removing player...");
 
-        if(this.playersInZoo.containsKey(aPlayer.getName())){
+        if (this.playersInZoo.containsKey(aPlayer.getName())) {
             //overrides current animal
             this.playersInZoo.remove(aPlayer.getName());
         }
@@ -103,12 +100,11 @@ public class Zoo implements Serializable
     /***
      * Returns a list containing all animals in the zoo
      */
-    public HashMap<String, Animal> getAnimalsInZoo()
-    {
+    public HashMap<String, Animal> getAnimalsInZoo() {
         HashMap<String, Animal> allAnimals = new HashMap<>();
 
         for (String playerName : this.getPlayersInZoo().keySet()) {
-            for (String animalName : this.getPlayersInZoo().get(playerName).getPlayerAnimals().keySet()){
+            for (String animalName : this.getPlayersInZoo().get(playerName).getPlayerAnimals().keySet()) {
                 allAnimals.put(animalName, this.getPlayersInZoo().get(playerName).getPlayerAnimals().get(animalName));
             }
         }

@@ -10,13 +10,11 @@ import java.util.Random;
 /***
  * Implementation of Animal for penguins
  */
-public class Penguin extends Animal
-{
+public class Penguin extends Animal {
     /***
      * Empty constructor
      */
-    public Penguin()
-    {
+    public Penguin() {
 
     }
 
@@ -25,8 +23,7 @@ public class Penguin extends Animal
      * @param Name
      * @param Sex
      */
-    public Penguin(String Name, String Sex, Player Owner, String status)
-    {
+    public Penguin(String Name, String Sex, Player Owner, String status) {
         babies = new HashMap<>();
         name = Name;
         sex = Sex;
@@ -46,7 +43,7 @@ public class Penguin extends Animal
 
         imageUrl = "resources/img/rectangle";
 
-        if(status.equals("baby")){
+        if (status.equals("baby")) {
             age = 0;
             canHaveBabies = isAnAdult();
             size = 15;
@@ -61,13 +58,12 @@ public class Penguin extends Animal
      * @param Age
      */
     @Override
-    public synchronized void growth(int Age)
-    {
+    public synchronized void growth(int Age) {
         // TODO : Implement method
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Penguin";
     }
 }

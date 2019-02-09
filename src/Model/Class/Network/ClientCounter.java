@@ -3,23 +3,21 @@ package Model.Class.Network;
 /***
  * Counts the number of clients connected to the server
  */
-public class ClientCounter
-{
+public class ClientCounter {
     private int count;
 
     /***
      * Constructor intitialize the
      */
     public ClientCounter() {
-        this.count =0;
+        this.count = 0;
     }
 
     /***
      * Adds one to the counter
      * Adds a client
      */
-    public synchronized void incCount()
-    {
+    public synchronized void incCount() {
         count++;
     }
 
@@ -27,8 +25,7 @@ public class ClientCounter
      * Decrease the counter from one
      * Removes one Client
      */
-    public synchronized void decCount()
-    {
+    public synchronized void decCount() {
         count--;
     }
 
@@ -36,8 +33,7 @@ public class ClientCounter
      * Returns the number of clients connected to the server
      * @return
      */
-    public int getCount()
-    {
+    public int getCount() {
         return count;
     }
 

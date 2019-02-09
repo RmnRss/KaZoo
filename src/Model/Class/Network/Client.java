@@ -1,10 +1,10 @@
 package Model.Class.Network;
 
-import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Animals.Animal;
 import Model.Class.Zoo.Animals.Bear;
 import Model.Class.Zoo.Animals.Penguin;
 import Model.Class.Zoo.Animals.Turtle;
+import Model.Class.Zoo.Player;
 import Model.Class.Zoo.Zoo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -15,7 +15,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
@@ -24,8 +26,7 @@ import static java.lang.Thread.sleep;
 /***
  * Client class Runs the interface and connects to the server
  */
-public class Client extends Application
-{
+public class Client extends Application {
     public static final int PORT = 6789;
 
     private Socket clientSocket;
@@ -56,8 +57,7 @@ public class Client extends Application
      * @throws Exception
      */
     @Override
-    public void start(Stage window) throws Exception
-    {
+    public void start(Stage window) throws Exception {
         window.setTitle("clientKaZoo");
 
         /*
@@ -66,7 +66,7 @@ public class Client extends Application
          */
 
         currentPlayer = new Player("Michel");
-        Penguin pigloo = new Penguin("Loulou","Male", currentPlayer, "adult");
+        Penguin pigloo = new Penguin("Loulou", "Male", currentPlayer, "adult");
         Turtle franklin = new Turtle("Foufou", "Male", currentPlayer, "adult");
         Bear winny = new Bear("Yvette", "Female", currentPlayer, "adult");
 
@@ -122,12 +122,10 @@ public class Client extends Application
          * Then animates the local zoo
          * And finally sends the updated information to the server
          */
-        new AnimationTimer()
-        {
-            public void handle(long currentNanoTime)
-            {
+        new AnimationTimer() {
+            public void handle(long currentNanoTime) {
                 double t = (currentNanoTime - startNanoTime) / 10000000000.0;
-                gc.drawImage(map , 0,0 );
+                gc.drawImage(map, 0, 0);
 
                 try {
                     receivedZooFromServer();
@@ -150,8 +148,7 @@ public class Client extends Application
      * Called every frame sends the player information to the server
      * @throws IOException
      */
-    public void sendPlayerToServer() throws IOException
-    {
+    public void sendPlayerToServer() throws IOException {
         //System.out.println("Sending player...");
         outputStream.reset();
         outputStream.writeObject(currentPlayer);
@@ -164,15 +161,14 @@ public class Client extends Application
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void receivedZooFromServer() throws IOException, ClassNotFoundException
-    {
+    public void receivedZooFromServer() throws IOException, ClassNotFoundException {
         //System.out.println("Receiving...");
         // Receiving Zoos
         Zoo zooFromServer = (Zoo) inputStream.readObject();
 
         clientKaZoo = zooFromServer;
 
-        if(clientKaZoo.getPlayersInZoo().containsKey(currentPlayer.getName())){
+        if (clientKaZoo.getPlayersInZoo().containsKey(currentPlayer.getName())) {
             currentPlayer.setColor(clientKaZoo.getPlayersInZoo().get(currentPlayer.getName()).getColor());
         }
         // Merging Zoo
@@ -187,8 +183,7 @@ public class Client extends Application
      * @throws InterruptedException
      */
     @Override
-    public void stop() throws IOException, InterruptedException
-    {
+    public void stop() throws IOException, InterruptedException {
         System.out.println("Closing client");
 
         sleep(1000);
@@ -201,10 +196,8 @@ public class Client extends Application
      * @param animalsToDisplay
      * @param gc
      */
-    public void displayAnimals(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc)
-    {
-        for (String animalName : animalsToDisplay.keySet())
-        {
+    public void displayAnimals(HashMap<String, Animal> animalsToDisplay, GraphicsContext gc) {
+        for (String animalName : animalsToDisplay.keySet()) {
             Animal animal = animalsToDisplay.get(animalName);
             Player player = clientKaZoo.getPlayersInZoo().get(animal.getOwner().getName());
 
@@ -217,8 +210,7 @@ public class Client extends Application
      * Displays obstacles on the canvas
      * @param gc
      */
-    public void displayObstacles(GraphicsContext gc)
-    {
+    public void displayObstacles(GraphicsContext gc) {
         gc.drawImage(new Image("resources/img/lightTree.png"), 102, 289);
         gc.drawImage(new Image("resources/img/darkTree.png"), 332, 32);
         gc.drawImage(new Image("resources/img/rocks.png"), 410, 283);
@@ -228,10 +220,8 @@ public class Client extends Application
      * Display all animals on teh canvas
      * @param gc
      */
-    public void display(GraphicsContext gc)
-    {
-        for (String playerName : clientKaZoo.getPlayersInZoo().keySet())
-        {
+    public void display(GraphicsContext gc) {
+        for (String playerName : clientKaZoo.getPlayersInZoo().keySet()) {
             displayAnimals(clientKaZoo.getPlayersInZoo().get(playerName).getPlayerAnimals(), gc);
         }
     }
@@ -242,7 +232,7 @@ public class Client extends Application
      * @param color
      * @return
      */
-    public Image selectImgColor(Animal anAnimal , int color){
+    public Image selectImgColor(Animal anAnimal, int color) {
         return new Image(anAnimal.getImageUrl() + color + ".png");
     }
 }

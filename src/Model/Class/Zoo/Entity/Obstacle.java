@@ -1,14 +1,11 @@
 package Model.Class.Zoo.Entity;
 
-import Model.Class.Zoo.Entity.Position;
-
 import java.io.Serializable;
 
 /***
  * Class of an obstacle
  */
-public class Obstacle implements Serializable
-{
+public class Obstacle implements Serializable {
     private Position position;
     private double width;
     private double height;
@@ -20,7 +17,7 @@ public class Obstacle implements Serializable
      * @param width
      * @param height
      */
-    public Obstacle(double x, double y, double width, double height){
+    public Obstacle(double x, double y, double width, double height) {
         position = new Position(x, y);
         this.width = width;
         this.height = height;

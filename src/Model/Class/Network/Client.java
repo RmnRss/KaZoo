@@ -68,12 +68,12 @@ public class Client extends Application {
         currentPlayer = new Player("Michel");
         Penguin pigloo = new Penguin("Loulou", "Male", currentPlayer, "adult");
         Turtle franklin = new Turtle("Foufou", "Male", currentPlayer, "adult");
-        Bear winny = new Bear("Yvette", "Female", currentPlayer, "adult");
+        Bear winny = new Bear("Yvette", "Female", currentPlayer, "adult");*/
 
-        /*currentPlayer = new Player("Didier");
+        currentPlayer = new Player("Didier");
         Penguin pigloo = new Penguin("Pigloo","Male", currentPlayer, "adult");
         Turtle franklin = new Turtle("Franklin", "Male", currentPlayer, "adult");
-        Bear winny = new Bear("Winny", "Male", currentPlayer, "adult");*/
+        Bear winny = new Bear("Winny", "Male", currentPlayer, "adult");
 
         clientKaZoo.addPlayer(currentPlayer);
         currentPlayer.addOrUpdateAnimal(pigloo);
@@ -105,7 +105,7 @@ public class Client extends Application {
          *          NETWORK INITIALISATION
          */
 
-        clientSocket = new Socket("localhost", PORT);
+        clientSocket = new Socket("192.168.43.92", PORT);
         outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         inputStream = new ObjectInputStream(clientSocket.getInputStream());
 
